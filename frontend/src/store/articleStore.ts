@@ -14,7 +14,7 @@ interface ArticleState {
   setCurrentArticle: (article: Article | null) => void;
 }
 
-export const useArticleStore = create<ArticleState>((set) => ({
+export const useArticleStore = create<ArticleState>(set => ({
   articles: [],
   currentArticle: null,
   loading: false,
@@ -26,9 +26,9 @@ export const useArticleStore = create<ArticleState>((set) => ({
       const articles = await dataLayer.getArticles();
       set({ articles, loading: false });
     } catch (error) {
-      set({ 
+      set({
         error: error instanceof Error ? error.message : 'Failed to fetch articles',
-        loading: false 
+        loading: false,
       });
     }
   },
@@ -39,9 +39,9 @@ export const useArticleStore = create<ArticleState>((set) => ({
       const article = await dataLayer.getArticleById(id);
       set({ currentArticle: article, loading: false });
     } catch (error) {
-      set({ 
+      set({
         error: error instanceof Error ? error.message : 'Failed to fetch article',
-        loading: false 
+        loading: false,
       });
     }
   },
@@ -52,9 +52,9 @@ export const useArticleStore = create<ArticleState>((set) => ({
       const articles = await dataLayer.getArticlesByTopic(topic);
       set({ articles, loading: false });
     } catch (error) {
-      set({ 
+      set({
         error: error instanceof Error ? error.message : 'Failed to fetch articles by topic',
-        loading: false 
+        loading: false,
       });
     }
   },
@@ -65,14 +65,14 @@ export const useArticleStore = create<ArticleState>((set) => ({
       const articles = await dataLayer.searchArticles(query);
       set({ articles, loading: false });
     } catch (error) {
-      set({ 
+      set({
         error: error instanceof Error ? error.message : 'Failed to search articles',
-        loading: false 
+        loading: false,
       });
     }
   },
 
   clearError: () => set({ error: null }),
-  
-  setCurrentArticle: (article: Article | null) => set({ currentArticle: article })
+
+  setCurrentArticle: (article: Article | null) => set({ currentArticle: article }),
 }));

@@ -16,9 +16,7 @@ export default function Sidebar({ articles, topics }: SidebarProps) {
             .slice(0, 3)
             .map((article, index) => (
               <li key={article.id} className="text-sm">
-                <span className="font-bold text-lg text-gray-400 mr-2">
-                  {index + 1}.
-                </span>
+                <span className="font-bold text-lg text-gray-400 mr-2">{index + 1}.</span>
                 <a href="#" className="hover:text-blue-600">
                   {article.title}
                 </a>

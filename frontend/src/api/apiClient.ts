@@ -9,7 +9,7 @@ interface RequestOptions {
 class ApiClient {
   private async request<T>(endpoint: string, options: RequestOptions): Promise<T> {
     const url = `${BASE_URL}${endpoint}`;
-    
+
     const config: RequestInit = {
       method: options.method,
       headers: {
@@ -21,11 +21,11 @@ class ApiClient {
 
     try {
       const response = await fetch(url, config);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       return response.json();
     } catch (error) {
       console.error('API request failed:', error);

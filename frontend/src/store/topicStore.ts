@@ -11,7 +11,7 @@ interface TopicState {
   clearError: () => void;
 }
 
-export const useTopicStore = create<TopicState>((set) => ({
+export const useTopicStore = create<TopicState>(set => ({
   topics: [],
   currentTopic: null,
   loading: false,
@@ -23,14 +23,14 @@ export const useTopicStore = create<TopicState>((set) => ({
       const topics = await dataLayer.getTopics();
       set({ topics, loading: false });
     } catch (error) {
-      set({ 
+      set({
         error: error instanceof Error ? error.message : 'Failed to fetch topics',
-        loading: false 
+        loading: false,
       });
     }
   },
 
   setCurrentTopic: (topic: string | null) => set({ currentTopic: topic }),
-  
-  clearError: () => set({ error: null })
+
+  clearError: () => set({ error: null }),
 }));

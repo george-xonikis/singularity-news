@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 
 export default async function Home() {
   const [articles, topics] = await Promise.all([
-    getArticles(),
+    getArticles(), 
     getTopics()
   ]);
 
@@ -15,7 +15,7 @@ export default async function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       <Navigation topics={topics} />
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <MainContent articles={articles} />

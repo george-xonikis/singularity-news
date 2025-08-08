@@ -1,4 +1,3 @@
-
 export interface Article {
   id: string;
   title: string;
@@ -25,7 +24,7 @@ const mockArticles: Article[] = [
     coverPhoto: '/placeholder-image.jpg',
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z',
-    views: 1250
+    views: 1250,
   },
   {
     id: '2',
@@ -35,7 +34,7 @@ const mockArticles: Article[] = [
     coverPhoto: '/placeholder-image.jpg',
     createdAt: '2024-01-02T00:00:00Z',
     updatedAt: '2024-01-02T00:00:00Z',
-    views: 890
+    views: 890,
   },
   {
     id: '3',
@@ -45,8 +44,8 @@ const mockArticles: Article[] = [
     coverPhoto: '/placeholder-image.jpg',
     createdAt: '2024-01-03T00:00:00Z',
     updatedAt: '2024-01-03T00:00:00Z',
-    views: 2100
-  }
+    views: 2100,
+  },
 ];
 
 const mockTopics: Topic[] = [
@@ -54,7 +53,7 @@ const mockTopics: Topic[] = [
   { id: '2', name: 'Environment', slug: 'environment' },
   { id: '3', name: 'Economy', slug: 'economy' },
   { id: '4', name: 'Politics', slug: 'politics' },
-  { id: '5', name: 'Health', slug: 'health' }
+  { id: '5', name: 'Health', slug: 'health' },
 ];
 
 export const dataLayer = {
@@ -75,9 +74,10 @@ export const dataLayer = {
 
   async searchArticles(query: string): Promise<Article[]> {
     await new Promise(resolve => setTimeout(resolve, 600));
-    return mockArticles.filter(article => 
-      article.title.toLowerCase().includes(query.toLowerCase()) ||
-      article.content.toLowerCase().includes(query.toLowerCase())
+    return mockArticles.filter(
+      article =>
+        article.title.toLowerCase().includes(query.toLowerCase()) ||
+        article.content.toLowerCase().includes(query.toLowerCase())
     );
   },
 
@@ -88,7 +88,7 @@ export const dataLayer = {
       id: Date.now().toString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      views: 0
+      views: 0,
     };
     return newArticle;
   },
@@ -97,11 +97,11 @@ export const dataLayer = {
     await new Promise(resolve => setTimeout(resolve, 700));
     const existingArticle = mockArticles.find(article => article.id === id);
     if (!existingArticle) return null;
-    
+
     return {
       ...existingArticle,
       ...updates,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
   },
 
@@ -113,5 +113,5 @@ export const dataLayer = {
   async getTopics(): Promise<Topic[]> {
     await new Promise(resolve => setTimeout(resolve, 200));
     return mockTopics;
-  }
+  },
 };
