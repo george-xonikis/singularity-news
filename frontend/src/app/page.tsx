@@ -1,38 +1,15 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useArticleStore } from '@/store/articleStore';
-import { useTopicStore } from '@/store/topicStore';
+import { getArticles, getTopics } from '@/lib/server-data';
 import Header from '@/components/Header';
 import Navigation from '@/components/Navigation';
 import MainContent from '@/components/MainContent';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
 
-export default function Home() {
-  const { articles, loading, error, fetchArticles } = useArticleStore();
-  const { topics, fetchTopics } = useTopicStore();
-
-  useEffect(() => {
-    fetchArticles();
-    fetchTopics();
-  }, [fetchArticles, fetchTopics]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading articles...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500">Error: {error}</div>
-      </div>
-    );
-  }
+export default async function Home() {
+  const [articles, topics] = await Promise.all([
+    getArticles(),
+    getTopics()
+  ]);
 
   return (
     <div className="min-h-screen bg-white">
