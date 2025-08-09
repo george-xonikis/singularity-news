@@ -11,10 +11,13 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@singularity-news/shared": "workspace:*",
     "next": "15.4.5",
+    "quill": "^2.0.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-quill": "^2.0.0",
     "zustand": "5.0.7"
   },
   "devDependencies": {

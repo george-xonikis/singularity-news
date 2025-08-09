@@ -13,18 +13,10 @@ const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
   {
     rules: {
-      // Indentation rules - most important for catching formatting issues
-      indent: [
-        'error',
-        2,
-        {
-          SwitchCase: 1,
-          VariableDeclarator: 1,
-          MemberExpression: 1,
-          ObjectExpression: 1,
-          ArrayExpression: 1,
-        },
-      ],
+      // Indentation rules - disabled due to conflicts with TypeScript/JSX
+      // Use Prettier for indentation instead
+      indent: 'off',
+      '@typescript-eslint/indent': 'off',
 
       // Unused variables and imports
       '@typescript-eslint/no-unused-vars': [
@@ -48,6 +40,9 @@ const eslintConfig = [
       quotes: ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
       'keyword-spacing': ['error', { before: true, after: true }],
       'space-infix-ops': 'error',
+      'object-curly-spacing': ['error', 'always'],
+      'array-bracket-spacing': ['error', 'never'],
+      'comma-spacing': ['error', { before: false, after: true }],
 
       // TypeScript specific
       '@typescript-eslint/explicit-function-return-type': 'off',

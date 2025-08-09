@@ -4,9 +4,7 @@ const API_BASE_URL = process.env.API_URL || 'http://localhost:3002';
 
 export async function getArticles(): Promise<Article[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/articles`, {
-      cache: 'no-store' // Always fetch fresh data
-    });
+    const response = await fetch(`${API_BASE_URL}/api/articles`, { cache: 'no-store' });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

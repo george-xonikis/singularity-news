@@ -3,6 +3,10 @@ import { Article, CreateArticleInput, UpdateArticleInput } from '@singularity-ne
 import { transformArticleFromDb } from '../utils/dataTransform';
 
 export class ArticleService {
+  // Expose query method for admin routes
+  query = query;
+  public transformArticleFromDb = transformArticleFromDb;
+
   async getAllArticles(limit = 50, offset = 0): Promise<Article[]> {
     const result = await query(
       'SELECT * FROM articles WHERE published = TRUE ORDER BY created_at DESC LIMIT $1 OFFSET $2',
@@ -43,24 +47,26 @@ export class ArticleService {
     return result.rows.map(transformArticleFromDb);
   }
 
-  async createArticle(articleData: CreateArticleInput & { published?: boolean }): Promise<Article> {
+  async createArticle(articleData: CreateArticleInput): Promise<Article> {
     const result = await query(
-      `INSERT INTO articles (title, content, topic, cover_photo, published, views) 
-       VALUES ($1, $2, $3, $4, $5, 0) 
+      `INSERT INTO articles (title, content, topic, cover_photo, tags, published_date, published, views) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 0) 
        RETURNING *`,
       [
         articleData.title,
         articleData.content,
         articleData.topic,
         articleData.coverPhoto || null,
-        (articleData as any).published ?? true
+        articleData.tags || [],
+        articleData.publishedDate ? new Date(articleData.publishedDate) : (articleData.published !== false ? new Date() : null),
+        articleData.published ?? true
       ]
     );
 
     return transformArticleFromDb(result.rows[0]);
   }
 
-  async updateArticle(id: string, updates: UpdateArticleInput & { published?: boolean }): Promise<Article | null> {
+  async updateArticle(id: string, updates: UpdateArticleInput): Promise<Article | null> {
     const fields = [];
     const values = [];
     let paramCount = 1;
@@ -81,9 +87,17 @@ export class ArticleService {
       fields.push(`cover_photo = $${paramCount++}`);
       values.push(updates.coverPhoto);
     }
-    if ((updates as any).published !== undefined) {
+    if (updates.tags !== undefined) {
+      fields.push(`tags = $${paramCount++}`);
+      values.push(updates.tags);
+    }
+    if (updates.publishedDate !== undefined) {
+      fields.push(`published_date = $${paramCount++}`);
+      values.push(updates.publishedDate ? new Date(updates.publishedDate) : null);
+    }
+    if (updates.published !== undefined) {
       fields.push(`published = $${paramCount++}`);
-      values.push((updates as any).published);
+      values.push(updates.published);
     }
 
     if (fields.length === 0) {

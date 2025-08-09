@@ -2,14 +2,7 @@
 
 A modern AI news website built with Next.js, Express.js, and PostgreSQL. Features a classic newspaper design with contemporary functionality and a robust full-stack architecture.
 
-## Requirements
-Certainly! Here’s a comprehensive, professionally-structured requirements description for your news website project.
-
----
-
-# **News Website Requirements**
-
-## **1. Website UI Requirements**
+## **Website UI Requirements**
 
 * **Modern, Minimalistic Design:**
   The website must utilize a clean, minimalistic, and contemporary design. The UI should be intuitive and visually appealing, providing a seamless experience across devices (desktop, tablet, mobile) with responsive layouts. The provided UI template is a reference and allows for adaptation; pixel-perfect implementation is not required.
@@ -19,7 +12,7 @@ Certainly! Here’s a comprehensive, professionally-structured requirements desc
 
 ---
 
-## **2. User Stories**
+## **User Stories**
 
 **Admin Functionality**
 

@@ -24,6 +24,7 @@ export interface CreateArticleRequest {
   content: string;
   topic: string;
   cover_photo?: string;
+  tags?: string[];
   published?: boolean;
 }
 

@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import articlesRouter from './routes/articles';
 import topicsRouter from './routes/topics';
+import adminRouter from './routes/admin';
 import { testConnection } from './lib/database';
 
 // Load environment variables from backend/.env
@@ -16,7 +17,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    'http://localhost:3001' // Allow frontend dev server on port 3001
+  ],
   credentials: true
 }));
 app.use(express.json());
@@ -34,6 +38,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/articles', articlesRouter);
 app.use('/api/topics', topicsRouter);
+app.use('/api/admin', adminRouter);
 
 app.get('/api', (req, res) => {
   res.json({

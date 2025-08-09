@@ -70,7 +70,10 @@ router.post('/', async (req, res) => {
       return;
     }
 
-    const article = await articleService.createArticle(articleData);
+    const article = await articleService.createArticle({
+      ...articleData,
+      tags: articleData.tags || []
+    });
     res.status(201).json(article);
   } catch (error) {
     res.status(500).json({
