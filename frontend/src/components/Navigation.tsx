@@ -1,4 +1,4 @@
-import { Topic } from '@/api/dataLayer';
+import { Topic } from '@singularity-news/shared';
 
 interface NavigationProps {
   topics: Topic[];

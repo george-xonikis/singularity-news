@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { dataLayer, Article } from '@/api/dataLayer';
+import { Article } from '@singularity-news/shared';
 
 interface ArticleState {
   articles: Article[];
@@ -23,7 +23,9 @@ export const useArticleStore = create<ArticleState>(set => ({
   fetchArticles: async () => {
     set({ loading: true, error: null });
     try {
-      const articles = await dataLayer.getArticles();
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/articles`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const articles = await response.json();
       set({ articles, loading: false });
     } catch (error) {
       set({
@@ -36,7 +38,9 @@ export const useArticleStore = create<ArticleState>(set => ({
   fetchArticleById: async (id: string) => {
     set({ loading: true, error: null });
     try {
-      const article = await dataLayer.getArticleById(id);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/articles/${id}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const article = await response.json();
       set({ currentArticle: article, loading: false });
     } catch (error) {
       set({
@@ -49,7 +53,9 @@ export const useArticleStore = create<ArticleState>(set => ({
   fetchArticlesByTopic: async (topic: string) => {
     set({ loading: true, error: null });
     try {
-      const articles = await dataLayer.getArticlesByTopic(topic);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/articles?topic=${encodeURIComponent(topic)}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const articles = await response.json();
       set({ articles, loading: false });
     } catch (error) {
       set({
@@ -62,7 +68,9 @@ export const useArticleStore = create<ArticleState>(set => ({
   searchArticles: async (query: string) => {
     set({ loading: true, error: null });
     try {
-      const articles = await dataLayer.searchArticles(query);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/articles?search=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const articles = await response.json();
       set({ articles, loading: false });
     } catch (error) {
       set({

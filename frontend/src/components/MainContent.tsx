@@ -1,4 +1,4 @@
-import { Article } from '@/api/dataLayer';
+import { Article } from '@singularity-news/shared';
 
 interface MainContentProps {
   articles: Article[];

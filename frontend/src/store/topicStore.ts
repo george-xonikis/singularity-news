@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { dataLayer, Topic } from '@/api/dataLayer';
+import { Topic } from '@singularity-news/shared';
 
 interface TopicState {
   topics: Topic[];
@@ -20,7 +20,9 @@ export const useTopicStore = create<TopicState>(set => ({
   fetchTopics: async () => {
     set({ loading: true, error: null });
     try {
-      const topics = await dataLayer.getTopics();
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/topics`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const topics = await response.json();
       set({ topics, loading: false });
     } catch (error) {
       set({

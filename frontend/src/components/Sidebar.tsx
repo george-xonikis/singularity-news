@@ -1,4 +1,4 @@
-import { Article, Topic } from '@/api/dataLayer';
+import { Article, Topic } from '@singularity-news/shared';
 
 interface SidebarProps {
   articles: Article[];
