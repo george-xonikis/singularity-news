@@ -1,11 +1,45 @@
 import express, { Router } from 'express';
 import { ArticleService } from '../services/articleService';
 import { CreateArticleRequest, UpdateArticleRequest } from '../types/database';
+import { query } from '../lib/database';
+import { transformArticleFromDb } from '../utils/dataTransform';
 
 const router: Router = express.Router();
 const articleService = new ArticleService();
 
 // GET /api/articles - Get all articles
+// Get article by slug
+router.get('/:slug', async (req, res): Promise<void> => {
+  try {
+    const { slug } = req.params;
+    const result = await query('SELECT * FROM articles WHERE slug = $1 AND published = TRUE', [slug]);
+    
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        error: 'Article not found'
+      });
+      return;
+    }
+
+    // Increment view count
+    await query('UPDATE articles SET views = views + 1 WHERE slug = $1', [slug]);
+    
+    const article = transformArticleFromDb(result.rows[0]);
+    res.json({
+      success: true,
+      data: article
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch article',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Get all articles with optional filters
 router.get('/', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit as string) || 50;

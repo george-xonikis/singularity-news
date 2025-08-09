@@ -3,6 +3,8 @@ import { Article, Topic } from '@singularity-news/shared';
 export interface DatabaseArticle {
   id: string;
   title: string;
+  slug: string;
+  summary: string | null;
   content: string;
   topic: string;
   cover_photo: string | null;
@@ -25,6 +27,7 @@ export const transformArticleFromDb = (dbArticle: DatabaseArticle): Article => {
   const result: Article = {
     id: parseInt(dbArticle.id),
     title: dbArticle.title,
+    slug: dbArticle.slug,
     content: dbArticle.content,
     topic: dbArticle.topic,
     tags: dbArticle.tags || [],
@@ -33,6 +36,10 @@ export const transformArticleFromDb = (dbArticle: DatabaseArticle): Article => {
     views: dbArticle.views,
     published: dbArticle.published,
   };
+  
+  if (dbArticle.summary) {
+    result.summary = dbArticle.summary;
+  }
   
   if (dbArticle.cover_photo) {
     result.coverPhoto = dbArticle.cover_photo;

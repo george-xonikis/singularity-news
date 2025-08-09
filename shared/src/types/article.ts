@@ -1,6 +1,7 @@
 export interface Article {
   id: number;
   title: string;
+  slug: string;
   content: string;
   summary?: string;
   topic: string;
@@ -16,6 +17,7 @@ export interface Article {
 
 export interface CreateArticleInput {
   title: string;
+  slug?: string;
   content: string;
   summary?: string;
   topic: string;
@@ -27,6 +29,7 @@ export interface CreateArticleInput {
 
 export interface UpdateArticleInput {
   title?: string;
+  slug?: string;
   content?: string;
   summary?: string;
   topic?: string;
