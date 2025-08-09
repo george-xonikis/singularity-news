@@ -1,6 +1,6 @@
 # AI News Website
 
-A modern, AI-news website built with Next.js, Express.js, and Firebase/Firestore. Features a classic newspaper design with contemporary functionality.
+A modern AI news website built with Next.js, Express.js, and PostgreSQL. Features a classic newspaper design with contemporary functionality and a robust full-stack architecture.
 
 ## Requirements
 Certainly! Here’s a comprehensive, professionally-structured requirements description for your news website project.
@@ -55,27 +55,30 @@ As a user, I want to read articles in a clear, accessible format.
 
 ### **Backend (Express.js)**
 - ✅ RESTful API with comprehensive endpoints
-- ✅ Firebase/Firestore as the database and storage solution
-- ✅ Secure admin-only routes with middleware
-- ✅ File upload handling for article images (via Firebase Storage)
-- ✅ Server-side search with pagination
-- ✅ Rate limiting and security headers
+- ✅ PostgreSQL database with Docker for local development
+- ✅ TypeScript-based services with proper data transformation
+- ✅ Connection pooling and query optimization
+- ✅ Full-text search capabilities
+- ✅ CORS and security middleware (Helmet)
+- ✅ Environment-based configuration
 
 ### **Admin Features**
-- ✅ Secure admin authentication
-- ✅ Rich text editor for article creation
-- ✅ Category management system
-- ✅ Article CRUD operations
-- ✅ Image upload and management
-- ✅ Analytics and view tracking
+- 🚧 Secure admin authentication (Supabase Auth integration)
+- 🚧 Protected admin dashboard with role-based access
+- 🚧 Rich text editor for article creation
+- 🚧 Category management system
+- 🚧 Article CRUD operations with user attribution
+- 🚧 Image upload and management
+- 🚧 Analytics and view tracking
 
 ### **Technical Features**
 - ✅ TypeScript throughout the entire stack
-- ✅ Monorepo architecture with shared utilities
-- ✅ Firebase/Firestore for data and storage
-- ✅ Docker containerization
-- ✅ Comprehensive error handling
-- ✅ SEO optimization with meta tags and sitemaps
+- ✅ Monorepo architecture with shared type system
+- ✅ Server-side rendering (SSR) for optimal SEO
+- ✅ Docker containerization for development environment
+- ✅ PostgreSQL with full-text search and triggers
+- ✅ Data transformation layer for consistent APIs
+- ✅ Comprehensive error handling and logging
 
 ## 🏗️ Tech Stack
 
@@ -83,272 +86,222 @@ As a user, I want to read articles in a clear, accessible format.
 |-----------|------------|
 | **Frontend** | Next.js 15.4.5, React 19, TypeScript, Zustand 5.0.7 |
 | **Backend** | Express.js, TypeScript, Node.js 20 |
-| **Database/Storage** | Firebase (Firestore, Storage) |
+| **Database** | PostgreSQL (Docker for local dev, Supabase for production) |
+| **Authentication** | Supabase Auth (integrated with PostgreSQL) |
+| **Shared** | TypeScript interfaces, utilities, constants |
 | **Styling** | Tailwind CSS 4.1.11 (default config) |
-| **Deployment** | Docker |
+| **Development** | Docker Compose, pnpm workspaces |
 | **Package Manager** | PNPM workspaces |
 
+## 🛠️ Architecture Decisions
+
+### **Database & Authentication Strategy**
+- **Local Development**: Docker PostgreSQL (port 5433) with Redis (port 6380)
+- **Production**: Supabase PostgreSQL + Supabase Auth (unified ecosystem)
+- **Benefits**: Full SQL capabilities, ACID compliance, integrated user management, built-in JWT tokens, social authentication
+
+### **Rendering Strategy**
+- **Server-Side Rendering (SSR)**: Converted from client-side to server components
+- **Benefits**: Better SEO, faster initial page loads, reduced client-side JavaScript
+
+### **Type Safety**
+- **Shared Type System**: Centralized TypeScript interfaces in `@singularity-news/shared`
+- **Data Transformation**: Convert snake_case database fields to camelCase API responses
+- **Benefits**: Type safety across frontend/backend, no type duplication, consistent APIs
+
+### **Authentication & User Management**
+- **Supabase Auth**: Unified authentication with database integration
+- **Built-in Features**: User registration, password reset, email verification, social logins
+- **JWT Tokens**: Seamless token-based authentication with automatic refresh
+- **Row-Level Security**: Database-level access control integrated with user roles
+- **Benefits**: Single provider ecosystem, reduced complexity, enterprise-grade security
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 20+
+- PNPM 9+
+- Docker & Docker Compose
+
+### Development Setup
+```bash
+# Clone and install dependencies
+git clone <repository-url>
+cd singularity-news
+pnpm install
+
+# Setup environment variables
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
+# Edit the .env files as needed (see ENV_SETUP.md for details)
+
+# Start development environment
+docker-compose up -d          # Start PostgreSQL & Redis
+pnpm --filter shared build    # Build shared types first
+pnpm --filter backend dev     # Start backend API (port 3002)
+pnpm --filter frontend dev    # Start frontend (port 3000)
+```
+
+### Key Commands
+```bash
+# Workspace management
+pnpm install                    # Install all dependencies
+pnpm -r build                   # Build all packages
+pnpm -r dev                     # Run all packages in dev mode
+
+# Frontend specific (port 3000)
+pnpm --filter frontend dev      # Run development server
+pnpm --filter frontend build    # Build for production
+pnpm --filter frontend lint     # Lint code
+
+# Backend specific (port 3002)
+pnpm --filter backend dev       # Run development server
+pnpm --filter backend build     # Build TypeScript
+pnpm --filter backend start     # Start production server
+
+# Shared module
+pnpm --filter shared build      # Build shared types
+pnpm --filter shared dev        # Watch mode for types
+```
+
+### Database Access
+- **PostgreSQL**: `localhost:5433` (username: `postgres`, password: `dev_password_123`)
+- **Redis**: `localhost:6380` (for upcoming features - see note below)
+- **Database**: `singularity_news`
+
+### Redis Usage Note
+Redis is included in the development environment but **not currently used**. It will be essential for upcoming features:
+- **Session Management**: JWT token storage for admin authentication (Step 5)
+- **API Caching**: Cache expensive PostgreSQL queries for better performance
+- **Rate Limiting**: Protect API endpoints from abuse
+- **Background Jobs**: Queue tasks like email notifications and image processing
+
+Current queries are fast enough with direct PostgreSQL access, but Redis will become valuable as the application grows.
+
 ### Code Quality
-- **TypeScript**: Strict type checking enabled
-- **ESLint**: Code linting with Next.js recommended rules
-- **Prettier**: Code formatting (configure in your IDE)
+- **TypeScript**: Strict type checking enabled across all packages
+- **ESLint**: Enhanced rules for indentation, quotes, and code quality  
+- **Prettier**: Code formatting with Next.js integration
 
-### Development Steps
-Absolutely, that’s a solid approach. Below is a list of **agnostic, clearly-defined development steps** for your project. Each step acts as a checkpoint and is independent, enabling effective parallelization or phased delivery. I have provided a brief description for each and listed deliverables or acceptance criteria where appropriate.
+## 📋 Development Progress
 
----
+### Current Status: Step 4 Complete ✅
+We follow a systematic 12-step development process. Each step is a checkpoint with specific deliverables and acceptance criteria.
 
-#### Workflow:
-- We will work on each development step one at a time, as outlined in the README.
-- Each step is a checkpoint: after completing a step, we will verify that the app is working as expected for that step.
-- Only after successful verification and your approval will we move on to the next step.
-- Make sure to pause for your review and confirmation at each checkpoint before proceeding.
+### Progress Overview
 
-### **Step 1: Monorepo Structure Setup**
+- ✅ **Step 1**: Monorepo Structure Setup - *Completed*
+- ✅ **Step 2**: Frontend Boilerplate & Architecture Setup - *Completed with SSR*  
+- ✅ **Step 3**: Backend Boilerplate - *Completed with PostgreSQL + Docker*
+- ✅ **Step 4**: Shared Module Setup - *Completed with TypeScript interfaces*
+- 🚧 **Step 5**: Authentication Foundation - *Next: Supabase Auth integration*
+- ⏳ **Step 6**: Database Schema & User Management Integration  
+- ⏳ **Step 7**: Article CRUD API & Admin UI
+- ⏳ **Step 8**: User-Facing Article Listing and Reading
+- ⏳ **Step 9**: Article Search Functionality
+- ⏳ **Step 10**: SEO Optimisation  
+- ⏳ **Step 11**: Dockerisation & Deployment
+- ⏳ **Step 12**: Quality Assurance & Documentation
 
-* **Goal:**
-  Scaffold the monorepo with three main directories: `backend`, `frontend`, and `shared`.
-* **Acceptance Criteria:**
+### Completed Steps Detail
 
-  * Monorepo created via pnpm workspace.
-  * Clearly separated `backend/`, `frontend/`, and `shared/` directories with initial `README.md` files.
-  * Repository bootstrapped with version control
+### **Step 1: Monorepo Structure Setup** ✅
 
+**Delivered:**
+- PNPM workspace configuration with 4 packages: `frontend/`, `backend/`, `shared/`, and root
+- Proper TypeScript configuration across all packages
+- Git repository with initial commit structure
 
-Perfect! Here’s what Step 1 involves, based on the README:
+### **Step 2: Frontend Boilerplate & Architecture Setup** ✅
 
-### **Step 1: Monorepo Structure Setup**
+**Key Decisions Made:**
+- **Server-Side Rendering**: Converted from client-side to server components for better SEO
+- **Zustand Integration**: State management preserved for future interactive features
+- **Layered Architecture**: API client → Server data layer → SSR components
 
-**Goal:**  
-Scaffold the monorepo with three main directories: `backend`, `frontend`, and `shared`.
+**Delivered:**
+- Next.js 15.4.5 with React 19 and TypeScript
+- Tailwind CSS 4.1.11 with responsive newspaper design
+- Server-side data fetching with `cache: 'no-store'`
+- Enhanced ESLint configuration with strict indentation rules
 
-**Acceptance Criteria:**
-- Monorepo created via pnpm workspace.
-- Clearly separated `backend/`, `frontend/`, and `shared/` directories with initial `README.md` files.
-- Repository bootstrapped with version control.
+### **Step 3: Backend Boilerplate** ✅
 
-**Plan:**
-1. Initialize a pnpm workspace in the project root.
-2. Create the directories: `backend/`, `frontend/`, and `shared/`.
-3. Add a minimal `README.md` to each directory.
-4. Update the root `pnpm-workspace.yaml` to include all three packages.
-5. Ensure version control (git) is initialized if not already.
+**Key Decisions Made:**
+- **Database**: PostgreSQL instead of Firebase for better SQL capabilities
+- **Local Development**: Docker PostgreSQL (port 5433) + Redis (port 6380)
+- **Production Strategy**: Supabase for managed PostgreSQL hosting
 
----
+**Delivered:**
+- Express.js server with TypeScript and comprehensive middleware
+- Docker Compose setup with PostgreSQL and Redis
+- Database schema with articles, topics, full-text search, and triggers
+- Complete REST API with pagination and search endpoints
+- CORS configuration and security headers (Helmet)
 
-### **Step 2: Frontend Boilerplate & Architecture Setup**
+### **Step 4: Shared Module Setup** ✅
 
-#### **Goals**
+**Key Decisions Made:**
+- **Centralized Types**: `@singularity-news/shared` package for type consistency
+- **Data Transformation**: Convert snake_case DB fields to camelCase API responses
+- **Utilities & Constants**: Shared functions and API endpoint constants
 
-* Initialize the Next.js (with TypeScript) project within the `frontend` directory (Next.js 15.4.5).
-* Set up foundational architectural layers to decouple data access, API calls, and state management, facilitating easy transition from mock to persistent data.
-* Ensure the codebase is modular, maintainable, and easily testable.
-
-#### **Deliverables / Acceptance Criteria**
-
-1. **Project Bootstrapping**
-
-   * Next.js app created with TypeScript (v15.4.5).
-   * Tailwind CSS installed and configured (v4.1.11, default config).
-   * Folder structure established for `pages/`, `components/`, `styles/`, `api/`, and `store/`.
-   * Placeholder homepage rendered.
-
-2. **API Layer**
-
-   * Create an `apiClient.ts` abstraction in `/frontend/api/`.
-   * Use the native `fetch` API for HTTP requests.
-   * Centralize configuration (e.g., base URL, error handling, etc).
-   * Export generic HTTP methods (`get`, `post`, `put`, `delete`).
-
-3. **Data Layer**
-
-   * Create a data access abstraction in `/frontend/api/dataLayer.ts`.
-   * Implement all REST calls related to articles, topics, etc. using `apiClient`.
-   * Expose functions such as `getArticles()`, `getArticleById(id)`, `createArticle(data)`, etc.
-   * Initially, these functions will return hardcoded mock data.
-   * Structure the data layer so the API endpoint or data source can be swapped with Firestore or another backend without impacting consuming code.
-
-4. **State Management Layer**
-
-   * Integrate [Zustand](https://zustand-demo.pmnd.rs/) for state management.
-   * Create a store in `/frontend/store/` for articles, topics, user session, etc.
-   * All components access and update state exclusively via this layer.
-   * The store should call dataLayer functions for CRUD operations, making it trivial to update the underlying data source later.
-   * Example:
-
-     ```ts
-     // store/articleStore.ts
-     import create from 'zustand';
-     import { getArticles } from '../api/dataLayer';
-
-     type Article = { id: number; title: string; content: string; topic: string };
-
-     interface ArticleState {
-       articles: Article[];
-       fetchArticles: () => Promise<void>;
-     }
-
-     export const useArticleStore = create<ArticleState>((set) => ({
-       articles: [],
-       fetchArticles: async () => {
-         const data = await getArticles();
-         set({ articles: data });
-       }
-     }));
-     ```
-
-5. **Folder Structure Example**
-
-   ```
-   frontend/
-   ├── api/
-   │   ├── apiClient.ts
-   │   └── dataLayer.ts
-   ├── components/
-   ├── pages/
-   ├── store/
-   │   └── articleStore.ts
-   ├── styles/
-   └── ...
-   ```
-
-6. **Testing and Documentation**
-
-   * Include a `README.md` describing the architectural layers and conventions for adding new API/data/state modules.
-   * Add example usage in a sample page/component, demonstrating how to fetch and render articles using Zustand and the data layer.
-   * **Testing will be skipped for now.**
-
-**Note:**
-By isolating the API layer (`apiClient`), data access layer (`dataLayer`), and state layer (Zustand store), you ensure that replacing mock data with persistent backend data (such as Firestore) is a matter of updating only the data layer implementation, leaving all other business logic and UI untouched.
+**Delivered:**
+- TypeScript interfaces: `Article`, `Topic`, `CreateArticleInput`, `UpdateArticleInput`
+- API response types: `ApiResponse`, `PaginatedResponse`, `ApiError`
+- Utility functions: `slugify`, `formatDate`, `truncateText`, `isValidEmail`
+- Full integration: Frontend and backend both use shared types
+- Data transformation layer ensuring consistent API responses
 
 ---
 
-### **Step 3: Backend Boilerplate**
+## 🔮 Next Steps
 
-* **Goal:**
-  Set up backend services in the `backend` directory, integrating Firebase Admin SDK for management operations.
-* **Acceptance Criteria:**
+### **Step 5: Authentication Foundation** (In Progress)
 
-  * Basic Node.js/TypeScript backend (e.g., for API routes, admin utilities, or batch jobs if needed).
-  * Firebase Admin SDK configured.
-  * Initial environment/configuration management (e.g., `.env` setup).
+**Goal:** Implement Supabase Authentication for secure admin access
 
----
+**Planned Approach:**
+- Supabase Auth SDK integration on frontend and backend
+- Protected admin routes with authentication middleware
+- JWT token validation using Supabase's built-in JWT system
+- Admin login/logout flow with social authentication options
+- User management integrated with PostgreSQL database
 
-### **Step 4: Shared Module Setup**
+**Benefits:** Unified ecosystem with database and authentication from same provider, built-in user table integration, and seamless JWT token handling.
 
-* **Goal:**
-  Create a `shared` directory for code, models, or utilities that are used by both frontend and backend.
-* **Acceptance Criteria:**
+## 📊 Current System Status
 
-  * TypeScript interfaces for articles, users, and topics.
-  * Shared utility functions (e.g., date formatting, slug generation).
-  * Proper import/export setup, with linting and type checking enabled.
+### ✅ **Working Features**
+- **Full-stack integration**: Frontend (Next.js) ↔ Backend (Express.js) ↔ Database (PostgreSQL)
+- **API endpoints**: `GET /api/articles`, `GET /api/topics` with search and filtering
+- **Type safety**: Shared TypeScript interfaces across frontend/backend
+- **Database**: PostgreSQL with full-text search, auto-incrementing views, and sample data
+- **Development environment**: Docker Compose with PostgreSQL + Redis
 
----
+### 🔧 **Technical Verification**
+```bash
+# Backend API Test
+curl http://localhost:3002/api/articles
+curl http://localhost:3002/api/topics
 
-### **Step 5: Authentication Foundation**
+# Frontend Build Test  
+pnpm --filter frontend build  # ✅ Successful
 
-* **Goal:**
-  Implement basic Firebase Authentication integration on the frontend.
-* **Acceptance Criteria:**
+# Database Test
+psql -h localhost -p 5433 -U postgres -d singularity_news
+```
 
-  * Firebase initialized on the frontend.
-  * Secure login/logout flow for admins.
-  * Protected admin route in the Next.js app.
-  * Demo user login works with Firebase Authentication.
-
----
-
-### **Step 6: Firestore & Storage Integration**
-
-* **Goal:**
-  Integrate Firestore and Firebase Storage with the frontend and backend.
-* **Acceptance Criteria:**
-
-  * Firestore initialized; able to read/write basic documents.
-  * Firebase Storage configured; able to upload and retrieve images/files.
-  * Access rules for articles and media assets defined in Firestore/Storage security rules.
-
----
-
-### **Step 7: Article CRUD API & Admin UI**
-
-* **Goal:**
-  Develop core article management: create, edit, delete articles via the admin UI.
-* **Acceptance Criteria:**
-
-  * Admin can create, update, and delete articles (title, cover photo, content).
-  * Articles are persisted in Firestore and media in Firebase Storage.
-  * Admin UI lists all articles with edit/delete options.
+### 📁 **Project Structure**
+```
+singularity-news/
+├── frontend/          # Next.js 15.4.5 + React 19 + TypeScript
+├── backend/           # Express.js + TypeScript + PostgreSQL  
+├── shared/            # Shared TypeScript interfaces & utilities
+├── docker-compose.yml # PostgreSQL + Redis for development
+└── README.md          # This comprehensive guide
+```
 
 ---
 
-### **Step 8: User-Facing Article Listing and Reading**
-
-* **Goal:**
-  Implement public pages to list articles by topic and view full article details.
-* **Acceptance Criteria:**
-
-  * Articles are fetched from Firestore and displayed for users.
-  * Topic-based navigation implemented.
-  * Individual article pages render correctly and are SEO-optimized.
-
----
-
-### **Step 9: Article Search Functionality**
-
-* **Goal:**
-  Implement full-text search or indexed keyword search for articles.
-* **Acceptance Criteria:**
-
-  * Users can search articles by title, keywords, or content.
-  * Search results are fast and accurate.
-  * Search UI integrated on the frontend.
-
----
-
-### **Step 10: SEO Optimisation**
-
-* **Goal:**
-  Ensure all necessary SEO features are in place.
-* **Acceptance Criteria:**
-
-  * SSR/SSG for article and topic pages.
-  * Meta tags, structured data, Open Graph tags.
-  * Sitemap and robots.txt generated.
-  * Accessibility checks passed.
-
----
-
-### **Step 11: Dockerisation & Deployment**
-
-* **Goal:**
-  Containerise the full stack and provide deployment documentation.
-* **Acceptance Criteria:**
-
-  * Dockerfiles for frontend and backend.
-  * Docker Compose configuration for local development.
-  * Deployment guide/documentation.
-
----
-
-### **Step 12: Quality Assurance & Documentation**
-
-* **Goal:**
-  Implement tests, code linting, and write developer/user documentation.
-* **Acceptance Criteria:**
-
-  * Basic unit and integration tests.
-  * Linting and formatting setup.
-  * Project documentation (README, setup instructions, architecture overview).
-
----
-
-**Notes:**
-
-* Each step can be a PR or a milestone and should be independently verifiable.
-* You can further parallelize some steps (e.g., frontend/backend boilerplates can start in parallel after step 1).
-* Optional enhancements and features (comments, analytics, newsletter) can be added as further steps after the MVP is completed.
-
-If you want Gantt chart formatting or a Jira-friendly breakdown, let me know!
+**Ready for Step 5: Authentication Foundation** 🔐
