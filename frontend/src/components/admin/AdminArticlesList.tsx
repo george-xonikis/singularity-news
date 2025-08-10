@@ -325,38 +325,38 @@ export function AdminArticlesList() {
       </div>
 
       {/* Articles Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <table className="min-w-full">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   <SortButton field="created_at">Date</SortButton>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   <SortButton field="title">Title</SortButton>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   <SortButton field="topic">Topic</SortButton>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   <SortButton field="views">Views</SortButton>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {articles.map((article) => (
-                <tr key={article.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-500">
+            <tbody>
+              {articles.map((article, index) => (
+                <tr key={article.id} className={`${index !== articles.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50`}>
+                  <td className="px-6 py-4 text-sm text-gray-600">
                     {formatDate(article.createdAt)}
                   </td>
                   <td className="px-6 py-4">
@@ -365,47 +365,35 @@ export function AdminArticlesList() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500" title={article.slug}>
+                    <div className="text-sm text-gray-600" title={article.slug}>
                       {article.slug.length > 20 ? article.slug.substring(0, 20) + '...' : article.slug}
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    <span className="text-sm text-gray-600">
                       {article.topic}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <EyeIcon className="h-4 w-4" />
-                      {article.views.toLocaleString()}
-                    </div>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {article.views.toLocaleString()}
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    <span className={`text-sm ${
                       article.status === 'published' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
+                        ? 'text-gray-600' 
+                        : 'text-gray-600'
                     }`}>
                       {article.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={`/admin/articles/${article.id}/edit`}
-                        className="text-blue-600 hover:text-blue-900 p-1 hover:bg-blue-50 rounded transition-colors duration-200"
-                        title="Edit"
-                      >
-                        <PencilIcon className="h-4 w-4" />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(article.id)}
-                        className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors duration-200"
-                        title="Delete"
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </button>
-                    </div>
+                  <td className="px-6 py-4 text-sm">
+                    <Link
+                      href={`/admin/articles/${article.id}/edit`}
+                      className="text-blue-600 hover:text-blue-700 transition-colors"
+                      title="Edit"
+                    >
+                      Edit
+                    </Link>
                   </td>
                 </tr>
               ))}
