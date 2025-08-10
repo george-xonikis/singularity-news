@@ -267,7 +267,7 @@ export function NewArticleForm() {
         >
           Cancel
         </button>
-        
+
         <div className="flex space-x-3">
           <button
             type="submit"

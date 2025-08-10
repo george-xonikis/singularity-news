@@ -52,6 +52,11 @@ pnpm install                    # Install all workspace dependencies
 pnpm -r build                   # Build all packages
 pnpm -r dev                     # Run all packages in dev mode
 
+# Code quality (unified across all workspaces)
+pnpm lint                       # Lint all workspaces (FE, BE, shared)
+pnpm lint:fix                   # Auto-fix linting issues across all workspaces
+pnpm tsc                        # TypeScript check across all workspaces
+
 # Frontend specific
 pnpm --filter frontend dev      # Run frontend dev server
 pnpm --filter frontend build    # Build frontend

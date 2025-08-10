@@ -1,39 +1,39 @@
-import { 
-  DocumentTextIcon, 
-  EyeIcon, 
+import {
+  DocumentTextIcon,
+  EyeIcon,
   TagIcon,
-  ChartBarIcon 
+  ChartBarIcon
 } from '@heroicons/react/24/outline';
 
 export function AdminDashboard() {
   const stats = [
-    { 
-      name: 'Total Articles', 
-      value: '24', 
-      change: '+4', 
+    {
+      name: 'Total Articles',
+      value: '24',
+      change: '+4',
       changeType: 'positive',
-      icon: DocumentTextIcon 
+      icon: DocumentTextIcon
     },
-    { 
-      name: 'Total Views', 
-      value: '12,345', 
-      change: '+12%', 
+    {
+      name: 'Total Views',
+      value: '12,345',
+      change: '+12%',
       changeType: 'positive',
-      icon: EyeIcon 
+      icon: EyeIcon
     },
-    { 
-      name: 'Active Topics', 
-      value: '8', 
-      change: '+1', 
+    {
+      name: 'Active Topics',
+      value: '8',
+      change: '+1',
       changeType: 'positive',
-      icon: TagIcon 
+      icon: TagIcon
     },
-    { 
-      name: 'Avg. Views/Article', 
-      value: '514', 
-      change: '+8%', 
+    {
+      name: 'Avg. Views/Article',
+      value: '514',
+      change: '+8%',
       changeType: 'positive',
-      icon: ChartBarIcon 
+      icon: ChartBarIcon
     },
   ];
 
@@ -89,8 +89,8 @@ export function AdminDashboard() {
                   <p className="text-sm text-gray-600">{article.views} views</p>
                 </div>
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  article.status === 'published' 
-                    ? 'bg-green-100 text-green-800' 
+                  article.status === 'published'
+                    ? 'bg-green-100 text-green-800'
                     : 'bg-yellow-100 text-yellow-800'
                 }`}>
                   {article.status}
@@ -105,7 +105,7 @@ export function AdminDashboard() {
             Quick Actions
           </h2>
           <div className="space-y-3">
-            <a 
+            <a
               href="/admin/articles/new"
               className="block w-full text-left px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
             >
@@ -119,8 +119,8 @@ export function AdminDashboard() {
                 </div>
               </div>
             </a>
-            
-            <a 
+
+            <a
               href="/admin/articles"
               className="block w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors duration-200"
             >

@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  PlusIcon, 
+import {
+  PlusIcon,
   TrashIcon,
   MagnifyingGlassIcon,
   ChevronLeftIcon,
@@ -69,8 +69,8 @@ export function AdminArticlesList() {
     >
       {children}
       {sortBy === field && (
-        sortOrder === 'asc' ? 
-          <ArrowUpIcon className="h-4 w-4" /> : 
+        sortOrder === 'asc' ?
+          <ArrowUpIcon className="h-4 w-4" /> :
           <ArrowDownIcon className="h-4 w-4" />
       )}
     </button>
@@ -92,7 +92,7 @@ export function AdminArticlesList() {
           <h1 className="text-3xl font-bold text-gray-900">Articles</h1>
           <p className="text-gray-600">Manage your news articles</p>
         </div>
-        <Link 
+        <Link
           href="/admin/articles/new"
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
         >
@@ -246,8 +246,8 @@ export function AdminArticlesList() {
             </thead>
             <tbody>
               {articles.map((article, index) => (
-                <tr 
-                  key={article.id} 
+                <tr
+                  key={article.id}
                   className={`${index !== articles.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 cursor-pointer`}
                   onClick={() => window.open(`/admin/articles/${article.id}/edit`, '_blank')}
                 >
@@ -274,8 +274,8 @@ export function AdminArticlesList() {
                   </td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      article.published 
-                        ? 'bg-green-100 text-green-700' 
+                      article.published
+                        ? 'bg-green-100 text-green-700'
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
                       {article.published ? 'Published' : 'Draft'}
@@ -345,7 +345,7 @@ export function AdminArticlesList() {
                     >
                       <ChevronLeftIcon className="h-5 w-5" />
                     </button>
-                    
+
                     {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
                       const page = i + 1;
                       return (
@@ -362,7 +362,7 @@ export function AdminArticlesList() {
                         </button>
                       );
                     })}
-                    
+
                     <button
                       onClick={() => setPage(Math.min(pagination.totalPages, currentPage + 1))}
                       disabled={currentPage === pagination.totalPages}

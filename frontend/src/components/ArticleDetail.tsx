@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { 
-  ShareIcon, 
+import {
+  ShareIcon,
   ChatBubbleLeftIcon,
   SpeakerWaveIcon,
   EllipsisHorizontalIcon,
@@ -23,20 +23,20 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    
+
     // Check if it's today
     if (date.toDateString() === now.toDateString()) {
-      return date.toLocaleTimeString('en-US', { 
-        hour: 'numeric', 
+      return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
         minute: '2-digit',
-        hour12: true 
+        hour12: true
       }) + ' ET';
     }
-    
+
     // Otherwise show full date
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
       year: 'numeric',
       hour: 'numeric',
       minute: '2-digit',
@@ -79,7 +79,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
       {/* Navigation Breadcrumb */}
       <div className="border-b border-gray-200 py-2">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link 
+          <Link
             href={`/topics/${article.topic.toLowerCase()}`}
             className="text-sm font-medium text-blue-600 hover:text-blue-800 uppercase tracking-wide"
           >
@@ -186,11 +186,11 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         )}
 
         {/* Article Content */}
-        <div 
+        <div
           className="prose prose-lg max-w-none"
           style={{ fontSize: `${fontSize}px` }}
         >
-          <div 
+          <div
             dangerouslySetInnerHTML={{ __html: article.content }}
             className="leading-relaxed text-gray-900"
           />

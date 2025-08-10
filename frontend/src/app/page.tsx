@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 
 export default async function Home() {
   const [articles, topics] = await Promise.all([
-    getArticles(), 
+    getArticles(),
     getTopics()
   ]);
 

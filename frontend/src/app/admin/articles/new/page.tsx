@@ -11,7 +11,7 @@ export default function NewArticlePage() {
           Write and publish a new article to your news site
         </p>
       </div>
-      
+
       <NewArticleForm />
     </div>
   );

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { 
+const ReactQuill = dynamic(() => import('react-quill-new'), {
   ssr: false,
   loading: () => <div className="h-[300px] bg-gray-50 border border-gray-300 rounded-md animate-pulse" />
 });
@@ -25,7 +25,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
     toolbar: [
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }, 
+      [{ 'list': 'ordered' }, { 'list': 'bullet' },
        { 'indent': '-1' }, { 'indent': '+1' }],
       ['link', 'image'],
       ['clean'],

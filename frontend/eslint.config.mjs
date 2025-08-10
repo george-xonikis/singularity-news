@@ -43,6 +43,11 @@ const eslintConfig = [
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
       'comma-spacing': ['error', { before: false, after: true }],
+      'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
+      'no-trailing-spaces': 'error',
+      'space-before-blocks': 'error',
+      'space-before-function-paren': ['error', { anonymous: 'always', named: 'never', asyncArrow: 'always' }],
+      'no-multi-spaces': 'error',
 
       // TypeScript specific
       '@typescript-eslint/explicit-function-return-type': 'off',

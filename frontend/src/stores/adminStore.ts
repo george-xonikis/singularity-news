@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { ArticleAdminService, type ArticleFilters } from '@/services/articleAdminService';
-import { TopicAdminService } from '@/services/topicAdminService';
+import { ArticleService, type ArticleFilters } from '@/services/articleService';
+import { TopicService } from '@/services/topicService';
 import type { Article, Topic } from '@singularity-news/shared';
 
 export interface AdminFilters {
@@ -16,11 +16,11 @@ export interface AdminState {
   // Data
   articles: Article[];
   topics: Topic[];
-  
+
   // UI State
   loading: boolean;
   error: string | null;
-  
+
   // Pagination
   currentPage: number;
   pagination: {
@@ -30,27 +30,27 @@ export interface AdminState {
     totalPages: number;
     hasMore: boolean;
   };
-  
+
   // Sorting
   sortBy: string;
   sortOrder: 'asc' | 'desc';
-  
+
   // Filters
   filters: AdminFilters;
   showFilters: boolean;
-  
+
   // Actions
   setFilters: (filters: Partial<AdminFilters>) => void;
   clearFilters: () => void;
   setSort: (field: string) => void;
   setPage: (page: number) => void;
   toggleFilters: () => void;
-  
+
   // Async Actions
   fetchArticles: () => Promise<void>;
   fetchTopics: () => Promise<void>;
   deleteArticle: (id: string) => Promise<void>;
-  
+
   // Reset
   reset: () => void;
 }
@@ -137,7 +137,7 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       if (state.filters.startDate) serviceFilters.startDate = state.filters.startDate;
       if (state.filters.endDate) serviceFilters.endDate = state.filters.endDate;
 
-      const result = await ArticleAdminService.getArticles({
+      const result = await ArticleService.getArticles({
         page: state.currentPage,
         limit: 20,
         sortBy: state.sortBy,
@@ -161,7 +161,7 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
   fetchTopics: async () => {
     try {
-      const topics = await TopicAdminService.getTopics();
+      const topics = await TopicService.getTopics();
       set({ topics });
     } catch (error) {
       console.error('Failed to fetch topics:', error);
@@ -171,7 +171,7 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
   deleteArticle: async (id: string) => {
     try {
-      await ArticleAdminService.deleteArticle(id);
+      await ArticleService.deleteArticle(id);
       // Reactively refresh articles after deletion
       await get().fetchArticles();
     } catch (error) {

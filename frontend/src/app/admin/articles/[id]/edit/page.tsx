@@ -6,7 +6,7 @@ interface PageProps {
 
 export default async function EditArticlePage({ params }: PageProps) {
   const { id } = await params;
-  
+
   return (
     <div>
       <div className="mb-8">
@@ -17,7 +17,7 @@ export default async function EditArticlePage({ params }: PageProps) {
           Make changes to your article
         </p>
       </div>
-      
+
       <EditArticleForm articleId={parseInt(id)} />
     </div>
   );

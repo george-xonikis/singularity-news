@@ -2,34 +2,34 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  NewspaperIcon, 
-  DocumentTextIcon, 
+import {
+  NewspaperIcon,
+  DocumentTextIcon,
   TagIcon,
   ChartBarIcon,
   CogIcon
 } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { 
-    name: 'Dashboard', 
-    href: '/admin', 
-    icon: ChartBarIcon 
+  {
+    name: 'Dashboard',
+    href: '/admin',
+    icon: ChartBarIcon
   },
-  { 
-    name: 'Articles', 
-    href: '/admin/articles', 
-    icon: DocumentTextIcon 
+  {
+    name: 'Articles',
+    href: '/admin/articles',
+    icon: DocumentTextIcon
   },
-  { 
-    name: 'Topics', 
-    href: '/admin/topics', 
-    icon: TagIcon 
+  {
+    name: 'Topics',
+    href: '/admin/topics',
+    icon: TagIcon
   },
-  { 
-    name: 'Settings', 
-    href: '/admin/settings', 
-    icon: CogIcon 
+  {
+    name: 'Settings',
+    href: '/admin/settings',
+    icon: CogIcon
   },
 ];
 
@@ -50,7 +50,7 @@ export function AdminSidebar() {
           </div>
         </div>
       </Link>
-      
+
       <nav className="mt-6 px-3">
         <ul className="space-y-1">
           {navigation.map((item) => {
@@ -61,8 +61,8 @@ export function AdminSidebar() {
                   href={item.href}
                   className={`
                     group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200
-                    ${isActive 
-                      ? 'bg-indigo-50 text-indigo-700 border-r-2 border-indigo-600' 
+                    ${isActive
+                      ? 'bg-indigo-50 text-indigo-700 border-r-2 border-indigo-600'
                       : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                     }
                   `}
@@ -80,7 +80,7 @@ export function AdminSidebar() {
           })}
         </ul>
       </nav>
-      
+
       <div className="absolute bottom-0 w-64 p-4 border-t border-gray-200 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center">

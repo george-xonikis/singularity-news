@@ -51,7 +51,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     try {
       const response = await fetch(`http://localhost:3002/api/admin/articles/${articleId}`);
       const data = await response.json();
-      
+
       if (data.success) {
         const articleData = data.data;
         setArticle(articleData);
@@ -335,7 +335,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
         >
           Cancel
         </button>
-        
+
         <div className="flex space-x-3">
           <button
             type="submit"
