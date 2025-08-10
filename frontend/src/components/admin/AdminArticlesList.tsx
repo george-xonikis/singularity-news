@@ -174,7 +174,7 @@ export function AdminArticlesList() {
   const SortButton = ({ field, children }: { field: string; children: React.ReactNode }) => (
     <button
       onClick={() => handleSort(field)}
-      className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+      className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer"
     >
       {children}
       {sortBy === field && (
