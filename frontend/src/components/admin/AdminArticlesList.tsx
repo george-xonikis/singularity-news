@@ -331,13 +331,13 @@ export function AdminArticlesList() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <SortButton field="created_at">Date</SortButton>
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <SortButton field="title">Title</SortButton>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Slug
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <SortButton field="created_at">Date</SortButton>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <SortButton field="topic">Topic</SortButton>
@@ -356,18 +356,18 @@ export function AdminArticlesList() {
             <tbody className="bg-white divide-y divide-gray-200">
               {articles.map((article) => (
                 <tr key={article.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-gray-900 truncate max-w-xs">
-                      {article.title}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500 truncate max-w-xs">
-                      {article.slug}
-                    </div>
-                  </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {formatDate(article.createdAt)}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-medium text-gray-900" title={article.title}>
+                      {article.title.length > 20 ? article.title.substring(0, 20) + '...' : article.title}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-500" title={article.slug}>
+                      {article.slug.length > 20 ? article.slug.substring(0, 20) + '...' : article.slug}
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
