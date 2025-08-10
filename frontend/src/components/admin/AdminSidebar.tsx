@@ -43,7 +43,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-white shadow-lg border-r border-gray-200">
+    <div className="w-64 h-screen bg-white shadow-lg border-r border-gray-200">
       <Link href="/admin">
         <div className="p-6 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors duration-200">
           <div className="flex items-center">
