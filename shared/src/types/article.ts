@@ -16,27 +16,13 @@ export interface Article {
 }
 
 // CreateArticleInput: Pick user-provided fields, exclude auto-generated ones
-export type CreateArticleInput = {
-  title: string;
-  content: string;
-  topic: string;
+export type CreateArticleInput = Pick<Article, 'title' | 'content' | 'topic' | 'tags'> & {
   slug?: string | undefined;
   summary?: string | undefined;
   coverPhoto?: string | undefined;
-  tags: string[];
   publishedDate?: string | null | undefined;
   published?: boolean | undefined;
 };
 
 // UpdateArticleInput: Make all user-editable fields optional
-export type UpdateArticleInput = {
-  title?: string | undefined;
-  slug?: string | undefined;
-  content?: string | undefined;
-  summary?: string | undefined;
-  topic?: string | undefined;
-  coverPhoto?: string | undefined;
-  tags?: string[] | undefined;
-  publishedDate?: string | null | undefined;
-  published?: boolean | undefined;
-};
+export type UpdateArticleInput = Partial<Pick<Article, 'title' | 'slug' | 'content' | 'summary' | 'topic' | 'coverPhoto' | 'tags' | 'publishedDate' | 'published'>>;

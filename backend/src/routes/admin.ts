@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import { query } from '../shared/database/connection';
 import { transformArticleFromDb } from '../features/articles/article.mapper';
-import { TopicService } from '../services/topicService';
+import { TopicService } from '../features/topics/topic.service';
+import { TopicRepository } from '../features/topics/topic.repository';
 
 const router: Router = Router();
-const topicService = new TopicService();
+const topicRepository = new TopicRepository();
+const topicService = new TopicService(topicRepository);
 
 // Admin Articles - Get all articles (including unpublished) with pagination and filters
 router.get('/articles', async (req, res) => {

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { createArticleRoutes } from './features/articles/article.routes';
+import { createTopicRoutes } from './features/topics/topic.routes';
 import { errorHandler, notFoundHandler } from './shared/middleware/error-handler';
 
 const app: express.Application = express();
@@ -29,11 +30,10 @@ app.get('/health', (req, res) => {
 
 // Feature routes
 app.use('/api/articles', createArticleRoutes());
+app.use('/api/topics', createTopicRoutes());
 
-// Temporary fallback to old routes for non-articles endpoints
-import topicsRouter from './routes/topics';
+// Temporary fallback to old routes for non-refactored endpoints
 import adminRouter from './routes/admin';
-app.use('/api/topics', topicsRouter);
 app.use('/api/admin', adminRouter);
 
 // Error handling
