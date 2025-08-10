@@ -174,7 +174,7 @@ export function AdminArticlesList() {
   const SortButton = ({ field, children }: { field: string; children: React.ReactNode }) => (
     <button
       onClick={() => handleSort(field)}
-      className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer"
+      className="flex items-center gap-1 hover:text-indigo-600 transition-colors cursor-pointer"
     >
       {children}
       {sortBy === field && (
@@ -203,7 +203,7 @@ export function AdminArticlesList() {
         </div>
         <Link 
           href="/admin/articles/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           New Article
@@ -216,7 +216,7 @@ export function AdminArticlesList() {
           <h3 className="text-lg font-medium">Filters</h3>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-2 py-1 rounded transition-colors cursor-pointer"
           >
             <FunnelIcon className="h-5 w-5" />
             {showFilters ? 'Hide Filters' : 'Show Filters'}
@@ -315,7 +315,7 @@ export function AdminArticlesList() {
             <div className="flex items-end">
               <button
                 onClick={clearFilters}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm transition-colors"
+                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm transition-colors cursor-pointer"
               >
                 Clear Filters
               </button>
@@ -330,32 +330,36 @@ export function AdminArticlesList() {
           <table className="min-w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   <SortButton field="created_at">Date</SortButton>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   <SortButton field="title">Title</SortButton>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   Slug
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   <SortButton field="topic">Topic</SortButton>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   <SortButton field="views">Views</SortButton>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   Status
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody>
               {articles.map((article, index) => (
-                <tr key={article.id} className={`${index !== articles.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50`}>
+                <tr 
+                  key={article.id} 
+                  className={`${index !== articles.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 cursor-pointer`}
+                  onClick={() => window.open(`/admin/articles/${article.id}/edit`, '_blank')}
+                >
                   <td className="px-6 py-4 text-sm text-gray-600">
                     {formatDate(article.createdAt)}
                   </td>
@@ -383,17 +387,17 @@ export function AdminArticlesList() {
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                      {article.status}
+                      {article.status.charAt(0).toUpperCase() + article.status.slice(1)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm">
-                    <Link
-                      href={`/admin/articles/${article.id}/edit`}
-                      className="text-blue-600 hover:text-blue-700 transition-colors"
-                      title="Edit"
+                  <td className="px-6 py-4 text-sm" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => handleDelete(article.id)}
+                      className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors duration-200 cursor-pointer"
+                      title="Delete"
                     >
-                      Edit
-                    </Link>
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -415,14 +419,14 @@ export function AdminArticlesList() {
                 <button
                   onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
                   disabled={currentPage === pagination.totalPages}
-                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                 >
                   Next
                 </button>
@@ -446,7 +450,7 @@ export function AdminArticlesList() {
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     >
                       <ChevronLeftIcon className="h-5 w-5" />
                     </button>
@@ -457,9 +461,9 @@ export function AdminArticlesList() {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                          className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer ${
                             currentPage === page
-                              ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                              ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                               : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                           }`}
                         >
@@ -471,7 +475,7 @@ export function AdminArticlesList() {
                     <button
                       onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
                       disabled={currentPage === pagination.totalPages}
-                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     >
                       <ChevronRightIcon className="h-5 w-5" />
                     </button>
