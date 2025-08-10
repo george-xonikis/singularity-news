@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { ArticleService } from '../services/articleService';
+import { query } from '../shared/database/connection';
+import { transformArticleFromDb } from '../features/articles/article.mapper';
 import { TopicService } from '../services/topicService';
 
 const router: Router = Router();
-const articleService = new ArticleService();
 const topicService = new TopicService();
 
 // Admin Articles - Get all articles (including unpublished) with pagination and filters
@@ -60,11 +60,11 @@ router.get('/articles', async (req, res) => {
 
     // Execute queries
     const [articlesResult, countResult] = await Promise.all([
-      articleService.query(queryText, queryParams),
-      articleService.query(countText, queryParams.slice(0, -2)) // Remove limit/offset for count
+      query(queryText, queryParams),
+      query(countText, queryParams.slice(0, -2)) // Remove limit/offset for count
     ]);
 
-    const articles = articlesResult.rows.map((row: any) => articleService.transformArticleFromDb(row));
+    const articles = articlesResult.rows.map((row: any) => transformArticleFromDb(row));
     const total = parseInt(countResult.rows[0].count);
 
     res.json({
@@ -87,14 +87,14 @@ router.get('/articles', async (req, res) => {
 router.get('/articles/:id', async (req, res): Promise<void> => {
   try {
     const { id } = req.params;
-    const result = await articleService.query('SELECT * FROM articles WHERE id = $1', [id]);
+    const result = await query('SELECT * FROM articles WHERE id = $1', [id]);
     
     if (result.rows.length === 0) {
       res.status(404).json({ error: 'Article not found' });
       return;
     }
 
-    const article = articleService.transformArticleFromDb(result.rows[0]);
+    const article = transformArticleFromDb(result.rows[0]);
     res.json(article);
   } catch (error) {
     console.error('Admin get article error:', error);
@@ -105,7 +105,24 @@ router.get('/articles/:id', async (req, res): Promise<void> => {
 // Admin - Create new article
 router.post('/articles', async (req, res) => {
   try {
-    const article = await articleService.createArticle(req.body);
+    // Create article directly
+    const { title, content, topic, summary, coverPhoto, tags, publishedDate, published } = req.body;
+    const result = await query(
+      `INSERT INTO articles (title, content, topic, summary, cover_photo, tags, published_date, published, views) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0) 
+       RETURNING *`,
+      [
+        title,
+        content, 
+        topic,
+        summary || null,
+        coverPhoto || null,
+        tags || [],
+        publishedDate ? new Date(publishedDate) : new Date(),
+        published ?? true
+      ]
+    );
+    const article = transformArticleFromDb(result.rows[0]);
     res.status(201).json(article);
   } catch (error) {
     console.error('Admin create article error:', error);
@@ -117,7 +134,42 @@ router.post('/articles', async (req, res) => {
 router.put('/articles/:id', async (req, res): Promise<void> => {
   try {
     const { id } = req.params;
-    const article = await articleService.updateArticle(id, req.body);
+    // Update article directly
+    const updates = req.body;
+    const fields: string[] = [];
+    const values: (string | number | boolean | string[] | Date | null)[] = [];
+    let paramCount = 1;
+
+    // Build dynamic UPDATE query
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value !== undefined && key !== 'id') {
+        const dbField = key === 'coverPhoto' ? 'cover_photo' : 
+                       key === 'publishedDate' ? 'published_date' : key;
+        fields.push(`${dbField} = $${paramCount++}`);
+        values.push(value as string | number | boolean | string[] | Date | null);
+      }
+    });
+
+    if (fields.length === 0) {
+      res.status(400).json({ error: 'No fields to update' });
+      return;
+    }
+
+    values.push(id);
+    const sql = `
+      UPDATE articles 
+      SET ${fields.join(', ')}, updated_at = NOW() 
+      WHERE id = $${paramCount} 
+      RETURNING *
+    `;
+
+    const result = await query(sql, values);
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Article not found' });
+      return;
+    }
+    
+    const article = transformArticleFromDb(result.rows[0]);
     
     if (!article) {
       res.status(404).json({ error: 'Article not found' });
@@ -135,7 +187,12 @@ router.put('/articles/:id', async (req, res): Promise<void> => {
 router.delete('/articles/:id', async (req, res): Promise<void> => {
   try {
     const { id } = req.params;
-    const success = await articleService.deleteArticle(id);
+    // Soft delete article by setting published = false
+    const result = await query(
+      'UPDATE articles SET published = FALSE WHERE id = $1 RETURNING id',
+      [id]
+    );
+    const success = result.rows.length > 0;
     
     if (!success) {
       res.status(404).json({ error: 'Article not found' });

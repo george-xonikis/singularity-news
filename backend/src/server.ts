@@ -1,78 +1,48 @@
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
-import dotenv from 'dotenv';
-import path from 'path';
-import articlesRouter from './routes/articles';
-import topicsRouter from './routes/topics';
-import adminRouter from './routes/admin';
-import { testConnection } from './lib/database';
+import { createArticleRoutes } from './features/articles/article.routes';
+import { errorHandler, notFoundHandler } from './shared/middleware/error-handler';
 
-// Load environment variables from backend/.env
-dotenv.config({ path: path.join(__dirname, '../.env') });
-
-const app = express();
-const PORT = process.env.PORT || 5000;
+const app: express.Application = express();
+const PORT = process.env.PORT || 3002;
 
 // Middleware
-app.use(helmet());
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-    'http://localhost:3001' // Allow frontend dev server on port 3001
-  ],
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3004'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 }));
-app.use(express.json());
+
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
+// Request logging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
 });
 
-// API routes
-app.use('/api/articles', articlesRouter);
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Feature routes
+app.use('/api/articles', createArticleRoutes());
+
+// Temporary fallback to old routes for non-articles endpoints
+import topicsRouter from './routes/topics';
+import adminRouter from './routes/admin';
 app.use('/api/topics', topicsRouter);
 app.use('/api/admin', adminRouter);
 
-app.get('/api', (req, res) => {
-  res.json({
-    message: 'AI News API',
-    version: '1.0.0',
-    endpoints: {
-      articles: '/api/articles',
-      topics: '/api/topics'
-    }
-  });
+// Error handling
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', err.message);
-  res.status(500).json({
-    error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
-  });
-});
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    error: 'Not Found',
-    message: `Route ${req.originalUrl} not found`
-  });
-});
-
-app.listen(PORT, async () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📋 Health check: http://localhost:${PORT}/health`);
-  console.log(`🔗 API docs: http://localhost:${PORT}/api`);
-  
-  // Test database connection
-  await testConnection();
-});
+export default app;

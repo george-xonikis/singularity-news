@@ -15,26 +15,28 @@ export interface Article {
   published: boolean;
 }
 
-export interface CreateArticleInput {
+// CreateArticleInput: Pick user-provided fields, exclude auto-generated ones
+export type CreateArticleInput = {
   title: string;
-  slug?: string;
   content: string;
-  summary?: string;
   topic: string;
-  coverPhoto?: string;
+  slug?: string | undefined;
+  summary?: string | undefined;
+  coverPhoto?: string | undefined;
   tags: string[];
-  publishedDate?: string | null;
-  published?: boolean;
-}
+  publishedDate?: string | null | undefined;
+  published?: boolean | undefined;
+};
 
-export interface UpdateArticleInput {
-  title?: string;
-  slug?: string;
-  content?: string;
-  summary?: string;
-  topic?: string;
-  coverPhoto?: string;
-  tags?: string[];
-  publishedDate?: string | null;
-  published?: boolean;
-}
+// UpdateArticleInput: Make all user-editable fields optional
+export type UpdateArticleInput = {
+  title?: string | undefined;
+  slug?: string | undefined;
+  content?: string | undefined;
+  summary?: string | undefined;
+  topic?: string | undefined;
+  coverPhoto?: string | undefined;
+  tags?: string[] | undefined;
+  publishedDate?: string | null | undefined;
+  published?: boolean | undefined;
+};

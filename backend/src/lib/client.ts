@@ -1,6 +1,6 @@
 // Database client that works with both Docker PostgreSQL and Supabase
 import { createClient } from '@supabase/supabase-js';
-import { query } from './database';
+import { query } from '../shared/database/connection';
 
 // Check if we're using Supabase or direct PostgreSQL
 const useSupabase = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY;

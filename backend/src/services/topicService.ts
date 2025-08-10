@@ -1,6 +1,6 @@
-import { query } from '../lib/database';
+import { query } from '../shared/database/connection';
 import { Topic } from '@singularity-news/shared';
-import { transformTopicFromDb } from '../utils/dataTransform';
+import { transformTopicFromDb } from '../shared/utils/topic.mapper';
 
 interface CreateTopicRequest {
   name: string;
