@@ -18,7 +18,7 @@ const articleService = new ArticleService(articleRepository);
 router.get('/articles', async (req, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = Math.min(parseInt(req.query.limit as string) || 10, 100);
+    const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
     const offset = (page - 1) * limit;
     
     const topic = req.query.topic as string;
@@ -26,6 +26,10 @@ router.get('/articles', async (req, res) => {
     const sortBy = req.query.sortBy as string || 'created_at';
     const sortOrder = req.query.sortOrder as string || 'DESC';
     const search = req.query.search as string;
+    const minViews = req.query.minViews ? parseInt(req.query.minViews as string) : undefined;
+    const maxViews = req.query.maxViews ? parseInt(req.query.maxViews as string) : undefined;
+    const startDate = req.query.startDate as string;
+    const endDate = req.query.endDate as string;
 
     // Build dynamic query
     let queryText = 'SELECT * FROM articles WHERE 1=1';
@@ -52,6 +56,36 @@ router.get('/articles', async (req, res) => {
       queryText += ` AND (title ILIKE $${paramCount} OR content ILIKE $${paramCount})`;
       countText += ` AND (title ILIKE $${paramCount} OR content ILIKE $${paramCount})`;
       queryParams.push(`%${search}%`);
+      paramCount++;
+    }
+
+    // Views range filter
+    if (minViews !== undefined) {
+      queryText += ` AND views >= $${paramCount}`;
+      countText += ` AND views >= $${paramCount}`;
+      queryParams.push(minViews);
+      paramCount++;
+    }
+
+    if (maxViews !== undefined) {
+      queryText += ` AND views <= $${paramCount}`;
+      countText += ` AND views <= $${paramCount}`;
+      queryParams.push(maxViews);
+      paramCount++;
+    }
+
+    // Date range filter (using created_at)
+    if (startDate) {
+      queryText += ` AND created_at >= $${paramCount}`;
+      countText += ` AND created_at >= $${paramCount}`;
+      queryParams.push(startDate);
+      paramCount++;
+    }
+
+    if (endDate) {
+      queryText += ` AND created_at <= $${paramCount}`;
+      countText += ` AND created_at <= $${paramCount}`;
+      queryParams.push(endDate + ' 23:59:59'); // Include full end date
       paramCount++;
     }
 
