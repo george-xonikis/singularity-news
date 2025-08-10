@@ -378,10 +378,10 @@ export function AdminArticlesList() {
                     {article.views.toLocaleString()}
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`text-sm ${
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                       article.status === 'published' 
-                        ? 'text-gray-600' 
-                        : 'text-gray-600'
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-yellow-100 text-yellow-700'
                     }`}>
                       {article.status}
                     </span>
