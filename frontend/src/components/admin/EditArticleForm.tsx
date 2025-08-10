@@ -124,8 +124,13 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
         body: JSON.stringify(submitData),
       });
 
-      const result = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrors({ submit: errorData.error || 'Failed to update article' });
+        return;
+      }
 
+      const result = await response.json();
       if (result.success) {
         router.push('/admin/articles');
       } else {

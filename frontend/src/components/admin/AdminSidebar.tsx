@@ -44,17 +44,18 @@ export function AdminSidebar() {
 
   return (
     <div className="w-64 bg-white shadow-lg border-r border-gray-200">
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center">
-          <NewspaperIcon className="h-8 w-8 text-blue-600" />
-          <div className="ml-3">
-            <h1 className="text-xl font-bold text-gray-900 font-serif">
-              Singularity News
-            </h1>
-            <p className="text-sm text-gray-600">Admin Panel</p>
+      <Link href="/admin">
+        <div className="p-6 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+          <div className="flex items-center">
+            <NewspaperIcon className="h-8 w-8 text-blue-600" />
+            <div className="ml-3">
+              <h1 className="text-xl font-bold text-gray-900 font-serif">
+                Singularity Admin
+              </h1>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
       
       <nav className="mt-6 px-3">
         <ul className="space-y-1">

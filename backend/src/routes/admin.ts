@@ -125,7 +125,7 @@ router.post('/articles', async (req, res) => {
     }
 
     const article = await articleService.createArticle(dto);
-    res.status(201).json(article);
+    res.status(201).json({ success: true, data: article });
   } catch (error) {
     console.error('Admin create article error:', error);
     
@@ -171,7 +171,7 @@ router.put('/articles/:id', async (req, res): Promise<void> => {
       return;
     }
 
-    res.json(article);
+    res.json({ success: true, data: article });
   } catch (error) {
     console.error('Admin update article error:', error);
     
