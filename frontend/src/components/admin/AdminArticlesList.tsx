@@ -1,12 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { 
   PlusIcon, 
-  PencilIcon, 
   TrashIcon,
-  EyeIcon,
   MagnifyingGlassIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -14,151 +12,44 @@ import {
   ArrowUpIcon,
   ArrowDownIcon
 } from '@heroicons/react/24/outline';
-import type { Article, Topic } from '@singularity-news/shared';
-
-interface AdminArticle extends Article {
-  status: 'published' | 'draft';
-}
-
-interface Pagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  hasMore: boolean;
-}
-
-interface Filters {
-  search: string;
-  topic: string;
-  minViews: string;
-  maxViews: string;
-  startDate: string;
-  endDate: string;
-}
+import { useAdminStore } from '@/stores/adminStore';
 
 export function AdminArticlesList() {
-  const [articles, setArticles] = useState<AdminArticle[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState('created_at');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pagination, setPagination] = useState<Pagination>({
-    page: 1,
-    limit: 20,
-    total: 0,
-    totalPages: 0,
-    hasMore: false
-  });
-  
-  const [filters, setFilters] = useState<Filters>({
-    search: '',
-    topic: '',
-    minViews: '',
-    maxViews: '',
-    startDate: '',
-    endDate: ''
-  });
-
-  const [showFilters, setShowFilters] = useState(false);
+  const {
+    articles,
+    topics,
+    loading,
+    sortBy,
+    sortOrder,
+    currentPage,
+    pagination,
+    filters,
+    showFilters,
+    setFilters,
+    clearFilters,
+    setSort,
+    setPage,
+    toggleFilters,
+    fetchArticles,
+    fetchTopics,
+    deleteArticle,
+  } = useAdminStore();
 
   useEffect(() => {
     fetchTopics();
-  }, []);
-
-  useEffect(() => {
     fetchArticles();
-  }, [sortBy, sortOrder, currentPage, filters]);
+  }, [fetchTopics, fetchArticles]);
 
-  const fetchTopics = async () => {
-    try {
-      const response = await fetch('http://localhost:3002/api/topics');
-      if (response.ok) {
-        const topics = await response.json();
-        setTopics(topics);
-      }
-    } catch (error) {
-      console.error('Failed to fetch topics:', error);
-    }
-  };
-
-  const fetchArticles = async () => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: '20',
-        sortBy,
-        sortOrder: sortOrder.toUpperCase(),
-        ...(filters.search && { search: filters.search }),
-        ...(filters.topic && { topic: filters.topic }),
-        ...(filters.minViews && { minViews: filters.minViews }),
-        ...(filters.maxViews && { maxViews: filters.maxViews }),
-        ...(filters.startDate && { startDate: filters.startDate }),
-        ...(filters.endDate && { endDate: filters.endDate })
-      });
-      
-      const response = await fetch(`http://localhost:3002/api/admin/articles?${params}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch articles');
-      }
-      
-      const data = await response.json();
-      const articlesWithStatus = data.data.map((article: Article) => ({
-        ...article,
-        status: article.published ? 'published' : 'draft' as 'published' | 'draft'
-      }));
-      
-      setArticles(articlesWithStatus);
-      setPagination(data.pagination);
-    } catch (error) {
-      console.error('Failed to fetch articles:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSort = (field: string) => {
-    if (sortBy === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(field);
-      setSortOrder('desc');
-    }
-  };
-
-  const handleFilterChange = (key: keyof Filters, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-    setCurrentPage(1); // Reset to first page when filters change
-  };
-
-  const clearFilters = () => {
-    setFilters({
-      search: '',
-      topic: '',
-      minViews: '',
-      maxViews: '',
-      startDate: '',
-      endDate: ''
-    });
-    setCurrentPage(1);
+  const handleFilterChange = (key: keyof typeof filters, value: string) => {
+    setFilters({ [key]: value });
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this article?')) {
       try {
-        const response = await fetch(`http://localhost:3002/api/admin/articles/${id}`, {
-          method: 'DELETE',
-        });
-        
-        if (response.ok) {
-          fetchArticles();
-        } else {
-          alert('Failed to delete article');
-        }
+        await deleteArticle(id);
       } catch (error) {
-        alert('Error deleting article');
+        alert(error instanceof Error ? error.message : 'Error deleting article');
       }
     }
   };
@@ -173,7 +64,7 @@ export function AdminArticlesList() {
 
   const SortButton = ({ field, children }: { field: string; children: React.ReactNode }) => (
     <button
-      onClick={() => handleSort(field)}
+      onClick={() => setSort(field)}
       className="flex items-center gap-1 hover:text-indigo-600 transition-colors cursor-pointer"
     >
       {children}
@@ -215,7 +106,7 @@ export function AdminArticlesList() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium">Filters</h3>
           <button
-            onClick={() => setShowFilters(!showFilters)}
+            onClick={toggleFilters}
             className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-2 py-1 rounded transition-colors cursor-pointer"
           >
             <FunnelIcon className="h-5 w-5" />
@@ -383,11 +274,11 @@ export function AdminArticlesList() {
                   </td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      article.status === 'published' 
+                      article.published 
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                      {article.status.charAt(0).toUpperCase() + article.status.slice(1)}
+                      {article.published ? 'Published' : 'Draft'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm" onClick={(e) => e.stopPropagation()}>
@@ -417,14 +308,14 @@ export function AdminArticlesList() {
             <div className="flex items-center justify-between">
               <div className="flex-1 flex justify-between sm:hidden">
                 <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  onClick={() => setPage(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
                   className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
                 <button
-                  onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
+                  onClick={() => setPage(Math.min(pagination.totalPages, currentPage + 1))}
                   disabled={currentPage === pagination.totalPages}
                   className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                 >
@@ -448,7 +339,7 @@ export function AdminArticlesList() {
                 <div>
                   <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                     <button
-                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      onClick={() => setPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
                       className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     >
@@ -460,7 +351,7 @@ export function AdminArticlesList() {
                       return (
                         <button
                           key={page}
-                          onClick={() => setCurrentPage(page)}
+                          onClick={() => setPage(page)}
                           className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer ${
                             currentPage === page
                               ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
@@ -473,7 +364,7 @@ export function AdminArticlesList() {
                     })}
                     
                     <button
-                      onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
+                      onClick={() => setPage(Math.min(pagination.totalPages, currentPage + 1))}
                       disabled={currentPage === pagination.totalPages}
                       className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     >

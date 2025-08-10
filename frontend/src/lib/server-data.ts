@@ -34,6 +34,7 @@ export async function getTopics(): Promise<Topic[]> {
   }
 }
 
+// TODO cleanup functions if not needed
 export async function getArticlesByTopic(topic: string): Promise<Article[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/articles?topic=${encodeURIComponent(topic)}`, {
