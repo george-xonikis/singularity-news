@@ -9,7 +9,7 @@ export class ArticleService {
 
   async getAllArticles(limit = 50, offset = 0): Promise<Article[]> {
     const result = await query(
-      'SELECT * FROM articles WHERE published = TRUE ORDER BY created_at DESC LIMIT $1 OFFSET $2',
+      'SELECT * FROM articles WHERE published = TRUE ORDER BY views DESC, created_at DESC LIMIT $1 OFFSET $2',
       [limit, offset]
     );
 

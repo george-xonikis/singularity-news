@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Topic } from '@singularity-news/shared';
 
 interface NavigationProps {
@@ -10,15 +11,15 @@ export default function Navigation({ topics }: NavigationProps) {
       <div className="container mx-auto px-4">
         <ul className="flex justify-center space-x-8 text-sm font-medium uppercase">
           <li>
-            <a href="#" className="hover:underline">
+            <Link href="/" className="hover:underline">
               HOME
-            </a>
+            </Link>
           </li>
           {topics.slice(0, 5).map(topic => (
             <li key={topic.id}>
-              <a href="#" className="hover:underline">
+              <Link href={`/topics/${topic.slug}`} className="hover:underline">
                 {topic.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

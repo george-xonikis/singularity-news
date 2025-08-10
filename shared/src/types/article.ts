@@ -1,5 +1,5 @@
 export interface Article {
-  id: number;
+  id: string; // UUID from database
   title: string;
   slug: string;
   content: string;

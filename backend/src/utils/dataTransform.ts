@@ -25,7 +25,7 @@ interface DatabaseTopic {
 
 export const transformArticleFromDb = (dbArticle: DatabaseArticle): Article => {
   const result: Article = {
-    id: parseInt(dbArticle.id),
+    id: dbArticle.id, // Keep UUID as string
     title: dbArticle.title,
     slug: dbArticle.slug,
     content: dbArticle.content,
