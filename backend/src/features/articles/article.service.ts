@@ -138,6 +138,13 @@ export class ArticleService {
   }
 
   /**
+   * Hard delete an article from database
+   */
+  async hardDeleteArticle(id: string): Promise<boolean> {
+    return this.repository.hardDelete(id);
+  }
+
+  /**
    * Search articles by keyword
    */
   async searchArticles(query: string, limit = 50, offset = 0): Promise<Article[]> {

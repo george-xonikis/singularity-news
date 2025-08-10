@@ -5,9 +5,15 @@ import { DatabaseArticle, transformArticleFromDb } from './article.mapper';
 export interface ArticleFilters {
   topic?: string | undefined;
   search?: string | undefined;
-  published?: boolean;
+  published?: boolean | undefined;
   limit?: number;
   offset?: number;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  minViews?: number;
+  maxViews?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export class ArticleRepository {
@@ -19,9 +25,15 @@ export class ArticleRepository {
     const {
       topic,
       search,
-      published = true,
+      published,
       limit = 50,
-      offset = 0
+      offset = 0,
+      sortBy = 'created_at',
+      sortOrder = 'DESC',
+      minViews,
+      maxViews,
+      startDate,
+      endDate
     } = filters;
 
     let sql = 'SELECT * FROM articles WHERE 1=1';
@@ -43,8 +55,32 @@ export class ArticleRepository {
       params.push(`%${search}%`);
     }
 
-    // Order by views first (popular), then by date
-    sql += ' ORDER BY views DESC, created_at DESC';
+    if (minViews !== undefined) {
+      sql += ` AND views >= $${++paramCount}`;
+      params.push(minViews);
+    }
+
+    if (maxViews !== undefined) {
+      sql += ` AND views <= $${++paramCount}`;
+      params.push(maxViews);
+    }
+
+    if (startDate) {
+      sql += ` AND created_at >= $${++paramCount}`;
+      params.push(startDate);
+    }
+
+    if (endDate) {
+      sql += ` AND created_at <= $${++paramCount}`;
+      params.push(endDate + ' 23:59:59'); // Include full end date
+    }
+
+    // Add sorting
+    const allowedSortFields = ['title', 'created_at', 'updated_at', 'published_date', 'views', 'topic'];
+    const validSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'created_at';
+    const validSortOrder = ['ASC', 'DESC'].includes(sortOrder) ? sortOrder : 'DESC';
+    
+    sql += ` ORDER BY ${validSortBy} ${validSortOrder}`;
     
     sql += ` LIMIT $${++paramCount} OFFSET $${++paramCount}`;
     params.push(limit, offset);
@@ -189,10 +225,29 @@ export class ArticleRepository {
   }
 
   /**
+   * Hard delete article from database
+   */
+  async hardDelete(id: string): Promise<boolean> {
+    const result = await query(
+      'DELETE FROM articles WHERE id = $1',
+      [id]
+    );
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  /**
    * Count total articles
    */
   async count(filters: ArticleFilters = {}): Promise<number> {
-    const { topic, search, published = true } = filters;
+    const { 
+      topic, 
+      search, 
+      published, 
+      minViews, 
+      maxViews, 
+      startDate, 
+      endDate 
+    } = filters;
     
     let sql = 'SELECT COUNT(*) as count FROM articles WHERE 1=1';
     const params: (string | number | boolean)[] = [];
@@ -211,6 +266,26 @@ export class ArticleRepository {
     if (search) {
       sql += ` AND (title ILIKE $${++paramCount} OR content ILIKE $${paramCount})`;
       params.push(`%${search}%`);
+    }
+
+    if (minViews !== undefined) {
+      sql += ` AND views >= $${++paramCount}`;
+      params.push(minViews);
+    }
+
+    if (maxViews !== undefined) {
+      sql += ` AND views <= $${++paramCount}`;
+      params.push(maxViews);
+    }
+
+    if (startDate) {
+      sql += ` AND created_at >= $${++paramCount}`;
+      params.push(startDate);
+    }
+
+    if (endDate) {
+      sql += ` AND created_at <= $${++paramCount}`;
+      params.push(endDate + ' 23:59:59');
     }
 
     const result = await query(sql, params);

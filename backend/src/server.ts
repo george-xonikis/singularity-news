@@ -1,7 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import { createArticleRoutes } from './features/articles/article.routes';
-import { createTopicRoutes } from './features/topics/topic.routes';
 import { errorHandler, notFoundHandler } from './shared/middleware/error-handler';
 
 const app: express.Application = express();
@@ -28,11 +26,11 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Feature routes
-app.use('/api/articles', createArticleRoutes());
-app.use('/api/topics', createTopicRoutes());
+// Public routes
+import publicRouter from './routes/public';
+app.use('/api', publicRouter);
 
-// Temporary fallback to old routes for non-refactored endpoints
+// Admin routes
 import adminRouter from './routes/admin';
 app.use('/api/admin', adminRouter);
 
