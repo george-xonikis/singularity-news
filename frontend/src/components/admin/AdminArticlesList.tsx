@@ -66,7 +66,7 @@ export function AdminArticlesList() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this article?')) {
       try {
         const response = await fetch(`http://localhost:3002/api/admin/articles/${id}`, {

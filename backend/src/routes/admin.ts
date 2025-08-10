@@ -3,10 +3,16 @@ import { query } from '../shared/database/connection';
 import { transformArticleFromDb } from '../features/articles/article.mapper';
 import { TopicService } from '../features/topics/topic.service';
 import { TopicRepository } from '../features/topics/topic.repository';
+import { ArticleService } from '../features/articles/article.service';
+import { ArticleRepository } from '../features/articles/article.repository';
+import { CreateArticleDto } from '../features/articles/dtos/create-article.dto';
+import { UpdateArticleDto } from '../features/articles/dtos/update-article.dto';
 
 const router: Router = Router();
 const topicRepository = new TopicRepository();
 const topicService = new TopicService(topicRepository);
+const articleRepository = new ArticleRepository();
+const articleService = new ArticleService(articleRepository);
 
 // Admin Articles - Get all articles (including unpublished) with pagination and filters
 router.get('/articles', async (req, res) => {
@@ -107,28 +113,34 @@ router.get('/articles/:id', async (req, res): Promise<void> => {
 // Admin - Create new article
 router.post('/articles', async (req, res) => {
   try {
-    // Create article directly
-    const { title, content, topic, summary, coverPhoto, tags, publishedDate, published } = req.body;
-    const result = await query(
-      `INSERT INTO articles (title, content, topic, summary, cover_photo, tags, published_date, published, views) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0) 
-       RETURNING *`,
-      [
-        title,
-        content, 
-        topic,
-        summary || null,
-        coverPhoto || null,
-        tags || [],
-        publishedDate ? new Date(publishedDate) : new Date(),
-        published ?? true
-      ]
-    );
-    const article = transformArticleFromDb(result.rows[0]);
+    const dto = new CreateArticleDto(req.body);
+    const validationErrors = dto.validate();
+    
+    if (validationErrors.length > 0) {
+      res.status(400).json({
+        error: 'Validation failed',
+        messages: validationErrors
+      });
+      return;
+    }
+
+    const article = await articleService.createArticle(dto);
     res.status(201).json(article);
   } catch (error) {
     console.error('Admin create article error:', error);
-    res.status(500).json({ error: 'Failed to create article' });
+    
+    if (error instanceof Error && error.message.includes('already exists')) {
+      res.status(409).json({
+        error: 'Conflict',
+        message: error.message
+      });
+      return;
+    }
+
+    res.status(500).json({ 
+      error: 'Failed to create article',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
@@ -136,42 +148,23 @@ router.post('/articles', async (req, res) => {
 router.put('/articles/:id', async (req, res): Promise<void> => {
   try {
     const { id } = req.params;
-    // Update article directly
-    const updates = req.body;
-    const fields: string[] = [];
-    const values: (string | number | boolean | string[] | Date | null)[] = [];
-    let paramCount = 1;
-
-    // Build dynamic UPDATE query
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value !== undefined && key !== 'id') {
-        const dbField = key === 'coverPhoto' ? 'cover_photo' : 
-                       key === 'publishedDate' ? 'published_date' : key;
-        fields.push(`${dbField} = $${paramCount++}`);
-        values.push(value as string | number | boolean | string[] | Date | null);
-      }
-    });
-
-    if (fields.length === 0) {
-      res.status(400).json({ error: 'No fields to update' });
+    if (!id) {
+      res.status(400).json({ error: 'ID parameter is required' });
       return;
     }
 
-    values.push(id);
-    const sql = `
-      UPDATE articles 
-      SET ${fields.join(', ')}, updated_at = NOW() 
-      WHERE id = $${paramCount} 
-      RETURNING *
-    `;
-
-    const result = await query(sql, values);
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: 'Article not found' });
-      return;
-    }
+    const dto = new UpdateArticleDto(req.body);
+    const validationErrors = dto.validate();
     
-    const article = transformArticleFromDb(result.rows[0]);
+    if (validationErrors.length > 0) {
+      res.status(400).json({
+        error: 'Validation failed',
+        messages: validationErrors
+      });
+      return;
+    }
+
+    const article = await articleService.updateArticle(id, dto);
     
     if (!article) {
       res.status(404).json({ error: 'Article not found' });
@@ -181,7 +174,19 @@ router.put('/articles/:id', async (req, res): Promise<void> => {
     res.json(article);
   } catch (error) {
     console.error('Admin update article error:', error);
-    res.status(500).json({ error: 'Failed to update article' });
+    
+    if (error instanceof Error && error.message.includes('already exists')) {
+      res.status(409).json({
+        error: 'Conflict',
+        message: error.message
+      });
+      return;
+    }
+
+    res.status(500).json({ 
+      error: 'Failed to update article',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 

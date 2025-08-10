@@ -4,10 +4,9 @@ export class UpdateTopicDto {
   private readonly data: UpdateTopicInput;
 
   constructor(input: UpdateTopicInput) {
-    this.data = {
-      name: input.name,
-      slug: input.slug,
-    };
+    this.data = {};
+    if (input.name !== undefined) this.data.name = input.name;
+    if (input.slug !== undefined) this.data.slug = input.slug;
   }
 
   validate(): string[] {
