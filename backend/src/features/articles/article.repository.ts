@@ -1,20 +1,6 @@
 import { query } from '../../shared/database/connection';
-import { Article } from '@singularity-news/shared';
+import { Article, ArticleFilters } from '@singularity-news/shared';
 import { DatabaseArticle, transformArticleFromDb } from './article.mapper';
-
-export interface ArticleFilters {
-  topic?: string | undefined;
-  search?: string | undefined;
-  published?: boolean | undefined;
-  limit?: number;
-  offset?: number;
-  sortBy?: string;
-  sortOrder?: 'ASC' | 'DESC';
-  minViews?: number;
-  maxViews?: number;
-  startDate?: string;
-  endDate?: string;
-}
 
 export class ArticleRepository {
   /**

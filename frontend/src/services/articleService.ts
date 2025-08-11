@@ -1,23 +1,10 @@
-import type { Article } from '@singularity-news/shared';
+import type { Article, ArticleFilters } from '@singularity-news/shared';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
-export interface ArticleFilters {
-  topic?: string;
-  search?: string;
-  published?: boolean;
-  limit?: number;
-  offset?: number;
-  sortBy?: string;
-  sortOrder?: 'ASC' | 'DESC';
-  minViews?: number;
-  maxViews?: number;
-  startDate?: string;
-  endDate?: string;
-}
-
 export interface PaginatedArticlesResponse {
   data: Article[];
+  // TODO rename "pagination" to "meta"
   pagination: {
     page: number;
     limit: number;
@@ -39,20 +26,17 @@ export class ArticleService {
   /**
    * Fetch articles with filtering, sorting, and pagination
    */
-  static async getArticles(params: {
-    page?: number;
-    limit?: number;
-    sortBy?: string;
-    sortOrder?: string;
-    filters?: ArticleFilters;
-  }): Promise<PaginatedArticlesResponse> {
+  static async getArticles(filters: ArticleFilters): Promise<PaginatedArticlesResponse> {
     const {
-      page = 1,
       limit = 20,
+      offset = 0,
       sortBy = 'created_at',
-      sortOrder = 'desc',
-      filters = {}
-    } = params;
+      sortOrder = 'DESC',
+      ...otherFilters
+    } = filters;
+
+    // Convert offset back to page for the API
+    const page = Math.floor(offset / limit) + 1;
 
     const searchParams = new URLSearchParams({
       page: page.toString(),
@@ -62,7 +46,7 @@ export class ArticleService {
     });
 
     // Add filters to search params
-    Object.entries(filters).forEach(([key, value]) => {
+    Object.entries(otherFilters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         searchParams.append(key, value.toString());
       }

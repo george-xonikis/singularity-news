@@ -26,13 +26,17 @@ export class ArticleController {
         return;
       }
 
-      const result = await this.service.getAllArticles({
+      // Build filters object with only defined values to satisfy exactOptionalPropertyTypes
+      const filters: any = {
         limit: queryDto.limit,
         offset: queryDto.offset,
-        topic: queryDto.topic,
-        search: queryDto.search,
         published: true
-      });
+      };
+      
+      if (queryDto.topic) filters.topic = queryDto.topic;
+      if (queryDto.search) filters.search = queryDto.search;
+      
+      const result = await this.service.getAllArticles(filters);
 
       // Return array directly for backward compatibility
       res.json(new ArticleListResponseDto(result.articles));

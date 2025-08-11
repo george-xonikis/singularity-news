@@ -1,5 +1,5 @@
-import { Article } from '@singularity-news/shared';
-import { ArticleRepository, ArticleFilters } from './article.repository';
+import { Article, ArticleFilters } from '@singularity-news/shared';
+import { ArticleRepository } from './article.repository';
 import { CreateArticleDto, UpdateArticleDto } from './dtos';
 import { generateSlug } from '../../shared/utils/slug.utils';
 
@@ -24,7 +24,7 @@ export class ArticleService {
       articles,
       total,
       page: Math.floor((filters.offset || 0) / (filters.limit || 50)) + 1,
-      limit: filters.limit || 50
+      limit: filters.limit || 50,
     };
   }
 

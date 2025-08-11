@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -253,9 +254,11 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
           </div>
           {formData.coverPhoto && (
             <div className="mt-3">
-              <img
+              <Image
                 src={formData.coverPhoto}
                 alt="Preview"
+                width={192}
+                height={128}
                 className="h-32 w-48 object-cover rounded border"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';

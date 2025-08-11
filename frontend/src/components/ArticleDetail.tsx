@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   ShareIcon,
   ChatBubbleLeftIcon,
@@ -176,11 +177,13 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         {/* Cover Image */}
         {article.coverPhoto && (
           <div className="mb-8">
-            <img
+            <Image
               src={article.coverPhoto}
               alt={article.title}
+              width={800}
+              height={400}
               className="w-full h-auto rounded-lg shadow-lg"
-              loading="eager"
+              priority
             />
           </div>
         )}
