@@ -45,7 +45,7 @@ export function AdminArticlesList() {
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
-          New Article
+          New Article in Admin
         </Link>
       </div>
 
