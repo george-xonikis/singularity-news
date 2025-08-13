@@ -13,10 +13,9 @@ import { useArticleStore, createInitialFilters } from '../articleStore';
 import { useAdminStore } from '../adminStore';
 import { ArticleService } from '@/services/articleService';
 import type { ArticleFilters } from '@singularity-news/shared';
-import { log } from 'node:util';
 
 /**
- * The Articles observable emits whenever filters, sorting, or pagination changes
+ * The Articles observable emits whenever filters, sorting, pagination, or refetch trigger changes
  */
 const store$ = storeToObservable(useArticleStore);
 
@@ -35,25 +34,35 @@ const nonSearchFilters$ = store$.pipe(
   debounceTime(50) // Small debounce for UI interactions
 );
 
-const filters$: Observable<ArticleFilters> = combineLatest([search$, nonSearchFilters$]).pipe(
+// Watch for refetch trigger changes
+const refetchTrigger$ = store$.pipe(
+  map(state => state.refetchTrigger),
+  distinctUntilChanged()
+);
+
+// Combine filters with refetch trigger
+const filters$: Observable<{ filters: ArticleFilters; trigger: number }> = combineLatest([
+  combineLatest([search$, nonSearchFilters$]).pipe(
     map(([search, otherFilters]) => ({
       ...otherFilters,
       ...(search ? { search } : {}) // Only include search if it has a value
-    })),
-    startWith(createInitialFilters()),
-    distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
-  );
+    }))
+  ),
+  refetchTrigger$
+]).pipe(
+  map(([filters, trigger]) => ({ filters, trigger })),
+  startWith({ filters: createInitialFilters(), trigger: 0 }),
+  distinctUntilChanged((a, b) =>
+    JSON.stringify(a.filters) === JSON.stringify(b.filters) && a.trigger === b.trigger
+  )
+);
 
 /**
  * Creates a complete reactive pipeline:
- * Filters changes → Fetch articles → Store results
+ * Filters/Refetch changes → Fetch articles → Store results
  */
 export const articles$ =
   filters$.pipe(
-    tap(v => console.log(v)),
-    // Remove duplicates - this is critical to prevent double requests
-    distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-
     // Set loading state
     tap(() => {
       useAdminStore.getState().setLoading(true);
@@ -61,7 +70,7 @@ export const articles$ =
     }),
 
     // Fetch articles (switchMap cancels previous requests)
-    switchMap(filters => {
+    switchMap(({ filters }) => {
       return ArticleService.getArticles(filters);
     }),
 

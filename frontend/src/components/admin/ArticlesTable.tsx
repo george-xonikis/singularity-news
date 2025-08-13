@@ -8,6 +8,8 @@ import {
   ArrowDownIcon
 } from '@heroicons/react/24/outline';
 import { useArticleStore } from '@/stores/articleStore';
+import { ArticleService } from '@/services/articleService';
+import { useAdminStore } from '@/stores/adminStore';
 
 export function ArticlesTable() {
   const {
@@ -16,19 +18,23 @@ export function ArticlesTable() {
     pagination,
     setSort,
     setPage,
-    deleteArticle,
+    refetch,
   } = useArticleStore();
+
+  const { setError } = useAdminStore();
 
   // Extract values from filters for convenience
   const { sortBy = 'created_at', sortOrder = 'DESC', limit = 20, offset = 0 } = filters;
   const currentPage = Math.floor(offset / limit) + 1;
 
-  const handleDelete = async (id: string) => {
+  const deleteArticle = async (id: string) => {
     if (confirm('Are you sure you want to delete this article?')) {
       try {
-        await deleteArticle(id);
+        ArticleService.deleteArticle(id).then(() => refetch());
       } catch (error) {
-        alert(error instanceof Error ? error.message : 'Error deleting article');
+        const errorMessage = error instanceof Error ? error.message : 'Error deleting article';
+        setError(errorMessage);
+        alert(errorMessage);
       }
     }
   };
@@ -123,7 +129,7 @@ export function ArticlesTable() {
                 </td>
                 <td className="px-6 py-4 text-sm" onClick={(e) => e.stopPropagation()}>
                   <button
-                    onClick={() => handleDelete(article.id)}
+                    onClick={() => deleteArticle(article.id)}
                     className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors duration-200 cursor-pointer"
                     title="Delete"
                   >

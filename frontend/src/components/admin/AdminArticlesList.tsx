@@ -13,7 +13,6 @@ import { ArticlesTable } from './ArticlesTable';
 export function AdminArticlesList() {
   useObservableSubscription(articles$);
 
-  // Admin app-level state
   const { loading } = useAdminStore();
 
   // Topic store

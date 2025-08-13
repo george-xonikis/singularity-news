@@ -93,3 +93,4 @@ pnpm --filter backend start     # Start production backend
 - Pause for review and confirmation at each checkpoint
 - Follow existing code conventions and patterns
 - Use TypeScript throughout the entire stack
+- **IMPORTANT**: Update `GIT_HISTORY.md` with every commit (required)

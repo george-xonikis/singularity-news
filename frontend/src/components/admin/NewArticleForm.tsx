@@ -7,6 +7,9 @@ import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import type { CreateArticleInput, Topic } from '@singularity-news/shared';
+import { ArticleService } from '@/services/articleService';
+import { TopicService } from '@/services/topicService';
+import { useAdminStore } from '@/stores/adminStore';
 
 export function NewArticleForm() {
   const router = useRouter();
@@ -30,14 +33,12 @@ export function NewArticleForm() {
 
   const fetchTopics = async () => {
     try {
-      const response = await fetch('http://localhost:3002/api/topics');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const topics = await response.json();
+      const topics = await TopicService.getTopics();
       setTopics(topics);
     } catch (error) {
       console.error('Failed to fetch topics:', error);
+      const { setError } = useAdminStore.getState();
+      setError('Failed to load topics');
     }
   };
 
@@ -78,28 +79,14 @@ export function NewArticleForm() {
         publishedDate: publish ? new Date().toISOString() : null
       };
 
-      const response = await fetch('http://localhost:3002/api/admin/articles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submitData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        setErrors({ submit: errorData.error || 'Failed to create article' });
-        return;
-      }
-
-      const result = await response.json();
-      if (result.success) {
-        router.push('/admin/articles');
-      } else {
-        setErrors({ submit: result.error || 'Failed to create article' });
-      }
-    } catch {
-      setErrors({ submit: 'Network error. Please try again.' });
+      await ArticleService.createArticle(submitData);
+      router.push('/admin/articles');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create article';
+      setErrors({ submit: errorMessage });
+      // Also set error in admin store for notification
+      const { setError } = useAdminStore.getState();
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

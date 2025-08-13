@@ -1,7 +1,5 @@
 import { create } from 'zustand';
-import { ArticleService } from '@/services/articleService';
 import type { Article, ArticleFilters } from '@singularity-news/shared';
-import { useAdminStore } from './adminStore';
 
 export interface ArticleState {
   // Data
@@ -19,15 +17,21 @@ export interface ArticleState {
   // Current filters (includes pagination, sorting, and filters)
   filters: ArticleFilters;
 
-  // Actions
+  // Refetch trigger - increment to trigger a refetch with current filters
+  refetchTrigger: number;
+
+  // State Management Actions (synchronous only)
+  updateArticle: (id: string, updatedArticle: Article) => void;
+
+  // Filter Actions
   setFilters: (filters: Partial<ArticleFilters>) => void;
   clearFilters: () => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
   setSort: (field: string, order?: 'ASC' | 'DESC') => void;
 
-  // Async Actions
-  deleteArticle: (id: string) => Promise<void>;
+  // Refetch Action
+  refetch: () => void;
 
   // Reset
   reset: () => void;
@@ -61,11 +65,21 @@ const createInitialState = () => ({
     hasMore: false,
   },
   filters: createInitialFilters(),
+  refetchTrigger: 0,
 });
 
 export const useArticleStore = create<ArticleState>((set) => ({
   ...createInitialState(),
 
+  updateArticle: (id: string, updatedArticle: Article) => {
+    set((state) => ({
+      articles: state.articles.map(article =>
+        article.id === id ? updatedArticle : article
+      )
+    }));
+  },
+
+  // Filter Actions
   setFilters: (newFilters: Partial<ArticleFilters>) => {
     set((state) => ({
       filters: {
@@ -116,17 +130,11 @@ export const useArticleStore = create<ArticleState>((set) => ({
     }));
   },
 
-  // Async Actions
-  deleteArticle: async (id: string) => {
-    const { setError } = useAdminStore.getState();
-
-    try {
-      await ArticleService.deleteArticle(id);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to delete article';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    }
+  // Refetch Action - increments trigger to force observable to emit
+  refetch: () => {
+    set((state) => ({
+      refetchTrigger: state.refetchTrigger + 1
+    }));
   },
 
   reset: () => set(createInitialState()),

@@ -7,6 +7,10 @@ import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import type { Article, UpdateArticleInput, Topic } from '@singularity-news/shared';
+import { ArticleService } from '@/services/articleService';
+import { TopicService } from '@/services/topicService';
+import { useArticleStore } from '@/stores/articleStore';
+import { useAdminStore } from '@/stores/adminStore';
 
 interface EditArticleFormProps {
   articleId: number;
@@ -33,41 +37,34 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
   useEffect(() => {
     fetchTopics();
     fetchArticle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleId]);
 
   const fetchTopics = async () => {
     try {
-      const response = await fetch('http://localhost:3002/api/topics');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const topics = await response.json();
+      const topics = await TopicService.getTopics();
       setTopics(topics);
     } catch (error) {
       console.error('Failed to fetch topics:', error);
+      const { setError } = useAdminStore.getState();
+      setError('Failed to load topics');
     }
   };
 
   const fetchArticle = async () => {
     try {
-      const response = await fetch(`http://localhost:3002/api/admin/articles/${articleId}`);
-      const data = await response.json();
-
-      if (data.success) {
-        const articleData = data.data;
-        setArticle(articleData);
-        setFormData({
-          title: articleData.title,
-          content: articleData.content,
-          topic: articleData.topic,
-          coverPhoto: articleData.coverPhoto || '',
-          tags: articleData.tags || [],
-          publishedDate: articleData.publishedDate || '',
-          published: articleData.published
-        });
-      } else {
-        setErrors({ fetch: 'Failed to load article' });
-      }
+      // Call service directly
+      const articleData = await ArticleService.getArticle(String(articleId));
+      setArticle(articleData);
+      setFormData({
+        title: articleData.title,
+        content: articleData.content,
+        topic: articleData.topic,
+        coverPhoto: articleData.coverPhoto || '',
+        tags: articleData.tags || [],
+        publishedDate: articleData.publishedDate || '',
+        published: articleData.published
+      });
     } catch {
       setErrors({ fetch: 'Failed to load article' });
     } finally {
@@ -117,28 +114,21 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
         }
       }
 
-      const response = await fetch(`http://localhost:3002/api/admin/articles/${articleId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submitData),
-      });
+      // Call service directly
+      const updatedArticle = await ArticleService.updateArticle(String(articleId), submitData);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        setErrors({ submit: errorData.error || 'Failed to update article' });
-        return;
-      }
+      // Update store with updated article
+      const { updateArticle } = useArticleStore.getState();
+      updateArticle(String(articleId), updatedArticle);
 
-      const result = await response.json();
-      if (result.success) {
-        router.push('/admin/articles');
-      } else {
-        setErrors({ submit: result.error || 'Failed to update article' });
-      }
-    } catch {
-      setErrors({ submit: 'Network error. Please try again.' });
+      // Navigate to articles list
+      router.push('/admin/articles');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update article';
+      setErrors({ submit: errorMessage });
+      // Also set error in admin store for notification
+      const { setError } = useAdminStore.getState();
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
