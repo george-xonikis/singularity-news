@@ -7,11 +7,38 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 7266c41)
+- **master**: Production-ready code (last commit: 538614c)
 
 ## Complete Commit History
 
 ### 2025-08-13
+
+#### `538614c` - **fix**: remove loading state and fix double request issue
+Performance & UX Improvements:
+- Removed loading state that was blocking UI during filter changes
+- Fixed double API request on component mount by removing startWith()
+- Cleaned up unused loading state from adminStore
+
+Key Changes:
+- Removed loading state from articles$ observable pipeline
+- Removed loading/setLoading from adminStore (unused)
+- Removed loading spinner from AdminArticlesList
+- Fixed observable double emission caused by startWith() with initial values
+
+Root Cause Analysis:
+- startWith() was creating eager emission before store values ready
+- Store would then emit actual values, causing duplicate request
+- Solution: Let store be single source of truth for initial state
+
+Benefits:
+- Filters remain fully responsive while fetching
+- Single API request on component mount (50% reduction)
+- Cleaner code without unnecessary state management
+- Better UX with non-blocking filter interactions
+
+Also Added:
+- Response protocol to CLAUDE.md for Q&A workflow
+- Clear guidance on when to provide recommendations vs implementation
 
 #### `7266c41` - **refactor**: implement clean architecture separation and refetch mechanism
 Architecture Improvements:
@@ -383,7 +410,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 30 (28 in master, 2 unique to feat-001)
+- **Total Commits**: 31 (29 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-13, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

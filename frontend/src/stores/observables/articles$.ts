@@ -6,10 +6,9 @@ import {
   switchMap,
   tap,
   catchError,
-  startWith
 } from 'rxjs/operators';
 import { storeToObservable } from '../utils/observables';
-import { useArticleStore, createInitialFilters } from '../articleStore';
+import { useArticleStore } from '../articleStore';
 import { useAdminStore } from '../adminStore';
 import { ArticleService } from '@/services/articleService';
 import type { ArticleFilters } from '@singularity-news/shared';
@@ -31,7 +30,7 @@ const nonSearchFilters$ = store$.pipe(
     return nonSearchFilters;
   }),
   distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-  debounceTime(50) // Small debounce for UI interactions
+  debounceTime(500)
 );
 
 // Watch for refetch trigger changes
@@ -51,7 +50,6 @@ const filters$: Observable<{ filters: ArticleFilters; trigger: number }> = combi
   refetchTrigger$
 ]).pipe(
   map(([filters, trigger]) => ({ filters, trigger })),
-  startWith({ filters: createInitialFilters(), trigger: 0 }),
   distinctUntilChanged((a, b) =>
     JSON.stringify(a.filters) === JSON.stringify(b.filters) && a.trigger === b.trigger
   )
@@ -63,9 +61,8 @@ const filters$: Observable<{ filters: ArticleFilters; trigger: number }> = combi
  */
 export const articles$ =
   filters$.pipe(
-    // Set loading state
+    // Clear any previous errors
     tap(() => {
-      useAdminStore.getState().setLoading(true);
       useAdminStore.getState().clearError();
     }),
 
@@ -80,14 +77,12 @@ export const articles$ =
         articles: result.data,
         pagination: result.pagination,
       });
-      useAdminStore.getState().setLoading(false);
     }),
 
     // Handle errors
     catchError(error => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to fetch articles';
       useAdminStore.getState().setError(errorMessage);
-      useAdminStore.getState().setLoading(false);
       console.error('Failed to fetch articles:', error);
 
       // Return empty array to keep stream alive

@@ -94,3 +94,13 @@ pnpm --filter backend start     # Start production backend
 - Follow existing code conventions and patterns
 - Use TypeScript throughout the entire stack
 - **IMPORTANT**: Update `GIT_HISTORY.md` with every commit (required)
+
+## Response Protocol
+- **When asked a question**: Provide recommendations and explain different approaches. DO NOT start coding.
+- **When given direction**: Only after explicit instruction on which approach to use, begin implementation.
+- **Analysis first**: Always analyze and discuss options before making changes.
+- Example:
+  - User: "How should I handle loading states?"
+  - Assistant: Provides 3-4 approaches with pros/cons
+  - User: "Use approach 2"
+  - Assistant: Now implements the chosen approach

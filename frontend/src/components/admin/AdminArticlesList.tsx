@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { useAdminStore } from '@/stores/adminStore';
 import { useTopicStore } from '@/stores/topicStore';
 import { useObservableSubscription } from '@/hooks/useObservableSubscription';
 import { articles$ } from '@/stores/observables/articles$';
@@ -13,8 +12,6 @@ import { ArticlesTable } from './ArticlesTable';
 export function AdminArticlesList() {
   useObservableSubscription(articles$);
 
-  const { loading } = useAdminStore();
-
   // Topic store
   const { fetchTopics } = useTopicStore();
 
@@ -22,14 +19,6 @@ export function AdminArticlesList() {
     // Fetch topics once - articles are handled by RxJS subscription
     fetchTopics();
   }, [fetchTopics]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
