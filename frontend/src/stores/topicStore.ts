@@ -1,36 +1,28 @@
 import { create } from 'zustand';
-import { TopicService } from '@/services/topicService';
 import type { Topic } from '@singularity-news/shared';
-import { useAdminStore } from './adminStore';
 
 export interface TopicState {
   // Data
   topics: Topic[];
+  refetchTrigger: number;
 
-  // Actions
-  fetchTopics: () => Promise<void>;
+  // Synchronous Actions
+  setTopics: (topics: Topic[]) => void;
+  refetch: () => void;
   reset: () => void;
 }
 
 export const useTopicStore = create<TopicState>((set) => ({
   // Initial state
   topics: [],
+  refetchTrigger: 0,
 
-  // Async Actions
-  fetchTopics: async () => {
-    const { setError } = useAdminStore.getState();
+  // Synchronous Actions only
+  setTopics: (topics) => set({ topics }),
 
-    try {
-      const topics = await TopicService.getTopics();
-      set({ topics });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch topics';
-      setError(errorMessage);
-      console.error('Failed to fetch topics:', error);
-    }
-  },
+  refetch: () => set((state) => ({ refetchTrigger: state.refetchTrigger + 1 })),
 
   reset: () => {
-    set({ topics: [] });
+    set({ topics: [], refetchTrigger: 0 });
   },
 }));

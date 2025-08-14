@@ -6,11 +6,13 @@ import Image from 'next/image';
 import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import type { Article, UpdateArticleInput, Topic } from '@singularity-news/shared';
+import type { Article, UpdateArticleInput } from '@singularity-news/shared';
 import { ArticleService } from '@/services/articleService';
-import { TopicService } from '@/services/topicService';
 import { useArticleStore } from '@/stores/articleStore';
 import { useAdminStore } from '@/stores/adminStore';
+import { useTopicStore } from '@/stores/topicStore';
+import { useObservableSubscription } from '@/hooks/useObservableSubscription';
+import { topics$ } from '@/stores/observables/topics$';
 
 interface EditArticleFormProps {
   articleId: number;
@@ -20,7 +22,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const { topics, refetch: refetchTopics } = useTopicStore();
   const [article, setArticle] = useState<Article | null>(null);
   const [formData, setFormData] = useState<UpdateArticleInput>({
     title: '',
@@ -34,22 +36,17 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Subscribe to topics observable
+  useObservableSubscription(topics$);
+
   useEffect(() => {
-    fetchTopics();
+    // Trigger initial fetch if topics are empty
+    if (topics.length === 0) {
+      refetchTopics();
+    }
     fetchArticle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleId]);
-
-  const fetchTopics = async () => {
-    try {
-      const topics = await TopicService.getTopics();
-      setTopics(topics);
-    } catch (error) {
-      console.error('Failed to fetch topics:', error);
-      const { setError } = useAdminStore.getState();
-      setError('Failed to load topics');
-    }
-  };
 
   const fetchArticle = async () => {
     try {

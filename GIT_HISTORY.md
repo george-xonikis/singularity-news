@@ -7,9 +7,38 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 538614c)
+- **master**: Production-ready code (last commit: 70b6da4)
 
 ## Complete Commit History
+
+### 2025-08-14
+
+#### `70b6da4` - **docs**: add comprehensive Articles feature architecture documentation
+Documentation:
+- Created detailed architecture documentation for Articles feature
+- Added visual Mermaid diagram showing component relationships
+- Documented complete data flow patterns and reactive pipeline
+
+Key Sections:
+- Component layer documentation (AdminArticlesList, ArticlesTable, etc.)
+- State management with Zustand stores
+- Reactive layer with RxJS observables pipeline
+- Service layer abstraction patterns
+- Data flow diagrams for filter, delete, and CRUD operations
+
+Architecture Highlights:
+- Separation of concerns: Components → Services → Store
+- Reactive pipeline: Store → Observables → API → Store updates
+- Debouncing strategy (500ms) for performance
+- Request cancellation via switchMap
+- Error recovery keeping streams alive
+- Type safety with shared types
+
+Documentation Benefits:
+- Onboarding reference for new developers
+- Architecture review and planning resource
+- Debugging guide for complex data flows
+- Best practices and patterns reference
 
 ### 2025-08-13
 #### `538614c` - **fix**: remove loading state and fix double request issue
@@ -409,9 +438,9 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 31 (29 in master, 2 unique to feat-001)
+- **Total Commits**: 32 (30 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
-- **Active Development Period**: August 7-13, 2025
+- **Active Development Period**: August 7-14, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)
 
 ## Update Instructions

@@ -6,19 +6,22 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { useTopicStore } from '@/stores/topicStore';
 import { useObservableSubscription } from '@/hooks/useObservableSubscription';
 import { articles$ } from '@/stores/observables/articles$';
+import { topics$ } from '@/stores/observables/topics$';
 import { ArticleFilters } from './ArticleFilters';
 import { ArticlesTable } from './ArticlesTable';
 
 export function AdminArticlesList() {
+  // Subscribe to both observables
   useObservableSubscription(articles$);
+  useObservableSubscription(topics$);
 
-  // Topic store
-  const { fetchTopics } = useTopicStore();
+  // Trigger initial fetch for topics
+  const { refetch } = useTopicStore();
 
   useEffect(() => {
-    // Fetch topics once - articles are handled by RxJS subscription
-    fetchTopics();
-  }, [fetchTopics]);
+    // Trigger initial fetch for topics
+    refetch();
+  }, [refetch]);
 
   return (
     <div className="space-y-6">

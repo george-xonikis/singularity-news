@@ -6,15 +6,17 @@ import Image from 'next/image';
 import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import type { CreateArticleInput, Topic } from '@singularity-news/shared';
+import type { CreateArticleInput } from '@singularity-news/shared';
 import { ArticleService } from '@/services/articleService';
-import { TopicService } from '@/services/topicService';
 import { useAdminStore } from '@/stores/adminStore';
+import { useTopicStore } from '@/stores/topicStore';
+import { useObservableSubscription } from '@/hooks/useObservableSubscription';
+import { topics$ } from '@/stores/observables/topics$';
 
 export function NewArticleForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const { topics, refetch } = useTopicStore();
   const [formData, setFormData] = useState<CreateArticleInput>({
     title: '',
     content: '',
@@ -27,20 +29,15 @@ export function NewArticleForm() {
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    fetchTopics();
-  }, []);
+  // Subscribe to topics observable
+  useObservableSubscription(topics$);
 
-  const fetchTopics = async () => {
-    try {
-      const topics = await TopicService.getTopics();
-      setTopics(topics);
-    } catch (error) {
-      console.error('Failed to fetch topics:', error);
-      const { setError } = useAdminStore.getState();
-      setError('Failed to load topics');
+  useEffect(() => {
+    // Trigger initial fetch if topics are empty
+    if (topics.length === 0) {
+      refetch();
     }
-  };
+  }, [topics.length, refetch]);
 
   const generateSummary = (content: string): string => {
     const textContent = content
