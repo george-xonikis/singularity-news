@@ -7,13 +7,28 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 8bb1dd9)
+- **master**: Production-ready code (last commit: d81f533)
 
 ## Complete Commit History
 
 ### 2025-08-16
 
-#### `8bb1dd9` - **docs**: add installation guidelines for git hooks and update documentation
+#### `d81f533` - **chore**: add conventional commits validation to git hooks
+- Create commit-msg hook to validate conventional commit format
+  - Validates format: type(scope): subject
+  - Supports all conventional types (feat, fix, docs, style, refactor, etc.)
+  - Interactive prompt for non-conforming messages
+  - Helpful examples and explanations on failure
+- Update pre-commit hook with better UI
+  - Add blue color for informational messages
+  - Add reminder about conventional commits
+  - Better structured output with clear sections
+- Improved developer experience
+  - Clear error messages with examples
+  - Allow bypass with confirmation for special cases
+  - Support for merge commits
+
+#### `5037eaa` - **docs**: add installation guidelines for git hooks and update documentation
 - Add setup instructions for git hooks in README.md
   - Document setup-hooks.sh usage in development setup
   - Add development conventions section
@@ -506,7 +521,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 36 (34 in master, 2 unique to feat-001)
+- **Total Commits**: 37 (35 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-16, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

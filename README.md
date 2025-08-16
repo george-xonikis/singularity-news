@@ -182,7 +182,10 @@ Current queries are fast enough with direct PostgreSQL access, but Redis will be
 
 ### Development Conventions
 - **Git History**: GIT_HISTORY.md must be updated with every commit (enforced by pre-commit hook)
-- **Commit Messages**: Follow conventional commits format (feat/fix/refactor/docs/chore)
+- **Commit Messages**: Follow conventional commits format (enforced by commit-msg hook)
+  - Format: `type(scope): subject`
+  - Types: feat, fix, docs, style, refactor, perf, test, chore, build, ci, revert
+  - Examples: `feat: add user authentication`, `fix(api): resolve timeout issue`
 - **Code Style**: Enforced via ESLint and Prettier on pre-commit
 - **Type Safety**: All code must be properly typed with TypeScript
 

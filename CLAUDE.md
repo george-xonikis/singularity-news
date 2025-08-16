@@ -105,12 +105,25 @@ pnpm --filter backend start     # Start production backend
   - User: "Use approach 2"
   - Assistant: Now implements the chosen approach
 
-## Git History Requirement
-**CRITICAL**: The GIT_HISTORY.md file MUST be updated with every commit. This is a mandatory requirement.
-- After creating a commit, immediately update GIT_HISTORY.md with:
+## Git Commit Requirements
+**CRITICAL**: Two mandatory requirements for all commits:
+
+### 1. Conventional Commits Format
+- All commit messages MUST follow conventional commits format
+- Format: `type(scope): subject` (scope is optional)
+- Allowed types: feat, fix, docs, style, refactor, perf, test, chore, build, ci, revert
+- Examples:
+  - `feat: add user authentication`
+  - `fix(api): resolve database timeout`
+  - `docs: update README with examples`
+- Enforced by commit-msg hook
+
+### 2. GIT_HISTORY.md Updates
+- The GIT_HISTORY.md file MUST be updated with every commit
+- After creating a commit, immediately update with:
   - Commit hash (short form)
   - Commit type and description
   - Detailed bullet points of changes
   - Update statistics section if needed
-- A pre-commit hook is configured to remind about this requirement
+- Enforced by pre-commit hook
 - Never skip this step - it maintains project documentation
