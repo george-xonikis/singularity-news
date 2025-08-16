@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { useTopicStore } from '@/stores/topicStore';
 import { useObservableSubscription } from '@/hooks/useObservableSubscription';
 import { articles$ } from '@/stores/observables/articles$';
 import { topics$ } from '@/stores/observables/topics$';
@@ -14,14 +12,6 @@ export function AdminArticlesList() {
   // Subscribe to both observables
   useObservableSubscription(articles$);
   useObservableSubscription(topics$);
-
-  // Trigger initial fetch for topics
-  const { refetch } = useTopicStore();
-
-  useEffect(() => {
-    // Trigger initial fetch for topics
-    refetch();
-  }, [refetch]);
 
   return (
     <div className="space-y-6">

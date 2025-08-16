@@ -13,6 +13,15 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-16
 
+#### `pending` - **fix**: Refactor topics$ observable to follow reactive pattern
+- Use RxJS from() to convert promise to observable (no async/await mixing)
+- Add startWith(0) to trigger initial fetch automatically
+- Use proper catchError operator instead of try/catch
+- Remove unnecessary useEffect from AdminArticlesList
+- Remove unused imports (useEffect, useTopicStore)
+- Fix trailing spaces in observable pipeline
+- Topics now fetch automatically on subscription without manual trigger
+
 #### `e9dff4d` - **fix**: Remove cover photos from seed data to resolve Next.js Image configuration error
 - Remove cover_photo and cover_photo_caption from INSERT statement
 - Remove all Unsplash image URLs and captions from article values  
