@@ -7,9 +7,47 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 70b6da4)
+- **master**: Production-ready code (last commit: e25cc88)
 
 ## Complete Commit History
+
+### 2025-08-16
+
+#### `e25cc88` - **fix**: resolve rich text editor issues with paste and height
+- Fix toolbar disappearing when pasting content
+  - Updated toolbar configuration to use container property
+  - Added clipboard.matchVisual: false to prevent paste issues
+  - Made toolbar sticky with proper z-index
+- Double editor height for better content visibility
+  - Increased height from 300px to 600px
+  - Updated min-height for editor from 300px to 550px
+  - Adjusted loading skeleton heights to match
+- Additional improvements
+  - Sticky toolbar stays at top when scrolling
+  - White background ensures toolbar visibility
+  - Proper z-index layering for toolbar
+- Minor import cleanup in topics$ observable
+
+#### `736634d` - **refactor**: cleanup stores and implement reactive topics pattern
+- Remove old unused /store directory with async articleStore and topicStore
+- Update topicStore to follow synchronous pattern like articleStore
+  - Remove async fetchTopics method
+  - Add refetchTrigger and refetch() for reactive updates
+  - Keep only synchronous state management
+- Create topics$ observable following articles$ pattern
+  - Uses storeToObservable utility for reactive data flow
+  - Handles API calls and error management in observable pipeline
+  - Simplified switchMap usage without unnecessary from() operator
+- Update components to use reactive topics pattern
+  - AdminArticlesList subscribes to topics$ observable
+  - NewArticleForm and EditArticleForm use reactive subscriptions
+  - Components trigger refetch instead of calling async methods
+
+Architecture improvements:
+- Consistent reactive pattern across articles and topics
+- Clean separation: Stores (sync) → Observables (async) → Services (API)
+- Better error handling and stream management
+- Reduced code duplication and complexity (124 lines removed)
 
 ### 2025-08-14
 
@@ -438,9 +476,9 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 32 (30 in master, 2 unique to feat-001)
+- **Total Commits**: 34 (32 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
-- **Active Development Period**: August 7-14, 2025
+- **Active Development Period**: August 7-16, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)
 
 ## Update Instructions

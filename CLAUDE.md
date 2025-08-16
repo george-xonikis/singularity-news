@@ -104,3 +104,13 @@ pnpm --filter backend start     # Start production backend
   - Assistant: Provides 3-4 approaches with pros/cons
   - User: "Use approach 2"
   - Assistant: Now implements the chosen approach
+
+## Git History Requirement
+**CRITICAL**: The GIT_HISTORY.md file MUST be updated with every commit. This is a mandatory requirement.
+- After creating a commit, immediately update GIT_HISTORY.md with:
+  - Commit hash (short form)
+  - Commit type and description
+  - Detailed bullet points of changes
+  - Update statistics section if needed
+- A pre-commit hook is configured to remind about this requirement
+- Never skip this step - it maintains project documentation
