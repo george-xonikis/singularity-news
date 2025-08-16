@@ -106,9 +106,15 @@ pnpm --filter backend start     # Start production backend
   - Assistant: Now implements the chosen approach
 
 ## Git Commit Requirements
-**CRITICAL**: Two mandatory requirements for all commits:
+**CRITICAL**: Three mandatory requirements for all commits:
 
-### 1. Conventional Commits Format
+### 1. Never Commit Without Explicit Instruction
+- **NEVER** commit changes unless explicitly instructed by the user
+- Wait for clear instructions like "commit this", "commit the changes", or "create a commit"
+- Only push to remote when specifically asked
+- The user will tell you when they want changes committed and pushed
+
+### 2. Conventional Commits Format
 - All commit messages MUST follow conventional commits format
 - Format: `type(scope): subject` (scope is optional)
 - Allowed types: feat, fix, docs, style, refactor, perf, test, chore, build, ci, revert
@@ -118,7 +124,7 @@ pnpm --filter backend start     # Start production backend
   - `docs: update README with examples`
 - Enforced by commit-msg hook
 
-### 2. GIT_HISTORY.md Updates
+### 3. GIT_HISTORY.md Updates
 - The GIT_HISTORY.md file MUST be updated with every commit
 - After creating a commit, immediately update with:
   - Commit hash (short form)

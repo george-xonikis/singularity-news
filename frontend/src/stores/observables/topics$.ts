@@ -1,4 +1,4 @@
-import { from } from 'rxjs';
+import { of } from 'rxjs';
 import { switchMap, tap, distinctUntilChanged, map, catchError, startWith } from 'rxjs/operators';
 import { TopicService } from '@/services/topicService';
 import { useTopicStore } from '@/stores/topicStore';
@@ -21,20 +21,17 @@ export const topics$ = refetchTrigger$.pipe(
     // Clear any previous errors
     useAdminStore.getState().clearError();
   }),
-  switchMap(() =>
-    from(TopicService.getTopics()).pipe(
-      tap(topics => {
-        // Update the store with fetched topics
-        useTopicStore.getState().setTopics(topics);
-      }),
-      catchError(error => {
-        // Handle error without breaking the stream
-        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch topics';
-        useAdminStore.getState().setError(errorMessage);
-        console.error('Failed to fetch topics:', error);
-        // Return empty array to keep stream alive
-        return from([[]]);
-      })
-    )
-  )
+  switchMap(() => TopicService.getTopics()),
+  tap(topics => {
+    // Update the store with fetched topics
+    useTopicStore.getState().setTopics(topics);
+  }),
+  catchError(error => {
+    // Handle error without breaking the stream
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch topics';
+    useAdminStore.getState().setError(errorMessage);
+    console.error('Failed to fetch topics:', error);
+    // Return empty array to keep stream alive
+    return of([]);
+  })
 );
