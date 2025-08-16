@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), {
   ssr: false,
-  loading: () => <div className="h-[300px] bg-gray-50 border border-gray-300 rounded-md animate-pulse" />
+  loading: () => <div className="h-[600px] bg-gray-50 border border-gray-300 rounded-md animate-pulse" />
 });
 
 interface RichTextEditorProps {
@@ -22,16 +22,21 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
   }, []);
 
   const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' },
-       { 'indent': '-1' }, { 'indent': '+1' }],
-      ['link', 'image'],
-      ['clean'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],
-    ],
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' },
+         { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image'],
+        ['clean'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+      ]
+    },
+    clipboard: {
+      matchVisual: false // This prevents toolbar from disappearing on paste
+    }
   };
 
   const formats = [
@@ -44,7 +49,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
   ];
 
   if (!isMounted) {
-    return <div className="h-[300px] bg-gray-50 border border-gray-300 rounded-md animate-pulse" />;
+    return <div className="h-[600px] bg-gray-50 border border-gray-300 rounded-md animate-pulse" />;
   }
 
   return (
@@ -57,9 +62,9 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         formats={formats}
         placeholder={placeholder}
         style={{
-          height: '300px',
+          height: '600px',
         }}
-        className="[&_.ql-editor]:min-h-[300px] [&_.ql-editor]:text-base [&_.ql-editor]:leading-relaxed"
+        className="[&_.ql-editor]:min-h-[550px] [&_.ql-editor]:text-base [&_.ql-editor]:leading-relaxed [&_.ql-toolbar]:sticky [&_.ql-toolbar]:top-0 [&_.ql-toolbar]:z-10 [&_.ql-toolbar]:bg-white"
       />
     </div>
   );

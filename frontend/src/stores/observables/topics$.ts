@@ -1,4 +1,4 @@
-import { switchMap, tap, catchError, distinctUntilChanged, map } from 'rxjs/operators';
+import { switchMap, tap, distinctUntilChanged, map } from 'rxjs/operators';
 import { TopicService } from '@/services/topicService';
 import { useTopicStore } from '@/stores/topicStore';
 import { useAdminStore } from '@/stores/adminStore';
