@@ -13,7 +13,19 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-16
 
-#### `pending` - **fix**: Simplify topics$ observable and add commit requirements to CLAUDE.md
+#### `pending` - **refactor**: Create shared ArticleForm component and fix edit route
+- Create shared ArticleForm component (~500 lines) with all form UI and validation logic
+- Refactor NewArticleForm to use shared component (reduced from 472 to 60 lines)
+- Refactor EditArticleForm to use shared component (reduced from 419 to 130 lines)
+- Fix article edit route to accept UUID strings instead of integers
+- Remove parseInt() conversion that was breaking UUID-based article IDs
+- Add proper TypeScript type checking for optional form fields
+- Remove unused setSuccess method references from adminStore
+- Add validation to ensure required fields are defined before submission
+- Total code reduction: ~900 lines to ~690 lines
+- Benefits: Single source of truth, easier maintenance, clear separation of concerns
+
+#### `6a7d4b6` - **fix**: Simplify topics$ observable and add commit requirements to CLAUDE.md
 - Remove unnecessary from() wrapper in switchMap (handles Promises automatically)
 - Move tap and catchError to main pipeline level for cleaner code
 - Use of([]) instead of from([[]]) for error case

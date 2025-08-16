@@ -18,7 +18,7 @@ export default async function EditArticlePage({ params }: PageProps) {
         </p>
       </div>
 
-      <EditArticleForm articleId={parseInt(id)} />
+      <EditArticleForm articleId={id} />
     </div>
   );
 }
