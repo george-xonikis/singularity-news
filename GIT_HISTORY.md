@@ -13,7 +13,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-16
 
-#### `pending` - **fix**: Remove cover photos from seed data to resolve Next.js Image configuration error
+#### `e9dff4d` - **fix**: Remove cover photos from seed data to resolve Next.js Image configuration error
 - Remove cover_photo and cover_photo_caption from INSERT statement
 - Remove all Unsplash image URLs and captions from article values  
 - Remove cover photo fields from ON CONFLICT UPDATE clause
@@ -21,7 +21,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 - Maintains all other article data (content, summaries, authors, tags, etc.)
 - This is a temporary solution until Next.js is configured to allow external image domains
 
-#### `pending` - **feat**: Add author field and cover photo caption to articles
+#### `a5392dc` - **feat**: Add author field and cover photo caption to articles
 - Added author field to database schema and all interfaces
   - New VARCHAR(200) column in articles table
   - Defaults to "Editorial Team" if not specified
