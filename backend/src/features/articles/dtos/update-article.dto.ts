@@ -54,7 +54,9 @@ export class UpdateArticleDto {
   get topic() { return this.data.topic; }
   get slug() { return this.data.slug; }
   get summary() { return this.data.summary; }
+  get author() { return this.data.author; }
   get coverPhoto() { return this.data.coverPhoto; }
+  get coverPhotoCaption() { return this.data.coverPhotoCaption; }
   get tags() { return this.data.tags; }
   get publishedDate() { return this.data.publishedDate; }
   get published() { return this.data.published; }

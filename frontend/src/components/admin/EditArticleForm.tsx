@@ -27,14 +27,22 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
   const [formData, setFormData] = useState<UpdateArticleInput>({
     title: '',
     content: '',
+    summary: '',
+    author: '',
     topic: '',
     coverPhoto: '',
+    coverPhotoCaption: '',
     tags: [],
     publishedDate: '',
     published: false
   });
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  // TODO: Implement file upload UI in EditArticleForm
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [uploadPreview, setUploadPreview] = useState<string>('');
 
   // Subscribe to topics observable
   useObservableSubscription(topics$);
@@ -56,8 +64,11 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
       setFormData({
         title: articleData.title,
         content: articleData.content,
+        summary: articleData.summary || '',
+        author: articleData.author || '',
         topic: articleData.topic,
         coverPhoto: articleData.coverPhoto || '',
+        coverPhotoCaption: articleData.coverPhotoCaption || '',
         tags: articleData.tags || [],
         publishedDate: articleData.publishedDate || '',
         published: articleData.published
@@ -67,14 +78,6 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     } finally {
       setInitialLoading(false);
     }
-  };
-
-  const generateSummary = (content: string): string => {
-    const textContent = content
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .trim();
-    return textContent.substring(0, 200) + (textContent.length > 200 ? '...' : '');
   };
 
   const handleSubmit = async (e: React.FormEvent, publish?: boolean) => {
@@ -99,9 +102,22 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     setLoading(true);
 
     try {
+      // If there's an uploaded file, we need to upload it first
+      let coverPhotoUrl = formData.coverPhoto;
+
+      if (uploadedFile) {
+        // TODO: Implement actual file upload to storage service
+        // For now, we'll use the base64 preview as a placeholder
+        // In production, this should upload to Firebase Storage, S3, etc.
+        coverPhotoUrl = uploadPreview;
+      }
+
       const submitData: UpdateArticleInput = {
         ...formData,
-        summary: generateSummary(formData.content),
+        summary: formData.summary || undefined,
+        author: formData.author || undefined,
+        coverPhoto: coverPhotoUrl || undefined,
+        coverPhotoCaption: formData.coverPhotoCaption || undefined,
       };
 
       if (publish !== undefined) {
@@ -219,6 +235,41 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
         </div>
 
         <div>
+          <label htmlFor="summary" className="block text-sm font-medium text-gray-700 mb-2">
+            Summary
+            <span className="text-gray-500 text-xs ml-2">(Brief description of the article)</span>
+          </label>
+          <textarea
+            id="summary"
+            value={formData.summary || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="A brief summary of the article that will appear in listings..."
+            rows={3}
+            maxLength={300}
+          />
+          <div className="text-right text-xs text-gray-500 mt-1">
+            {formData.summary?.length || 0}/300
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+            Author
+            <span className="text-gray-500 text-xs ml-2">(Leave blank for &quot;Editorial Team&quot;)</span>
+          </label>
+          <input
+            type="text"
+            id="author"
+            value={formData.author || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="e.g., John Doe or Editorial Team"
+            maxLength={200}
+          />
+        </div>
+
+        <div>
           <label htmlFor="coverPhoto" className="block text-sm font-medium text-gray-700 mb-2">
             Cover Photo URL
           </label>
@@ -254,6 +305,24 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
             </div>
           )}
         </div>
+
+        {formData.coverPhoto && (
+          <div>
+            <label htmlFor="coverPhotoCaption" className="block text-sm font-medium text-gray-700 mb-2">
+              Photo Caption
+              <span className="text-gray-500 text-xs ml-2">(Description/Credit for the image)</span>
+            </label>
+            <input
+              type="text"
+              id="coverPhotoCaption"
+              value={formData.coverPhotoCaption || ''}
+              onChange={(e) => setFormData(prev => ({ ...prev, coverPhotoCaption: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., President meets with officials at summit - Photo by John Doe/Reuters"
+              maxLength={200}
+            />
+          </div>
+        )}
 
         <div>
           <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">

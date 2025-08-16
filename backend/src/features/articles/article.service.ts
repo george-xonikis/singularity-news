@@ -61,6 +61,8 @@ export class ArticleService {
    */
   async createArticle(dto: CreateArticleDto): Promise<Article> {
     const data = dto.validatedData;
+
+    console.log(data);
     
     // Generate slug if not provided
     const slug = data.slug || generateSlug(data.title);
@@ -76,8 +78,10 @@ export class ArticleService {
       slug,
       content: data.content,
       summary: data.summary || null,
+      author: data.author || null,
       topic: data.topic,
       cover_photo: data.coverPhoto || null,
+      cover_photo_caption: data.coverPhotoCaption || null,
       tags: data.tags || [],
       published: data.published ?? true,
       published_date: data.publishedDate ? new Date(data.publishedDate).toISOString() : new Date().toISOString()
@@ -109,8 +113,10 @@ export class ArticleService {
       slug: string;
       content: string;
       summary: string | null;
+      author: string | null;
       topic: string;
       cover_photo: string | null;
+      cover_photo_caption: string | null;
       tags: string[];
       published: boolean;
       published_date: string | null;
@@ -119,8 +125,10 @@ export class ArticleService {
     if (data.slug !== undefined) updates.slug = data.slug;
     if (data.content !== undefined) updates.content = data.content;
     if (data.summary !== undefined) updates.summary = data.summary;
+    if (data.author !== undefined) updates.author = data.author;
     if (data.topic !== undefined) updates.topic = data.topic;
     if (data.coverPhoto !== undefined) updates.cover_photo = data.coverPhoto;
+    if (data.coverPhotoCaption !== undefined) updates.cover_photo_caption = data.coverPhotoCaption;
     if (data.tags !== undefined) updates.tags = data.tags;
     if (data.published !== undefined) updates.published = data.published;
     if (data.publishedDate !== undefined) {

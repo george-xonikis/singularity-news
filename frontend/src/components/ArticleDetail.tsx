@@ -108,7 +108,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
           <div className="mb-4 sm:mb-0">
             <div className="flex items-center space-x-2 mb-2">
               <span className="text-gray-600">By</span>
-              <span className="font-medium text-gray-900">Editorial Team</span>
+              <span className="font-medium text-gray-900">{article.author || 'Editorial Team'}</span>
               <button className="text-blue-600 hover:text-blue-800 text-sm font-medium border border-blue-600 rounded px-2 py-1 hover:bg-blue-50 transition-colors">
                 Follow
               </button>
@@ -176,7 +176,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
         {/* Cover Image */}
         {article.coverPhoto && (
-          <div className="mb-8">
+          <figure className="mb-8">
             <Image
               src={article.coverPhoto}
               alt={article.title}
@@ -185,7 +185,12 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
               className="w-full h-auto rounded-lg shadow-lg"
               priority
             />
-          </div>
+            {article.coverPhotoCaption && (
+              <figcaption className="mt-2 text-sm text-gray-600 italic">
+                {article.coverPhotoCaption}
+              </figcaption>
+            )}
+          </figure>
         )}
 
         {/* Article Content */}

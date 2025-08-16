@@ -20,14 +20,34 @@ export function NewArticleForm() {
   const [formData, setFormData] = useState<CreateArticleInput>({
     title: '',
     content: '',
+    summary: '',
+    author: '',
     topic: '',
     coverPhoto: '',
+    coverPhotoCaption: '',
     tags: [],
     publishedDate: '',
     published: false
   });
   const [currentTag, setCurrentTag] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadPreview, setUploadPreview] = useState<string>('');
+  const [uploadMode, setUploadMode] = useState<'url' | 'upload'>('url');
+
+  // Check if form is valid
+  const isFormValid = () => {
+    return (
+      formData.title.trim() !== '' &&
+      formData.content.trim() !== '' &&
+      formData.summary?.trim() !== '' &&
+      formData.author?.trim() !== '' &&
+      formData.topic !== '' &&
+      (formData.coverPhoto?.trim() !== '' || uploadPreview !== '') &&
+      formData.coverPhotoCaption?.trim() !== '' &&
+      formData.tags.length > 0
+    );
+  };
 
   // Subscribe to topics observable
   useObservableSubscription(topics$);
@@ -39,12 +59,39 @@ export function NewArticleForm() {
     }
   }, [topics.length, refetch]);
 
-  const generateSummary = (content: string): string => {
-    const textContent = content
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .trim();
-    return textContent.substring(0, 200) + (textContent.length > 200 ? '...' : '');
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setErrors(prev => ({ ...prev, coverPhoto: 'Please select an image file' }));
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, coverPhoto: 'Image size must be less than 5MB' }));
+        return;
+      }
+
+      setUploadedFile(file);
+
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+
+      // Clear any previous errors
+      setErrors(prev => ({ ...prev, coverPhoto: '' }));
+    }
+  };
+
+  const removeUploadedFile = () => {
+    setUploadedFile(null);
+    setUploadPreview('');
+    setFormData(prev => ({ ...prev, coverPhoto: '' }));
   };
 
   const handleSubmit = async (e: React.FormEvent, publish = false) => {
@@ -69,9 +116,22 @@ export function NewArticleForm() {
     setLoading(true);
 
     try {
+      // If there's an uploaded file, we need to upload it first
+      let coverPhotoUrl = formData.coverPhoto;
+
+      if (uploadedFile) {
+        // TODO: Implement actual file upload to storage service
+        // For now, we'll use the base64 preview as a placeholder
+        // In production, this should upload to Firebase Storage, S3, etc.
+        coverPhotoUrl = uploadPreview;
+      }
+
       const submitData = {
         ...formData,
-        summary: generateSummary(formData.content),
+        summary: formData.summary || undefined,
+        author: formData.author || undefined,
+        coverPhoto: coverPhotoUrl || undefined,
+        coverPhotoCaption: formData.coverPhotoCaption || undefined,
         published: publish,
         publishedDate: publish ? new Date().toISOString() : null
       };
@@ -114,7 +174,7 @@ export function NewArticleForm() {
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, false)} className="space-y-8">
+      <form onSubmit={(e) => handleSubmit(e, false)} className="space-y-8">
       <div className="bg-white shadow rounded-lg p-6 space-y-6">
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
@@ -134,6 +194,42 @@ export function NewArticleForm() {
         </div>
 
         <div>
+          <label htmlFor="summary" className="block text-sm font-medium text-gray-700 mb-2">
+            Summary *
+            <span className="text-gray-500 text-xs ml-2">(Brief description for preview)</span>
+          </label>
+          <textarea
+            id="summary"
+            value={formData.summary || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Enter a brief summary of the article"
+            rows={3}
+            maxLength={300}
+            required
+          />
+          <p className="text-gray-500 text-xs mt-1">
+            {formData.summary?.length || 0}/300 characters
+          </p>
+        </div>
+
+        <div>
+          <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+            Author *
+          </label>
+          <input
+            type="text"
+            id="author"
+            value={formData.author || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="e.g., John Doe or Editorial Team"
+            maxLength={200}
+            required
+          />
+        </div>
+
+        <div>
           <label htmlFor="topic" className="block text-sm font-medium text-gray-700 mb-2">
             Topic *
           </label>
@@ -149,44 +245,143 @@ export function NewArticleForm() {
 
         <div>
           <label htmlFor="coverPhoto" className="block text-sm font-medium text-gray-700 mb-2">
-            Cover Photo URL
+            Cover Photo *
           </label>
-          <div className="flex space-x-3">
-            <input
-              type="url"
-              id="coverPhoto"
-              value={formData.coverPhoto}
-              onChange={(e) => setFormData(prev => ({ ...prev, coverPhoto: e.target.value }))}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://example.com/image.jpg"
-            />
+
+          {/* Tab selection for URL or Upload */}
+          <div className="flex space-x-4 mb-3">
             <button
               type="button"
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md flex items-center gap-2 transition-colors duration-200"
+              onClick={() => {
+                setUploadMode('url');
+                setUploadedFile(null);
+                setUploadPreview('');
+              }}
+              className={`px-3 py-1 text-sm font-medium rounded-md ${
+                uploadMode === 'url'
+                  ? 'bg-blue-100 text-blue-700'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
             >
-              <PhotoIcon className="h-4 w-4" />
+              URL
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setUploadMode('upload');
+                setFormData(prev => ({ ...prev, coverPhoto: '' }));
+              }}
+              className={`px-3 py-1 text-sm font-medium rounded-md ${
+                uploadMode === 'upload'
+                  ? 'bg-blue-100 text-blue-700'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
               Upload
             </button>
           </div>
-          {formData.coverPhoto && (
-            <div className="mt-3">
-              <Image
-                src={formData.coverPhoto}
-                alt="Preview"
-                width={192}
-                height={128}
-                className="h-32 w-48 object-cover rounded border"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
+
+          {uploadMode === 'url' ? (
+            // URL input
+            <div>
+              <input
+                type="url"
+                id="coverPhoto"
+                value={formData.coverPhoto}
+                onChange={(e) => setFormData(prev => ({ ...prev, coverPhoto: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="https://example.com/image.jpg"
               />
+              {formData.coverPhoto && (
+                <div className="mt-3">
+                  <Image
+                    src={formData.coverPhoto}
+                    alt="Preview"
+                    width={192}
+                    height={128}
+                    className="h-32 w-48 object-cover rounded border"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            // File upload
+            <div>
+              <div className="relative">
+                <input
+                  type="file"
+                  id="coverPhotoFile"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="coverPhotoFile"
+                  className="cursor-pointer flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+                >
+                  <div className="text-center">
+                    <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
+                    <p className="mt-2 text-sm text-gray-600">
+                      Click to upload or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, GIF up to 5MB
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              {uploadPreview && (
+                <div className="mt-3 relative">
+                  <Image
+                    src={uploadPreview}
+                    alt="Upload preview"
+                    width={192}
+                    height={128}
+                    className="h-32 w-48 object-cover rounded border"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeUploadedFile}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                  >
+                    <XMarkIcon className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
+
+          {errors.coverPhoto && <p className="text-red-600 text-sm mt-1">{errors.coverPhoto}</p>}
+        </div>
+
+        {/* Cover Photo Caption */}
+        <div>
+          <label htmlFor="coverPhotoCaption" className="block text-sm font-medium text-gray-700 mb-2">
+            Photo Caption *
+            <span className="text-gray-500 text-xs ml-2">(Description/Credit for the image)</span>
+          </label>
+          <input
+            type="text"
+            id="coverPhotoCaption"
+            value={formData.coverPhotoCaption || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, coverPhotoCaption: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="e.g., President meets with officials at summit - Photo by John Doe/Reuters"
+            maxLength={200}
+            required
+          />
+          <p className="text-gray-500 text-xs mt-1">
+            {formData.coverPhotoCaption?.length || 0}/200 characters
+          </p>
         </div>
 
         <div>
           <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
-            Tags
+            Tags *
           </label>
           <div className="flex space-x-2 mb-2">
             <input
@@ -258,16 +453,16 @@ export function NewArticleForm() {
         <div className="flex space-x-3">
           <button
             type="submit"
-            disabled={loading}
-            className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md disabled:opacity-50 transition-colors duration-200"
+            disabled={loading || !isFormValid()}
+            className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
             {loading ? 'Saving...' : 'Save Draft'}
           </button>
           <button
             type="button"
             onClick={(e) => handleSubmit(e, true)}
-            disabled={loading}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 transition-colors duration-200"
+            disabled={loading || !isFormValid()}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
             {loading ? 'Publishing...' : 'Publish Now'}
           </button>

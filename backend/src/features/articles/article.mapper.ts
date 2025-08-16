@@ -8,9 +8,11 @@ export interface DatabaseArticle {
   title: string;
   slug: string;
   summary: string | null;
+  author: string | null;
   content: string;
   topic: string;
   cover_photo: string | null;
+  cover_photo_caption: string | null;
   tags: string[];
   created_at: string;
   updated_at: string;
@@ -41,8 +43,16 @@ export const transformArticleFromDb = (dbArticle: DatabaseArticle): Article => {
     result.summary = dbArticle.summary;
   }
   
+  if (dbArticle.author) {
+    result.author = dbArticle.author;
+  }
+  
   if (dbArticle.cover_photo) {
     result.coverPhoto = dbArticle.cover_photo;
+  }
+  
+  if (dbArticle.cover_photo_caption) {
+    result.coverPhotoCaption = dbArticle.cover_photo_caption;
   }
   
   if (dbArticle.published_date) {
@@ -64,7 +74,9 @@ export const transformArticleToDb = (article: Partial<Article>): Partial<Databas
   if (article.content) result.content = article.content;
   if (article.topic) result.topic = article.topic;
   if (article.summary !== undefined) result.summary = article.summary || null;
+  if (article.author !== undefined) result.author = article.author || null;
   if (article.coverPhoto !== undefined) result.cover_photo = article.coverPhoto || null;
+  if (article.coverPhotoCaption !== undefined) result.cover_photo_caption = article.coverPhotoCaption || null;
   if (article.tags) result.tags = article.tags;
   if (article.publishedDate !== undefined) result.published_date = article.publishedDate || null;
   if (article.published !== undefined) result.published = article.published;

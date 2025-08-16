@@ -1,11 +1,19 @@
 import { ArticleDetail } from '@/components/ArticleDetail';
 import { notFound } from 'next/navigation';
+import type { Article } from '@singularity-news/shared';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getArticleBySlug(slug: string) {
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
     const response = await fetch(`http://localhost:3002/api/articles/${slug}`, {
       cache: 'no-store'
@@ -15,8 +23,9 @@ async function getArticleBySlug(slug: string) {
       return null;
     }
 
-    const data = await response.json();
-    return data.success ? data.data : null;
+    const { success, data }: ApiResponse<Article> = await response.json();
+
+    return success && data ? data : null;
   } catch (error) {
     console.error('Failed to fetch article:', error);
     return null;

@@ -8,12 +8,14 @@ export class CreateArticleDto {
       title: input.title,
       content: input.content,
       topic: input.topic,
-      slug: input.slug,
-      summary: input.summary,
-      coverPhoto: input.coverPhoto,
       tags: input.tags || [],
-      publishedDate: input.publishedDate,
       published: input.published ?? true,
+      ...(input.slug !== undefined && { slug: input.slug }),
+      ...(input.summary !== undefined && { summary: input.summary }),
+      ...(input.author !== undefined && { author: input.author }),
+      ...(input.coverPhoto !== undefined && { coverPhoto: input.coverPhoto }),
+      ...(input.coverPhotoCaption !== undefined && { coverPhotoCaption: input.coverPhotoCaption }),
+      ...(input.publishedDate !== undefined && { publishedDate: input.publishedDate }),
     };
   }
 
@@ -34,6 +36,26 @@ export class CreateArticleDto {
 
     if (!this.data.topic || this.data.topic.trim().length === 0) {
       errors.push('Topic is required');
+    }
+
+    if (!this.data.summary || this.data.summary.trim().length === 0) {
+      errors.push('Summary is required');
+    }
+
+    if (!this.data.author || this.data.author.trim().length === 0) {
+      errors.push('Author is required');
+    }
+
+    if (!this.data.coverPhoto || this.data.coverPhoto.trim().length === 0) {
+      errors.push('Cover photo is required');
+    }
+
+    if (!this.data.coverPhotoCaption || this.data.coverPhotoCaption.trim().length === 0) {
+      errors.push('Cover photo caption is required');
+    }
+
+    if (!this.data.tags || this.data.tags.length === 0) {
+      errors.push('At least one tag is required');
     }
 
     // Optional field validations
@@ -63,7 +85,9 @@ export class CreateArticleDto {
   get topic() { return this.data.topic; }
   get slug() { return this.data.slug; }
   get summary() { return this.data.summary; }
+  get author() { return this.data.author; }
   get coverPhoto() { return this.data.coverPhoto; }
+  get coverPhotoCaption() { return this.data.coverPhotoCaption; }
   get tags() { return this.data.tags; }
   get publishedDate() { return this.data.publishedDate; }
   get published() { return this.data.published; }

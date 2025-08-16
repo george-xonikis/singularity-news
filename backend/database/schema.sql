@@ -19,8 +19,10 @@ CREATE TABLE articles (
   slug VARCHAR(600) NOT NULL UNIQUE,
   content TEXT NOT NULL,
   summary TEXT,
+  author VARCHAR(200),
   topic VARCHAR(100) NOT NULL,
   cover_photo TEXT,
+  cover_photo_caption VARCHAR(500),
   tags TEXT[], -- Array of tags for SEO and filtering
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),

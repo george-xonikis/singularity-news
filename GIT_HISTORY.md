@@ -13,6 +13,36 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-16
 
+#### `pending` - **feat**: Add author field and cover photo caption to articles
+- Added author field to database schema and all interfaces
+  - New VARCHAR(200) column in articles table
+  - Defaults to "Editorial Team" if not specified
+  - Added to Article interface, DTOs, and mappers
+- Added cover photo caption field for image credits/descriptions
+  - New VARCHAR(500) column for photo captions
+  - Displays underneath images in ArticleDetail
+  - Required field in article forms
+- Made all form fields required in NewArticleForm
+  - Summary, author, cover photo, caption, and tags now required
+  - Updated backend validation in CreateArticleDto
+  - Added visual indicators (*) for required fields
+- Added form validation to disable publish button when invalid
+  - Created isFormValid() function to check all fields
+  - Buttons disabled until all requirements met
+  - Added cursor-not-allowed styling for disabled state
+- Fixed cover photo upload functionality
+  - Proper tab switching between URL and file upload
+  - File validation for type and size (max 5MB)
+  - Base64 preview for uploaded images
+- Updated ArticleDetail to display actual author
+  - Shows author from database or "Editorial Team" as fallback
+- Added strict typing to article fetch function
+  - Created ApiResponse<T> interface
+  - Proper TypeScript types for SSR data fetching
+- Fixed RichTextEditor dynamic import for Turbopack compatibility
+  - Simplified dynamic import approach
+  - Added dev:webpack script as fallback option
+
 #### `85a5caa` - **fix**: make GIT_HISTORY.md update mandatory in pre-commit hook
 - Remove interactive prompt for GIT_HISTORY.md check
 - Make updating GIT_HISTORY.md a hard requirement
