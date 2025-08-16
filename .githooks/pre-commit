@@ -16,16 +16,16 @@ echo ""
 if git diff --cached --name-only | grep -q "GIT_HISTORY.md"; then
     echo -e "${GREEN}✓ GIT_HISTORY.md has been updated${NC}"
 else
-    echo -e "${YELLOW}⚠️  WARNING: GIT_HISTORY.md has not been updated${NC}"
-    echo -e "${YELLOW}   Don't forget to update the git history with this commit!${NC}"
+    echo -e "${RED}❌ ERROR: GIT_HISTORY.md has not been updated${NC}"
+    echo -e "${YELLOW}   You must update the git history before committing!${NC}"
     echo ""
-    echo -e "Do you want to continue without updating GIT_HISTORY.md? (y/n)"
-    read -n 1 -r < /dev/tty
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo -e "${RED}Commit aborted. Please update GIT_HISTORY.md first.${NC}"
-        exit 1
-    fi
+    echo -e "${YELLOW}Please add this commit to GIT_HISTORY.md with:${NC}"
+    echo -e "  - Commit hash (will be generated after commit)"
+    echo -e "  - Commit type and description"
+    echo -e "  - Detailed bullet points of changes"
+    echo ""
+    echo -e "${RED}Commit aborted. Please update GIT_HISTORY.md first.${NC}"
+    exit 1
 fi
 
 
