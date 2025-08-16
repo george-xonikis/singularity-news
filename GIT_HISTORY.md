@@ -7,11 +7,41 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: e25cc88)
+- **master**: Production-ready code (last commit: 8bb1dd9)
 
 ## Complete Commit History
 
 ### 2025-08-16
+
+#### `8bb1dd9` - **docs**: add installation guidelines for git hooks and update documentation
+- Add setup instructions for git hooks in README.md
+  - Document setup-hooks.sh usage in development setup
+  - Add development conventions section
+  - Explain GIT_HISTORY.md requirement
+- Update GIT_HISTORY.md with latest commit (76577b0)
+  - Document git hooks implementation
+  - Update statistics to 35 total commits
+  - Update last commit reference
+- Improve documentation clarity
+  - Add note about optional but recommended git hooks
+  - Document commit message conventions
+  - Explain code quality enforcement
+
+#### `76577b0` - **chore**: add git hooks and update GIT_HISTORY.md
+- Update GIT_HISTORY.md with missing commits (736634d, e25cc88)
+  - Added refactor commit for reactive topics pattern
+  - Added fix commit for rich text editor issues
+  - Updated statistics to reflect 34 total commits
+- Create pre-commit hook to remind about GIT_HISTORY.md updates
+  - Interactive prompt asks for confirmation if history not updated
+  - Includes color-coded warnings for better visibility
+  - Optionally runs lint:fix on commit
+- Add setup-hooks.sh script for easy configuration
+  - Configures git to use .githooks directory
+  - Makes setup simple for other developers
+- Document GIT_HISTORY.md requirement in CLAUDE.md
+  - Added critical section about mandatory history updates
+  - Clear instructions on what to include in updates
 
 #### `e25cc88` - **fix**: resolve rich text editor issues with paste and height
 - Fix toolbar disappearing when pasting content
@@ -476,7 +506,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 34 (32 in master, 2 unique to feat-001)
+- **Total Commits**: 36 (34 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-16, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

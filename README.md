@@ -128,6 +128,10 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env.local
 # Edit the .env files as needed (see ENV_SETUP.md for details)
 
+# Setup git hooks (optional but recommended)
+./setup-hooks.sh
+# This configures pre-commit hooks to remind about updating GIT_HISTORY.md
+
 # Start development environment
 docker-compose up -d          # Start PostgreSQL & Redis
 pnpm --filter shared build    # Build shared types first
@@ -175,6 +179,12 @@ Current queries are fast enough with direct PostgreSQL access, but Redis will be
 - **TypeScript**: Strict type checking enabled across all packages
 - **ESLint**: Enhanced rules for indentation, quotes, and code quality  
 - **Prettier**: Code formatting with Next.js integration
+
+### Development Conventions
+- **Git History**: GIT_HISTORY.md must be updated with every commit (enforced by pre-commit hook)
+- **Commit Messages**: Follow conventional commits format (feat/fix/refactor/docs/chore)
+- **Code Style**: Enforced via ESLint and Prettier on pre-commit
+- **Type Safety**: All code must be properly typed with TypeScript
 
 ## 📋 Development Progress
 
