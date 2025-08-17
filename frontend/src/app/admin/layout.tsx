@@ -1,4 +1,5 @@
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { Notifications } from '@/components/admin/Notifications';
 
 export default function AdminLayout({
   children,
@@ -15,6 +16,7 @@ export default function AdminLayout({
           </div>
         </main>
       </div>
+      <Notifications />
     </div>
   );
 }

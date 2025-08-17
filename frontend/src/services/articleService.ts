@@ -53,14 +53,14 @@ export class ArticleService {
     });
 
     const response = await fetch(`${API_BASE_URL}/admin/articles?${searchParams}`);
-    const data = await this.handleResponse<{
+    const { data, pagination } = await this.handleResponse<{
       data: Article[];
       pagination: PaginatedArticlesResponse['pagination'];
     }>(response);
 
     return {
-      data: data.data,
-      pagination: data.pagination
+      data,
+      pagination
     };
   }
 
@@ -98,8 +98,8 @@ export class ArticleService {
       body: JSON.stringify(articleData),
     });
 
-    const data = await this.handleResponse<{ success: boolean; data: Article }>(response);
-    return data.data;
+    const { data } = await this.handleResponse<{ success: boolean; data: Article }>(response);
+    return data;
   }
 
   /**
@@ -114,7 +114,7 @@ export class ArticleService {
       body: JSON.stringify(articleData),
     });
 
-    const data = await this.handleResponse<{ success: boolean; data: Article }>(response);
-    return data.data;
+    const { data } = await this.handleResponse<{ success: boolean; data: Article }>(response);
+    return data;
   }
 }
