@@ -1,4 +1,5 @@
 import { ArticleDetail } from '@/components/ArticleDetail';
+import { RelatedArticles } from '@/components/RelatedArticles';
 import { notFound } from 'next/navigation';
 import type { Article } from '@singularity-news/shared';
 
@@ -40,5 +41,13 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound();
   }
 
-  return <ArticleDetail article={article} />;
+  return (
+    <ArticleDetail article={article}>
+      <RelatedArticles
+        currentArticleId={article.id}
+        currentTopic={article.topic}
+        currentTags={article.tags}
+      />
+    </ArticleDetail>
+  );
 }

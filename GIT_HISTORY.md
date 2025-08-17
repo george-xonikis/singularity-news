@@ -7,11 +7,22 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 85a5caa)
+- **master**: Production-ready code (last commit: 221feed)
 
 ## Complete Commit History
 
 ### 2025-08-17
+
+#### `221feed` - **refactor**: Implement content projection for RelatedArticles component
+- Extract Related Articles section to dedicated component
+- Implement content projection pattern using React children
+- Update ArticleDetail to accept children prop for flexibility
+- Reorganize article metadata layout:
+  - Move views count to same row as author (right-aligned)
+  - Make views count bold for better visibility
+  - Move updated date to same row as action buttons
+- Pass RelatedArticles as children to ArticleDetail in article page
+- Improve component composition and reusability
 
 #### `ca54d07` - **feat**: Implement topics management UI with CRUD operations
 - Create complete topics management interface at /admin/topics
@@ -664,7 +675,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 40 (38 in master, 2 unique to feat-001)
+- **Total Commits**: 41 (39 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

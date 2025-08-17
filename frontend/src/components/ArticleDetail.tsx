@@ -5,9 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   ShareIcon,
-  ChatBubbleLeftIcon,
-  SpeakerWaveIcon,
-  EllipsisHorizontalIcon,
   ChevronUpIcon,
   ChevronDownIcon,
   EyeIcon
@@ -19,11 +16,11 @@ import { buttonStyles } from '@/styles/buttonStyles';
 interface ArticleDetailProps {
   article: Article;
   isPreview?: boolean;
+  children?: React.ReactNode;
 }
 
-export function ArticleDetail({ article, isPreview = false }: ArticleDetailProps) {
+export function ArticleDetail({ article, isPreview = false, children }: ArticleDetailProps) {
   const [fontSize, setFontSize] = useState(16);
-  const [isListening, setIsListening] = useState(false);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -54,11 +51,6 @@ export function ArticleDetail({ article, isPreview = false }: ArticleDetailProps
 
     const shareUrl = ShareService.generateArticleUrl(article.slug);
     await ShareService.shareArticle(article.title, article.summary, shareUrl);
-  };
-
-  const toggleListen = () => {
-    setIsListening(!isListening);
-    // Here you would integrate with a text-to-speech service
   };
 
   const adjustFontSize = (increase: boolean) => {
@@ -108,75 +100,50 @@ export function ArticleDetail({ article, isPreview = false }: ArticleDetailProps
         )}
 
         {/* Author and Meta Information */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 pb-6 border-b border-gray-200">
-          <div className="mb-4 sm:mb-0">
-            <div className="flex items-center space-x-2 mb-2">
+        <div className="mb-8 pb-6 border-b border-gray-200">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
               <span className="text-gray-600">By</span>
               <span className="font-medium text-gray-900">{article.author || 'Editorial Team'}</span>
-              {!isPreview && (
-                <button className="text-blue-600 hover:text-blue-800 text-sm font-medium border border-blue-600 rounded px-2 py-1 hover:bg-blue-50 transition-colors cursor-pointer">
-                  Follow
-                </button>
-              )}
             </div>
-            <p className="text-gray-500 text-sm italic">
-              Updated {formatDate(article.updatedAt || article.createdAt)}
-            </p>
+            <span className="font-bold text-gray-900">{article.views.toLocaleString()} views</span>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={handleShare}
-              className={`flex items-center space-x-1 ${buttonStyles.ghost}`}
-              title="Share"
-            >
-              <ShareIcon className="h-5 w-5" />
-              <span className="text-sm font-medium">Share</span>
-            </button>
+          {/* Updated Date and Action Buttons */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-gray-500 text-sm italic mb-4 sm:mb-0">
+              Updated {formatDate(article.updatedAt || article.createdAt)}
+            </p>
 
-            <div className="flex items-center space-x-1">
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-4">
               <button
-                onClick={() => adjustFontSize(false)}
-                className={buttonStyles.ghost}
-                title="Decrease font size"
+                onClick={handleShare}
+                className={`flex items-center space-x-1 ${buttonStyles.ghost}`}
+                title="Share"
               >
-                <ChevronDownIcon className="h-5 w-5" />
+                <ShareIcon className="h-5 w-5" />
+                <span className="text-sm font-medium">Share</span>
               </button>
-              <span className="text-sm font-medium text-gray-600 mx-2">Resize</span>
-              <button
-                onClick={() => adjustFontSize(true)}
-                className={buttonStyles.ghost}
-                title="Increase font size"
-              >
-                <ChevronUpIcon className="h-5 w-5" />
-              </button>
+
+              <div className="flex items-center space-x-1">
+                <button
+                  onClick={() => adjustFontSize(false)}
+                  className={buttonStyles.ghost}
+                  title="Decrease font size"
+                >
+                  <ChevronDownIcon className="h-5 w-5" />
+                </button>
+                <span className="text-sm font-bold text-gray-600 mx-2">Aa</span>
+                <button
+                  onClick={() => adjustFontSize(true)}
+                  className={buttonStyles.ghost}
+                  title="Increase font size"
+                >
+                  <ChevronUpIcon className="h-5 w-5" />
+                </button>
+              </div>
             </div>
-
-            <div className="flex items-center space-x-1 text-gray-600">
-              <ChatBubbleLeftIcon className="h-5 w-5" />
-              <span className="text-sm font-medium">{Math.floor(article.views / 10) || 1}</span>
-            </div>
-
-            <button
-              onClick={toggleListen}
-              className={`flex items-center space-x-1 transition-colors cursor-pointer ${
-                isListening ? 'text-blue-600' : buttonStyles.ghost
-              }`}
-              title="Listen to article"
-            >
-              <SpeakerWaveIcon className="h-5 w-5" />
-              <span className="text-sm font-medium">
-                Listen <span className="text-xs">(2 min)</span>
-              </span>
-            </button>
-
-            <button
-              className={buttonStyles.ghost}
-              title="More options"
-            >
-              <EllipsisHorizontalIcon className="h-5 w-5" />
-            </button>
           </div>
         </div>
 
@@ -228,28 +195,8 @@ export function ArticleDetail({ article, isPreview = false }: ArticleDetailProps
           </div>
         )}
 
-        {/* Article Metadata */}
-        <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-500">
-          <div className="flex items-center justify-between">
-            <div>
-              <span>Published: {formatDate(article.publishedDate || article.createdAt)}</span>
-              {article.updatedAt && article.updatedAt !== article.createdAt && (
-                <span className="ml-4">Updated: {formatDate(article.updatedAt)}</span>
-              )}
-            </div>
-            <div className="flex items-center space-x-4">
-              <span>{article.views.toLocaleString()} views</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Related Articles Section Placeholder */}
-        {!isPreview && (
-          <div className="mt-16 pt-8 border-t border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
-            <p className="text-gray-600 italic">Related articles will be displayed here.</p>
-          </div>
-        )}
+        {/* Related Articles Section - Content Projection */}
+        {!isPreview && children}
       </article>
     </div>
   );
