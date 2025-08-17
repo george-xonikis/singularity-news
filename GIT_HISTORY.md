@@ -7,13 +7,35 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: e8a61d8)
+- **master**: Production-ready code (last commit: fc4f371)
 
 ## Complete Commit History
 
 ### 2025-08-17
 
-#### `e8a61d8` - **refactor**: Create reusable table components for DRY code
+#### `pending` - **feat**: Implement real-time dashboard with live statistics
+- Created dashboard feature module with MVC architecture:
+  - DashboardController handling HTTP requests
+  - DashboardService implementing business logic
+  - DashboardRepository for database queries
+- Added API endpoints for dashboard metrics:
+  - `/api/admin/dashboard/stats` for statistics overview
+  - `/api/admin/dashboard/recent-articles` for recent articles list
+- Implemented comprehensive database queries:
+  - Article statistics (total, published, drafts)
+  - View metrics (total views, average per article)
+  - Topic counts and last month comparisons
+- Updated AdminDashboard component:
+  - Fetch real data from backend APIs
+  - Display loading states with skeleton UI
+  - Show live statistics instead of hardcoded values
+- Dashboard now displays:
+  - Total articles with published/draft breakdown
+  - Total and average views with trend indicators
+  - Active topics count
+  - Recent articles with titles, views, and status
+
+#### `fc4f371` - **refactor**: Create reusable table components for DRY code
 - Created TableHeader and TableCell components with content projection
 - Added variant prop for TableHeader (default/compact) for different styles
 - Added align prop for TableHeader (left/center/right) for text alignment
