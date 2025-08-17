@@ -7,11 +7,21 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 8e4f5bd)
+- **master**: Production-ready code (last commit: e8a61d8)
 
 ## Complete Commit History
 
 ### 2025-08-17
+
+#### `e8a61d8` - **refactor**: Create reusable table components for DRY code
+- Created TableHeader and TableCell components with content projection
+- Added variant prop for TableHeader (default/compact) for different styles
+- Added align prop for TableHeader (left/center/right) for text alignment
+- Replaced all table headers and cells in ArticlesTable with reusable components
+- Replaced all table headers and cells in TopicsTable with reusable components
+- Made both tables use consistent styling (default variant) for uniformity
+- Removed class overrides and !important flags for cleaner code
+- Improved maintainability with single source of truth for table styling
 
 #### `8e4f5bd` - **feat**: Improve article typography and interactive elements
 - Enhanced article body text with line height of 1.8 for better readability
@@ -685,7 +695,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 42 (40 in master, 2 unique to feat-001)
+- **Total Commits**: 43 (41 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

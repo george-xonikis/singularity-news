@@ -10,6 +10,7 @@ import {
 import { useArticleStore } from '@/stores/articleStore';
 import { ArticleService } from '@/services/articleService';
 import { useAdminStore } from '@/stores/adminStore';
+import { TableHeader, TableCell } from '@/components/ui/TableComponents';
 
 export function ArticlesTable() {
   const {
@@ -67,27 +68,24 @@ export function ArticlesTable() {
         <table className="min-w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
+              <TableHeader>
                 <SortButton field="created_at">Date</SortButton>
-              </th>
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
+              </TableHeader>
+              <TableHeader>
                 <SortButton field="title">Title</SortButton>
-              </th>
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
-                Slug
-              </th>
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
+              </TableHeader>
+              <TableHeader>
                 <SortButton field="topic">Topic</SortButton>
-              </th>
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
+              </TableHeader>
+              <TableHeader>
                 <SortButton field="views">Views</SortButton>
-              </th>
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
+              </TableHeader>
+              <TableHeader>
                 Status
-              </th>
-              <th className="px-6 py-4 text-left text-base font-bold text-gray-700">
+              </TableHeader>
+              <TableHeader>
                 Actions
-              </th>
+              </TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -97,28 +95,21 @@ export function ArticlesTable() {
                 className={`${index !== articles.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 cursor-pointer`}
                 onClick={() => window.open(`/admin/articles/${article.id}/edit`, '_blank')}
               >
-                <td className="px-6 py-4 text-sm text-gray-600">
-                  {formatDate(article.createdAt)}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm font-medium text-gray-900" title={article.title}>
+                <TableCell>
+                  <span className="text-gray-600">{formatDate(article.createdAt)}</span>
+                </TableCell>
+                <TableCell>
+                  <div className="font-medium text-gray-900" title={article.title}>
                     {article.title.length > 60 ? article.title.substring(0, 60) + '...' : article.title}
                   </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-600" title={article.slug}>
-                    {article.slug.length > 20 ? article.slug.substring(0, 20) + '...' : article.slug}
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <span className="text-sm text-gray-600">
-                    {article.topic}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-600">
-                  {article.views.toLocaleString()}
-                </td>
-                <td className="px-6 py-4">
+                </TableCell>
+                <TableCell>
+                  <span className="text-gray-600">{article.topic}</span>
+                </TableCell>
+                <TableCell>
+                  <span className="text-gray-600">{article.views.toLocaleString()}</span>
+                </TableCell>
+                <TableCell>
                   <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                     article.published
                       ? 'bg-green-100 text-green-700'
@@ -126,16 +117,18 @@ export function ArticlesTable() {
                   }`}>
                     {article.published ? 'Published' : 'Draft'}
                   </span>
-                </td>
-                <td className="px-6 py-4 text-sm" onClick={(e) => e.stopPropagation()}>
-                  <button
-                    onClick={() => deleteArticle(article.id)}
-                    className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors duration-200 cursor-pointer"
-                    title="Delete"
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                  </button>
-                </td>
+                </TableCell>
+                <TableCell>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => deleteArticle(article.id)}
+                      className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors duration-200 cursor-pointer"
+                      title="Delete"
+                    >
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                </TableCell>
               </tr>
             ))}
           </tbody>

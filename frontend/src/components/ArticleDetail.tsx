@@ -82,7 +82,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Headline */}
-        <h1 
+        <h1
           className="font-bold text-gray-900 leading-tight mb-4"
           style={{ fontSize: `${fontSize * 2}px` }}
         >
@@ -91,7 +91,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
 
         {/* Summary */}
         {article.summary && (
-          <p 
+          <p
             className="text-gray-600 leading-relaxed mb-8"
             style={{ fontSize: `${fontSize * 1.125}px` }}
           >

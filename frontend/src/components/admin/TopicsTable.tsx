@@ -2,6 +2,7 @@
 
 import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
 import type { Topic } from '@singularity-news/shared';
+import { TableHeader, TableCell } from '@/components/ui/TableComponents';
 
 interface TopicsTableProps {
   topics: Topic[];
@@ -20,17 +21,17 @@ export function TopicsTable({ topics, onEdit, onDelete }: TopicsTableProps) {
   return (
     <div className="bg-white shadow-sm rounded-lg overflow-hidden">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <thead>
+          <tr className="border-b border-gray-200">
+            <TableHeader>
               Name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHeader>
+            <TableHeader>
               Slug
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHeader>
+            <TableHeader align="right">
               Actions
-            </th>
+            </TableHeader>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -43,13 +44,13 @@ export function TopicsTable({ topics, onEdit, onDelete }: TopicsTableProps) {
           ) : (
             topics.map((topic) => (
               <tr key={topic.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{topic.name}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500 font-mono">{topic.slug}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <TableCell>
+                  <div className="font-medium text-gray-900 whitespace-nowrap">{topic.name}</div>
+                </TableCell>
+                <TableCell>
+                  <div className="text-gray-500 font-mono whitespace-nowrap">{topic.slug}</div>
+                </TableCell>
+                <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button
                       onClick={() => onEdit(topic)}
@@ -66,7 +67,7 @@ export function TopicsTable({ topics, onEdit, onDelete }: TopicsTableProps) {
                       <TrashIcon className="h-4 w-4" />
                     </button>
                   </div>
-                </td>
+                </TableCell>
               </tr>
             ))
           )}
