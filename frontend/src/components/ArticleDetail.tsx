@@ -9,15 +9,19 @@ import {
   SpeakerWaveIcon,
   EllipsisHorizontalIcon,
   ChevronUpIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  EyeIcon
 } from '@heroicons/react/24/outline';
 import type { Article } from '@singularity-news/shared';
+import { ShareService } from '@/services/shareService';
+import { buttonStyles } from '@/styles/buttonStyles';
 
 interface ArticleDetailProps {
   article: Article;
+  isPreview?: boolean;
 }
 
-export function ArticleDetail({ article }: ArticleDetailProps) {
+export function ArticleDetail({ article, isPreview = false }: ArticleDetailProps) {
   const [fontSize, setFontSize] = useState(16);
   const [isListening, setIsListening] = useState(false);
 
@@ -46,20 +50,10 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: article.title,
-          text: article.summary,
-          url: window.location.href,
-        });
-      } catch {
-        // User cancelled or error occurred
-      }
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-    }
+    if (isPreview) return; // Disable sharing in preview mode
+
+    const shareUrl = ShareService.generateArticleUrl(article.slug);
+    await ShareService.shareArticle(article.title, article.summary, shareUrl);
   };
 
   const toggleListen = () => {
@@ -76,18 +70,28 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation Breadcrumb */}
-      <div className="border-b border-gray-200 py-2">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href={`/topics/${article.topic.toLowerCase()}`}
-            className="text-sm font-medium text-blue-600 hover:text-blue-800 uppercase tracking-wide"
-          >
-            {article.topic}
-          </Link>
+    <div className={isPreview ? 'bg-white border rounded-lg p-6' : 'min-h-screen bg-white'}>
+      {/* Preview Mode Indicator */}
+      {isPreview && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6 flex items-center gap-2">
+          <EyeIcon className="h-5 w-5 text-yellow-600" />
+          <span className="text-sm font-medium text-yellow-800">Preview Mode - This is how your article will appear when published</span>
         </div>
-      </div>
+      )}
+
+      {/* Navigation Breadcrumb */}
+      {!isPreview && (
+        <div className="border-b border-gray-200 py-2">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Link
+              href={`/topics/${article.topic.toLowerCase()}`}
+              className="text-sm font-medium text-blue-600 hover:text-blue-800 uppercase tracking-wide"
+            >
+              {article.topic}
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -109,9 +113,11 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             <div className="flex items-center space-x-2 mb-2">
               <span className="text-gray-600">By</span>
               <span className="font-medium text-gray-900">{article.author || 'Editorial Team'}</span>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium border border-blue-600 rounded px-2 py-1 hover:bg-blue-50 transition-colors">
-                Follow
-              </button>
+              {!isPreview && (
+                <button className="text-blue-600 hover:text-blue-800 text-sm font-medium border border-blue-600 rounded px-2 py-1 hover:bg-blue-50 transition-colors cursor-pointer">
+                  Follow
+                </button>
+              )}
             </div>
             <p className="text-gray-500 text-sm italic">
               Updated {formatDate(article.updatedAt || article.createdAt)}
@@ -122,7 +128,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
           <div className="flex items-center space-x-4">
             <button
               onClick={handleShare}
-              className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 transition-colors"
+              className={`flex items-center space-x-1 ${buttonStyles.ghost}`}
               title="Share"
             >
               <ShareIcon className="h-5 w-5" />
@@ -132,7 +138,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             <div className="flex items-center space-x-1">
               <button
                 onClick={() => adjustFontSize(false)}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className={buttonStyles.ghost}
                 title="Decrease font size"
               >
                 <ChevronDownIcon className="h-5 w-5" />
@@ -140,7 +146,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
               <span className="text-sm font-medium text-gray-600 mx-2">Resize</span>
               <button
                 onClick={() => adjustFontSize(true)}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className={buttonStyles.ghost}
                 title="Increase font size"
               >
                 <ChevronUpIcon className="h-5 w-5" />
@@ -154,8 +160,8 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
             <button
               onClick={toggleListen}
-              className={`flex items-center space-x-1 transition-colors ${
-                isListening ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'
+              className={`flex items-center space-x-1 transition-colors cursor-pointer ${
+                isListening ? 'text-blue-600' : buttonStyles.ghost
               }`}
               title="Listen to article"
             >
@@ -166,7 +172,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             </button>
 
             <button
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className={buttonStyles.ghost}
               title="More options"
             >
               <EllipsisHorizontalIcon className="h-5 w-5" />
@@ -238,10 +244,12 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
         </div>
 
         {/* Related Articles Section Placeholder */}
-        <div className="mt-16 pt-8 border-t border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
-          <p className="text-gray-600 italic">Related articles will be displayed here.</p>
-        </div>
+        {!isPreview && (
+          <div className="mt-16 pt-8 border-t border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+            <p className="text-gray-600 italic">Related articles will be displayed here.</p>
+          </div>
+        )}
       </article>
     </div>
   );

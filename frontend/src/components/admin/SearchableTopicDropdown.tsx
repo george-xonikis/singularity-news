@@ -131,7 +131,7 @@ export function SearchableTopicDropdown({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 hover:text-gray-600"
+          className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 hover:text-gray-600 cursor-pointer"
         >
           {isOpen ? (
             <ChevronUpIcon className="h-4 w-4" />

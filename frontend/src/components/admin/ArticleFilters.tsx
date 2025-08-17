@@ -5,6 +5,7 @@ import { useAdminStore } from '@/stores/adminStore';
 import { useArticleStore } from '@/stores/articleStore';
 import { useTopicStore } from '@/stores/topicStore';
 import type { ArticleFilters as IArticleFilters } from '@singularity-news/shared';
+import { buttonStyles } from '@/styles/buttonStyles';
 
 export function ArticleFilters() {
   const { showFilters, toggleFilters } = useAdminStore();
@@ -25,7 +26,7 @@ export function ArticleFilters() {
         <h3 className="text-lg font-medium">Filters</h3>
         <button
           onClick={toggleFilters}
-          className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-2 py-1 rounded transition-colors cursor-pointer"
+          className={`flex items-center gap-2 ${buttonStyles.link}`}
         >
           <FunnelIcon className="h-5 w-5" />
           {showFilters ? 'Hide Filters' : 'Show Filters'}
@@ -124,7 +125,7 @@ export function ArticleFilters() {
           <div className="flex items-end">
             <button
               onClick={clearFilters}
-              className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm transition-colors cursor-pointer"
+              className={`w-full ${buttonStyles.secondary}`}
             >
               Clear Filters
             </button>

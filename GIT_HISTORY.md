@@ -11,9 +11,43 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ## Complete Commit History
 
+### 2025-08-17
+
+#### `15293ec` - **feat**: Add live preview and centralize button styles
+- Create ShareService to extract sharing functionality from ArticleDetail component
+  - Supports Web Share API with clipboard fallback
+  - Handles platform-specific sharing (Twitter, Facebook, LinkedIn, email)
+  - Generates shareable URLs for articles
+- Add isPreview prop to ArticleDetail for conditional feature display
+  - Hides navigation breadcrumb in preview mode
+  - Disables sharing and follow buttons in preview
+  - Shows preview mode indicator banner
+- Integrate live preview in ArticleForm with Edit/Preview toggle
+  - Real-time preview using actual ArticleDetail component
+  - Toggle between edit and preview modes
+  - Preview shows exactly how article will appear when published
+- Add cursor-pointer to all clickable buttons and interactive elements
+  - Updated ArticleDetail, ArticleForm, ArticleFilters components
+  - Added to SearchableTopicDropdown and all button elements
+- Create centralized buttonStyles.ts with consistent design system
+  - Primary: Main CTA buttons (indigo background)
+  - Secondary: Alternative actions (white with border)
+  - Ghost: Minimal styling for icon buttons
+  - Icon: Icon-only buttons with hover background
+  - Danger: Destructive actions (red)
+  - Link: Link-style buttons
+  - Tab: Tab navigation buttons
+  - Toggle: Mode switching buttons
+  - Pagination: Pagination controls
+- Refactor all button components to use centralized styling
+  - ArticleForm now uses buttonStyles for all buttons
+  - ArticleFilters uses buttonStyles for toggle and clear buttons
+  - ArticleDetail uses ghost style for action buttons
+- Fix linting errors in shareService (remove unused error variables)
+
 ### 2025-08-16
 
-#### `pending` - **refactor**: Improve form UI and centralize font family configuration
+#### `f9f69c5` - **refactor**: Improve form UI and centralize font family configuration
 - Increased form padding from p-8 to p-12 for more spacious layout
 - Increased RichTextEditor height from 600px to 800px (min-height 750px)
 - Fixed RichTextEditor scrolling issue with proper flex layout
@@ -598,9 +632,9 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 38 (36 in master, 2 unique to feat-001)
+- **Total Commits**: 39 (37 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
-- **Active Development Period**: August 7-16, 2025
+- **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)
 
 ## Update Instructions

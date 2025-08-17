@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
-import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import type { CreateArticleInput, UpdateArticleInput } from '@singularity-news/shared';
+import { ArticleDetail } from '@/components/ArticleDetail';
+import { PhotoIcon, XMarkIcon, EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
+import type { CreateArticleInput, UpdateArticleInput, Article } from '@singularity-news/shared';
 import { useTopicStore } from '@/stores/topicStore';
 import { useObservableSubscription } from '@/hooks/useObservableSubscription';
 import { topics$ } from '@/stores/observables/topics$';
+import { buttonStyles } from '@/styles/buttonStyles';
 
 export type ArticleFormData = CreateArticleInput | UpdateArticleInput;
 
@@ -28,6 +30,7 @@ export function ArticleForm({
   loading = false
 }: ArticleFormProps) {
   const { topics } = useTopicStore();
+  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
   const [formData, setFormData] = useState<ArticleFormData>(
     initialData || {
       title: '',
@@ -128,6 +131,27 @@ export function ArticleForm({
     }));
   };
 
+  // Convert form data to Article format for preview
+  const getPreviewArticle = (): Article => {
+    return {
+      id: 'preview',
+      slug: formData.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'preview',
+      title: formData.title || 'Untitled Article',
+      content: formData.content || '',
+      summary: formData.summary,
+      author: formData.author,
+      topic: formData.topic || '',
+      tags: formData.tags || [],
+      coverPhoto: uploadPreview || formData.coverPhoto,
+      coverPhotoCaption: formData.coverPhotoCaption,
+      views: 0,
+      published: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      publishedDate: null
+    };
+  };
+
   const handleSubmit = async (publish: boolean) => {
     // Validate form
     const newErrors: Record<string, string> = {};
@@ -178,7 +202,41 @@ export function ArticleForm({
   };
 
   return (
-    <form className="space-y-8 bg-white rounded-lg shadow-lg p-12">
+    <div className="space-y-6">
+      {/* View Mode Toggle */}
+      <div className="bg-white rounded-lg shadow-lg p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setViewMode('edit')}
+              className={buttonStyles.toggle(viewMode === 'edit')}
+            >
+              <PencilIcon className="h-5 w-5" />
+              Edit
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('preview')}
+              className={buttonStyles.toggle(viewMode === 'preview')}
+            >
+              <EyeIcon className="h-5 w-5" />
+              Preview
+            </button>
+          </div>
+          <span className="text-sm text-gray-500">
+            {viewMode === 'preview' ? 'Preview how your article will look when published' : 'Edit your article content'}
+          </span>
+        </div>
+      </div>
+
+      {/* Content Area */}
+      {viewMode === 'preview' ? (
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <ArticleDetail article={getPreviewArticle()} isPreview={true} />
+        </div>
+      ) : (
+        <form className="space-y-8 bg-white rounded-lg shadow-lg p-12">
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -289,7 +347,7 @@ export function ArticleForm({
           <button
             type="button"
             onClick={handleAddTag}
-            className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className={buttonStyles.primary}
           >
             Add
           </button>
@@ -305,7 +363,7 @@ export function ArticleForm({
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:text-indigo-600"
+                  className="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:text-indigo-600 cursor-pointer"
                 >
                   <XMarkIcon className="h-3 w-3" />
                 </button>
@@ -330,22 +388,14 @@ export function ArticleForm({
             <button
               type="button"
               onClick={() => setUploadMode('url')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                uploadMode === 'url'
-                  ? 'border-indigo-500 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={buttonStyles.tab(uploadMode === 'url')}
             >
               URL
             </button>
             <button
               type="button"
               onClick={() => setUploadMode('upload')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                uploadMode === 'upload'
-                  ? 'border-indigo-500 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={buttonStyles.tab(uploadMode === 'upload')}
             >
               Upload
             </button>
@@ -408,7 +458,7 @@ export function ArticleForm({
                 <button
                   type="button"
                   onClick={removeUploadedFile}
-                  className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
+                  className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full hover:bg-red-700 cursor-pointer"
                 >
                   <XMarkIcon className="h-4 w-4" />
                 </button>
@@ -481,7 +531,7 @@ export function ArticleForm({
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className={buttonStyles.secondary}
         >
           Cancel
         </button>
@@ -490,7 +540,7 @@ export function ArticleForm({
             type="button"
             onClick={() => handleSubmit(false)}
             disabled={loading || !isFormValid()}
-            className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+            className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer transition-colors ${
               loading || !isFormValid()
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200'
@@ -502,16 +552,14 @@ export function ArticleForm({
             type="button"
             onClick={() => handleSubmit(true)}
             disabled={loading || !isFormValid()}
-            className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-              loading || !isFormValid()
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-indigo-600 hover:bg-indigo-700'
-            }`}
+            className={buttonStyles.primary}
           >
             {loading ? 'Publishing...' : `Publish`}
           </button>
         </div>
       </div>
-    </form>
+        </form>
+      )}
+    </div>
   );
 }
