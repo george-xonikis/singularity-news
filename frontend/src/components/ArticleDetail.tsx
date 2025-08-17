@@ -11,7 +11,6 @@ import {
 } from '@heroicons/react/24/outline';
 import type { Article } from '@singularity-news/shared';
 import { ShareService } from '@/services/shareService';
-import { buttonStyles } from '@/styles/buttonStyles';
 
 interface ArticleDetailProps {
   article: Article;
@@ -24,26 +23,21 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    const now = new Date();
 
-    // Check if it's today
-    if (date.toDateString() === now.toDateString()) {
-      return date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }) + ' ET';
-    }
-
-    // Otherwise show full date
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
+    // Format: Aug. 17, 2025 10:16 am (in user's local timezone)
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const time = date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true
-    }) + ' ET';
+    }).toLowerCase();
+
+    // Get timezone abbreviation (e.g., EST, PST, GMT)
+    const timeZone = date.toLocaleDateString('en-US', { timeZoneName: 'short' }).split(', ').pop() || '';
+
+    return `${month}. ${day}, ${year} ${time} ${timeZone}`;
   };
 
   const handleShare = async () => {
@@ -88,61 +82,66 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Headline */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+        <h1 
+          className="font-bold text-gray-900 leading-tight mb-4"
+          style={{ fontSize: `${fontSize * 2}px` }}
+        >
           {article.title}
         </h1>
 
         {/* Summary */}
         {article.summary && (
-          <p className="text-xl text-gray-600 leading-relaxed mb-8 font-light">
+          <p 
+            className="text-gray-600 leading-relaxed mb-8"
+            style={{ fontSize: `${fontSize * 1.125}px` }}
+          >
             {article.summary}
           </p>
         )}
 
         {/* Author and Meta Information */}
         <div className="mb-8 pb-6 border-b border-gray-200">
-          <div className="flex items-center justify-between mb-2">
+          {/* First Row: Author and Views */}
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <span className="text-gray-600">By</span>
-              <span className="font-medium text-gray-900">{article.author || 'Editorial Team'}</span>
+              <span className="font-bold text-gray-900">{article.author || 'Editorial Team'}</span>
             </div>
             <span className="font-bold text-gray-900">{article.views.toLocaleString()} views</span>
           </div>
 
-          {/* Updated Date and Action Buttons */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-gray-500 text-sm italic mb-4 sm:mb-0">
-              Updated {formatDate(article.updatedAt || article.createdAt)}
-            </p>
+          {/* Second Row: Updated Date */}
+          <p className="text-gray-500 text-sm italic mb-4">
+            {formatDate(article.publishedDate || article.createdAt)}
+          </p>
 
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-4">
+          {/* Third Row: Action Buttons */}
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={handleShare}
+              className="flex items-center space-x-2 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-all duration-200 transform hover:scale-105 cursor-pointer"
+              title="Share"
+            >
+              <ShareIcon className="h-5 w-5" />
+              <span className="text-sm font-semibold">Share</span>
+            </button>
+
+            <div className="flex items-center space-x-1">
               <button
-                onClick={handleShare}
-                className={`flex items-center space-x-1 ${buttonStyles.ghost}`}
-                title="Share"
+                onClick={() => adjustFontSize(false)}
+                className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
+                title="Decrease font size"
               >
-                <ShareIcon className="h-5 w-5" />
-                <span className="text-sm font-medium">Share</span>
+                <ChevronDownIcon className="h-5 w-5 text-gray-600" />
               </button>
-
-              <div className="flex items-center space-x-1">
-                <button
-                  onClick={() => adjustFontSize(false)}
-                  className={buttonStyles.ghost}
-                  title="Decrease font size"
-                >
-                  <ChevronDownIcon className="h-5 w-5" />
-                </button>
-                <span className="text-sm font-bold text-gray-600 mx-2">Aa</span>
-                <button
-                  onClick={() => adjustFontSize(true)}
-                  className={buttonStyles.ghost}
-                  title="Increase font size"
-                >
-                  <ChevronUpIcon className="h-5 w-5" />
-                </button>
-              </div>
+              <span className="text-sm font-bold text-gray-600 mx-2">Aa</span>
+              <button
+                onClick={() => adjustFontSize(true)}
+                className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
+                title="Increase font size"
+              >
+                <ChevronUpIcon className="h-5 w-5 text-gray-600" />
+              </button>
             </div>
           </div>
         </div>
@@ -169,11 +168,19 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
         {/* Article Content */}
         <div
           className="prose prose-lg max-w-none"
-          style={{ fontSize: `${fontSize}px` }}
+          style={{
+            fontSize: `${fontSize}px`,
+            lineHeight: '1.8',
+            letterSpacing: '0.01em'
+          }}
         >
           <div
             dangerouslySetInnerHTML={{ __html: article.content }}
-            className="leading-relaxed text-gray-900"
+            className="text-gray-900"
+            style={{
+              lineHeight: 'inherit',
+              letterSpacing: 'inherit'
+            }}
           />
         </div>
 
@@ -186,7 +193,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
                 <Link
                   key={tag}
                   href={`/search?q=${encodeURIComponent(tag)}`}
-                  className="inline-block bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm px-3 py-1 rounded-full transition-colors"
+                  className="inline-block bg-gray-100 hover:bg-indigo-50 text-gray-700 hover:text-indigo-700 text-sm px-3 py-1 rounded-full transition-all duration-200 transform hover:scale-105"
                 >
                   {tag}
                 </Link>

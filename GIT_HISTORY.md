@@ -7,13 +7,23 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 221feed)
+- **master**: Production-ready code (last commit: 8e4f5bd)
 
 ## Complete Commit History
 
 ### 2025-08-17
 
-#### `221feed` - **refactor**: Implement content projection for RelatedArticles component
+#### `8e4f5bd` - **feat**: Improve article typography and interactive elements
+- Enhanced article body text with line height of 1.8 for better readability
+- Added letter spacing (0.01em) for improved character distinction
+- Made Share button more distinctive with indigo background and hover effects
+- Added cursor-pointer and hover states to all interactive buttons
+- Reorganized metadata layout into 3 clear rows (author/views, date, buttons)
+- Updated date format to "Aug. 17, 2025 10:16 am PST" using browser's local timezone
+- Made font size controls affect title, summary, and body text proportionally
+- Adjusted title and summary font sizes for better visual proportion
+
+#### `1e9067e` - **refactor**: Implement content projection for RelatedArticles component
 - Extract Related Articles section to dedicated component
 - Implement content projection pattern using React children
 - Update ArticleDetail to accept children prop for flexibility
@@ -675,7 +685,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 41 (39 in master, 2 unique to feat-001)
+- **Total Commits**: 42 (40 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)
