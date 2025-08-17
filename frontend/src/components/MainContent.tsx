@@ -19,7 +19,7 @@ export default function MainContent({ articles }: MainContentProps) {
                 </h3>
               </Link>
               <p className="text-gray-600 mb-2">
-                {article.summary || (article.content ? article.content.substring(0, 150) : '')}...
+                {article.summary || article.content.substring(0, 150)}
               </p>
               <div className="flex justify-between items-center text-sm text-gray-500">
                 <span className="bg-gray-100 px-2 py-1 rounded">{article.topic}</span>

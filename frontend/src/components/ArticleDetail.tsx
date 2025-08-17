@@ -92,7 +92,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Headline */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6 font-serif">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
           {article.title}
         </h1>
 
@@ -239,7 +239,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
         {/* Related Articles Section Placeholder */}
         <div className="mt-16 pt-8 border-t border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-serif">Related Articles</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
           <p className="text-gray-600 italic">Related articles will be displayed here.</p>
         </div>
       </article>

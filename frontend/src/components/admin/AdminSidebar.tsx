@@ -43,7 +43,7 @@ export function AdminSidebar() {
           <div className="flex items-center">
             <NewspaperIcon className="h-8 w-8 text-indigo-600" />
             <div className="ml-3">
-              <h1 className="text-xl font-bold text-gray-900 font-serif">
+              <h1 className="text-xl font-bold text-gray-900">
                 Singularity Admin
               </h1>
             </div>

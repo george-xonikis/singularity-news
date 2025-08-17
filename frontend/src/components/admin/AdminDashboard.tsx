@@ -40,7 +40,7 @@ export function AdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 font-serif">
+        <h1 className="text-3xl font-bold text-gray-900">
           Dashboard
         </h1>
         <p className="mt-2 text-gray-600">
@@ -74,7 +74,7 @@ export function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 font-serif">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">
             Recent Articles
           </h2>
           <div className="space-y-4">
@@ -101,7 +101,7 @@ export function AdminDashboard() {
         </div>
 
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 font-serif">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">
             Quick Actions
           </h2>
           <div className="space-y-3">

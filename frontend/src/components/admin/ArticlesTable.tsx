@@ -102,7 +102,7 @@ export function ArticlesTable() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="text-sm font-medium text-gray-900" title={article.title}>
-                    {article.title.length > 20 ? article.title.substring(0, 20) + '...' : article.title}
+                    {article.title.length > 60 ? article.title.substring(0, 60) + '...' : article.title}
                   </div>
                 </td>
                 <td className="px-6 py-4">

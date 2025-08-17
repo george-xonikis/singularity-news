@@ -65,7 +65,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
   );
 
   return (
-    <div className="bg-white border border-gray-300 rounded-md overflow-hidden">
+    <div className="bg-white border border-gray-300 rounded-md overflow-hidden" style={{ height: '850px' }}>
       <ReactQuill
         theme="snow"
         value={value}
@@ -74,9 +74,11 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         formats={formats}
         placeholder={placeholder}
         style={{
-          height: '600px',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
         }}
-        className="[&_.ql-editor]:min-h-[550px] [&_.ql-editor]:text-base [&_.ql-editor]:leading-relaxed [&_.ql-toolbar]:sticky [&_.ql-toolbar]:top-0 [&_.ql-toolbar]:z-10 [&_.ql-toolbar]:bg-white"
+        className="[&_.ql-container]:flex-1 [&_.ql-container]:overflow-hidden [&_.ql-editor]:h-full [&_.ql-editor]:overflow-y-auto [&_.ql-editor]:text-base [&_.ql-editor]:leading-relaxed [&_.ql-editor]:p-4 [&_.ql-toolbar]:flex-shrink-0 [&_.ql-toolbar]:border-b [&_.ql-toolbar]:bg-white"
       />
     </div>
   );

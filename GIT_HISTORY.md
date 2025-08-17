@@ -13,7 +13,20 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-16
 
-#### `pending` - **refactor**: Create shared ArticleForm component and fix edit route
+#### `pending` - **refactor**: Improve form UI and centralize font family configuration
+- Increased form padding from p-8 to p-12 for more spacious layout
+- Increased RichTextEditor height from 600px to 800px (min-height 750px)
+- Fixed RichTextEditor scrolling issue with proper flex layout
+- Added p-2 padding to all input fields for consistency
+- Moved Tags field above Cover Photo field for better form flow
+- Changed summary character limit from 300 to 400
+- Added vertical padding (py-4) and line-height to summary textarea
+- Centralized font family configuration in globals.css
+- Set Georgia serif as default font throughout the app
+- Removed all inline font-serif classes from components (8 instances)
+- Created CSS variables for primary (serif) and secondary (sans-serif) fonts
+
+#### `f9f69c5` - **refactor**: Create shared ArticleForm component and fix edit route
 - Create shared ArticleForm component (~500 lines) with all form UI and validation logic
 - Refactor NewArticleForm to use shared component (reduced from 472 to 60 lines)
 - Refactor EditArticleForm to use shared component (reduced from 419 to 130 lines)

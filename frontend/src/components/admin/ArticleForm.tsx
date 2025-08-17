@@ -178,7 +178,7 @@ export function ArticleForm({
   };
 
   return (
-    <form className="space-y-6 bg-white rounded-lg shadow p-6">
+    <form className="space-y-8 bg-white rounded-lg shadow-lg p-12">
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -189,7 +189,7 @@ export function ArticleForm({
           id="title"
           value={formData.title || ''}
           onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-          className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
+          className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm p-2 ${
             errors.title
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -207,21 +207,21 @@ export function ArticleForm({
           Summary <span className="text-red-500">*</span>
           {formData.summary && (
             <span className="ml-2 text-xs text-gray-500">
-              ({formData.summary.length}/300)
+              ({formData.summary.length}/400)
             </span>
           )}
         </label>
         <textarea
           id="summary"
           value={formData.summary || ''}
-          onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value.slice(0, 300) }))}
-          className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
+          onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value.slice(0, 400) }))}
+          className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm px-3 py-4 leading-relaxed ${
             errors.summary
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
           }`}
           rows={3}
-          placeholder="Brief summary of the article (max 300 characters)"
+          placeholder="Brief summary of the article (max 400 characters)"
         />
         {errors.summary && (
           <p className="mt-1 text-sm text-red-600">{errors.summary}</p>
@@ -238,7 +238,7 @@ export function ArticleForm({
           id="author"
           value={formData.author || ''}
           onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-          className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
+          className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm p-2 ${
             errors.author
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -263,6 +263,58 @@ export function ArticleForm({
         />
         {errors.topic && (
           <p className="mt-1 text-sm text-red-600">{errors.topic}</p>
+        )}
+      </div>
+
+      {/* Tags */}
+      <div>
+        <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
+          Tags <span className="text-red-500">*</span>
+        </label>
+        <div className="mt-1 flex gap-2">
+          <input
+            type="text"
+            id="tags"
+            value={currentTag}
+            onChange={(e) => setCurrentTag(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddTag();
+              }
+            }}
+            className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+            placeholder="Add a tag and press Enter"
+          />
+          <button
+            type="button"
+            onClick={handleAddTag}
+            className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Add
+          </button>
+        </div>
+        {formData.tags && formData.tags.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {formData.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTag(tag)}
+                  className="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:text-indigo-600"
+                >
+                  <XMarkIcon className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        {errors.tags && (
+          <p className="mt-1 text-sm text-red-600">{errors.tags}</p>
         )}
       </div>
 
@@ -307,7 +359,7 @@ export function ArticleForm({
               type="url"
               value={formData.coverPhoto || ''}
               onChange={(e) => setFormData(prev => ({ ...prev, coverPhoto: e.target.value }))}
-              className={`block w-full rounded-md shadow-sm sm:text-sm ${
+              className={`block w-full rounded-md shadow-sm sm:text-sm p-2 ${
                 errors.coverPhoto
                   ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                   : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -395,7 +447,7 @@ export function ArticleForm({
             id="coverPhotoCaption"
             value={formData.coverPhotoCaption || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, coverPhotoCaption: e.target.value }))}
-            className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
+            className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm p-2 ${
               errors.coverPhotoCaption
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                 : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
@@ -421,58 +473,6 @@ export function ArticleForm({
         </div>
         {errors.content && (
           <p className="mt-1 text-sm text-red-600">{errors.content}</p>
-        )}
-      </div>
-
-      {/* Tags */}
-      <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-          Tags <span className="text-red-500">*</span>
-        </label>
-        <div className="mt-1 flex gap-2">
-          <input
-            type="text"
-            id="tags"
-            value={currentTag}
-            onChange={(e) => setCurrentTag(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleAddTag();
-              }
-            }}
-            className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Add a tag and press Enter"
-          />
-          <button
-            type="button"
-            onClick={handleAddTag}
-            className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Add
-          </button>
-        </div>
-        {formData.tags && formData.tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {formData.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
-              >
-                {tag}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveTag(tag)}
-                  className="ml-1 inline-flex items-center justify-center w-4 h-4 text-indigo-400 hover:text-indigo-600"
-                >
-                  <XMarkIcon className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
-        {errors.tags && (
-          <p className="mt-1 text-sm text-red-600">{errors.tags}</p>
         )}
       </div>
 
