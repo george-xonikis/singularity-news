@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { TagIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import { TopicsTable } from '@/components/admin/TopicsTable';
 import { TopicModal } from '@/components/admin/TopicModal';
 import { TopicService } from '@/services/topicService';
@@ -10,7 +10,6 @@ import { useAdminStore } from '@/stores/adminStore';
 import { useObservableSubscription } from '@/hooks/useObservableSubscription';
 import { topics$ } from '@/stores/observables/topics$';
 import type { Topic, CreateTopicInput, UpdateTopicInput } from '@singularity-news/shared';
-import { buttonStyles } from '@/styles/buttonStyles';
 
 export default function TopicsPage() {
   const { topics, refetch } = useTopicStore();
@@ -77,25 +76,18 @@ export default function TopicsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm rounded-lg p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <TagIcon className="h-8 w-8 text-indigo-600 mr-3" />
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Topics Management</h1>
-              <p className="text-sm text-gray-600 mt-1">
-                Manage article categories and topics
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={openAddModal}
-            className={`${buttonStyles.primary} flex items-center`}
-          >
-            <PlusIcon className="h-5 w-5 mr-2" />
-            Add Topic
-          </button>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Topics</h1>
+          <p className="text-gray-600">Manage article categories and topics</p>
         </div>
+        <button
+          onClick={openAddModal}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors cursor-pointer"
+        >
+          <PlusIcon className="h-5 w-5" />
+          Add Topic
+        </button>
       </div>
 
       {/* Topics Table */}

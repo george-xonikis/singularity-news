@@ -12,7 +12,7 @@ interface RelatedArticlesProps {
 }
 
 export function RelatedArticles({ currentArticleId, currentTopic, currentTags = [] }: RelatedArticlesProps) {
-  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [relatedArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -100,7 +100,7 @@ export function AdminDashboard() {
                   <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
                   <div className="flex items-center mt-2">
                     <span className={`text-sm font-medium ${
-                      stat.changeType === 'positive' ? 'text-green-600' : 
+                      stat.changeType === 'positive' ? 'text-green-600' :
                       stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
                     }`}>
                       {stat.change}
@@ -135,8 +135,8 @@ export function AdminDashboard() {
           ) : recentArticles.length > 0 ? (
             <div className="space-y-4">
               {recentArticles.map((article) => (
-                <Link 
-                  key={article.id} 
+                <Link
+                  key={article.id}
                   href={`/admin/articles/${article.id}/edit`}
                   className="block hover:bg-gray-50 -mx-2 px-2 rounded transition-colors"
                 >
