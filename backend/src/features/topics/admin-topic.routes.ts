@@ -8,20 +8,11 @@ const repository = new TopicRepository();
 const service = new TopicService(repository);
 const controller = new TopicController(service);
 
-// Bind controller methods to preserve 'this' context
-const boundController = {
-  getAllTopics: controller.getAllTopics.bind(controller),
-  getTopicById: controller.getTopicById.bind(controller),
-  createTopic: controller.createTopic.bind(controller),
-  updateTopic: controller.updateTopic.bind(controller),
-  deleteTopic: controller.deleteTopic.bind(controller),
-};
-
 // Create router with admin topic routes
 export const AdminTopicRoutes: Router = Router();
 
-AdminTopicRoutes.get('/', boundController.getAllTopics);
-AdminTopicRoutes.get('/:id', boundController.getTopicById);
-AdminTopicRoutes.post('/', boundController.createTopic);
-AdminTopicRoutes.put('/:id', boundController.updateTopic);
-AdminTopicRoutes.delete('/:id', boundController.deleteTopic);
+AdminTopicRoutes.get('/', (req, res) => controller.getAllTopics(req, res));
+AdminTopicRoutes.get('/:id', (req, res) => controller.getTopicById(req, res));
+AdminTopicRoutes.post('/', (req, res) => controller.createTopic(req, res));
+AdminTopicRoutes.put('/:id', (req, res) => controller.updateTopic(req, res));
+AdminTopicRoutes.delete('/:id', (req, res) => controller.deleteTopic(req, res));

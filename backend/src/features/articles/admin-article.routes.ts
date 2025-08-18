@@ -8,20 +8,11 @@ const repository = new ArticleRepository();
 const service = new ArticleService(repository);
 const controller = new AdminArticleController(service);
 
-// Bind controller methods to preserve 'this' context
-const boundController = {
-  getAllArticles: controller.getAllArticles.bind(controller),
-  getArticleById: controller.getArticleById.bind(controller),
-  createArticle: controller.createArticle.bind(controller),
-  updateArticle: controller.updateArticle.bind(controller),
-  deleteArticle: controller.deleteArticle.bind(controller),
-};
-
 // Create router with admin routes
 export const AdminArticleRoutes: Router = Router();
 
-AdminArticleRoutes.get('/', boundController.getAllArticles);
-AdminArticleRoutes.get('/:id', boundController.getArticleById);
-AdminArticleRoutes.post('/', boundController.createArticle);
-AdminArticleRoutes.put('/:id', boundController.updateArticle);
-AdminArticleRoutes.delete('/:id', boundController.deleteArticle);
+AdminArticleRoutes.get('/', (req, res, next) => controller.getAllArticles(req, res, next));
+AdminArticleRoutes.get('/:id', (req, res, next) => controller.getArticleById(req, res, next));
+AdminArticleRoutes.post('/', (req, res, next) => controller.createArticle(req, res, next));
+AdminArticleRoutes.put('/:id', (req, res, next) => controller.updateArticle(req, res, next));
+AdminArticleRoutes.delete('/:id', (req, res, next) => controller.deleteArticle(req, res, next));

@@ -13,7 +13,19 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-17
 
-#### `pending` - **refactor**: Improve UI consistency for admin pages
+#### `pending` - **refactor**: Replace .bind() pattern with arrow functions in all route handlers
+- Removed confusing `.bind(controller)` pattern from all route files
+- Replaced with cleaner arrow function wrappers `(req, res, next) => controller.method(req, res, next)`
+- Updated files:
+  - admin-article.routes.ts - removed boundController object
+  - article.routes.ts - removed boundController object
+  - admin-topic.routes.ts - removed boundController object
+  - topic.routes.ts - fixed missing binding with arrow functions
+  - dashboard.routes.ts - already had correct pattern, cleaned up formatting
+- Improved code readability and consistency across all routes
+- Preserved 'this' context without confusing syntax
+
+#### `ce0385c` - **refactor**: Improve UI consistency for admin pages
 - Refactored Topics page header to match Articles page clean style
 - Removed white background card wrapper from Topics header
 - Removed TagIcon from Topics header for simpler design

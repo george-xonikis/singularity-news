@@ -8,14 +8,8 @@ const repository = new DashboardRepository();
 const service = new DashboardService(repository);
 const controller = new DashboardController(service);
 
-// Bind controller methods
-const boundController = {
-  getStats: controller.getStats.bind(controller),
-  getRecentArticles: controller.getRecentArticles.bind(controller)
-};
-
 // Create router
 export const DashboardRoutes: Router = Router();
 
-DashboardRoutes.get('/stats', boundController.getStats);
-DashboardRoutes.get('/recent-articles', boundController.getRecentArticles);
+DashboardRoutes.get('/stats', (req, res) => controller.getStats(req, res));
+DashboardRoutes.get('/recent-articles', (req, res) => controller.getRecentArticles(req, res));

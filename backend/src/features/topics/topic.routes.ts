@@ -11,6 +11,6 @@ const topicController = new TopicController(topicService);
 // Create router with public topic routes
 export const TopicRoutes: Router = Router();
 
-TopicRoutes.get('/', topicController.getAllTopics);
-TopicRoutes.get('/:id', topicController.getTopicById);
-TopicRoutes.get('/slug/:slug', topicController.getTopicBySlug);
+TopicRoutes.get('/', (req, res) => topicController.getAllTopics(req, res));
+TopicRoutes.get('/:id', (req, res) => topicController.getTopicById(req, res));
+TopicRoutes.get('/slug/:slug', (req, res) => topicController.getTopicBySlug(req, res));
