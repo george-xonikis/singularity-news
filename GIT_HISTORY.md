@@ -13,7 +13,24 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-23
 
-#### `pending` - **feat**: Implement always-visible Navigation and WSJ-style article design
+#### `fe22a37` - **build**: Add Vercel deployment configuration for monorepo
+- Added vercel.json configuration file for proper Vercel deployment
+  - Custom build command that builds shared package before frontend
+  - Configured output directory to frontend/.next for Next.js build
+  - Set install command to use pnpm for workspace dependency management
+  - Added ignore command to only rebuild when frontend/ or shared/ directories change
+  - Configured Node.js 20.x runtime for API functions (matching development environment)
+- Created build.sh script for deployment build process
+  - Ensures proper build order: install dependencies → build shared → build frontend
+  - Provides clear logging for build steps and error handling
+  - Compatible with Vercel's build environment
+- Updated frontend package.json build scripts
+  - Modified build script to depend on shared package compilation
+  - Added build:vercel script specifically for Vercel deployment
+  - Maintains compatibility with local development workflow
+- Resolves monorepo deployment issue where shared package was not found during build
+
+#### `6f9c127` - **feat**: Implement always-visible Navigation and WSJ-style article design
 - Implemented always-visible Navigation component across all public pages
   - Created (public) route group with shared layout including Header, Navigation, Footer
   - Moved homepage and article pages to route group structure
