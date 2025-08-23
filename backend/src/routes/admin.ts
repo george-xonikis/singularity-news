@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AdminArticleRoutes } from '../features/articles/admin-article.routes';
 import { AdminTopicRoutes } from '../features/topics/admin-topic.routes';
-§import { DashboardRoutes } from '../features/dashboard/dashboard.routes';
+import { DashboardRoutes } from '../features/dashboard/dashboard.routes';
 
 const router: Router = Router();
 

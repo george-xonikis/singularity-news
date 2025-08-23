@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
+		"install:all": "pnpm install",
 		"dev": "docker-compose up -d && pnpm --filter shared build && pnpm --parallel --filter backend --filter frontend dev",
 		"stop": "docker-compose down",
 		"tsc": "pnpm --parallel --filter backend --filter frontend --filter shared exec tsc --noEmit",
