@@ -13,6 +13,36 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-23
 
+#### `c362db1` - **fix**: Move homepage from route group to root to resolve Vercel 404
+- Fixed Vercel deployment 404 error by restructuring homepage location
+  - Moved frontend/src/app/(public)/page.tsx to frontend/src/app/page.tsx
+  - Added Header, Navigation, and Footer components directly to root page
+  - Ensures root route "/" properly resolves on Vercel deployment platform
+  - Maintains identical layout and functionality as previous route group structure
+- Route group structure was causing Next.js routing conflicts on Vercel
+- Root page now serves homepage content with proper navigation components
+- Resolves "404: NOT_FOUND" error that was preventing site access
+
+#### `d58f2af` - **feat**: Prepare backend for Railway deployment
+- Created comprehensive Railway deployment configuration
+  - Added railway.json with build commands and health check settings
+  - Updated CORS configuration to be environment-aware for production
+  - Created .env.example with all required environment variables
+- Enhanced server.ts with flexible origin handling for development/production
+- Prepared backend for PostgreSQL integration on Railway platform
+- Ready for seamless deployment with database migration support
+
+#### `1585bc4` - **fix**: Remove functions runtime config to let Vercel auto-detect
+- Simplified vercel.json by removing functions runtime configuration
+- Allows Vercel to automatically detect and use appropriate Node.js runtime
+- Eliminates potential compatibility issues with runtime version specification
+- Streamlines deployment process with Vercel's intelligent defaults
+
+#### `43003f6` - **fix**: Use nodejs18.x runtime for Vercel compatibility  
+- Updated Vercel functions runtime from nodejs20.x to nodejs18.x
+- Resolved Vercel build failure: "Function Runtimes must have a valid version"
+- Ensures compatibility with Vercel's supported Node.js runtime versions
+
 #### `587b072` - **feat**: Migrate from single topic to multiple topics array
 - Completely restructured topic system to support multiple topics per article
 - **Database Changes**:
