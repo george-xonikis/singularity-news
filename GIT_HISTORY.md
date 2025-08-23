@@ -13,6 +13,18 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-23
 
+#### `[pending]` - **fix**: Enhance Railway deployment with improved logging and error handling
+- Enhanced Railway deployment configuration to resolve "service unavailable" errors
+  - Updated railway.json with longer health check timeout (300s) and improved start command
+  - Added comprehensive logging with emojis and proper container networking to server.ts
+  - Configured server to bind to 0.0.0.0 for proper Railway container access
+  - Added detailed startup logging with environment, port, and health check information
+- Improved database connection error handling and logging
+  - Enhanced database connection.ts with better error reporting
+  - Added startup connection test with detailed error messages
+- Removed Dockerfile to use Railway's Nixpacks auto-detection for optimal builds
+- Addresses Railway deployment failures and provides better debugging capabilities
+
 #### `c362db1` - **fix**: Move homepage from route group to root to resolve Vercel 404
 - Fixed Vercel deployment 404 error by restructuring homepage location
   - Moved frontend/src/app/(public)/page.tsx to frontend/src/app/page.tsx

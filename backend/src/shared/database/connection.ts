@@ -16,10 +16,21 @@ const dbConfig = {
 const pool = new Pool(dbConfig);
 
 // Log database configuration (hide password)
-console.log('Database config:', {
+console.log('🐘 Database config:', {
   ...dbConfig,
   password: '***'
 });
+
+// Test database connection on startup
+pool.connect()
+  .then(client => {
+    console.log('✅ Database connected successfully');
+    client.release();
+  })
+  .catch(err => {
+    console.error('❌ Database connection failed:', err.message);
+    console.error('   Please check your database configuration and ensure PostgreSQL is running');
+  });
 
 /**
  * Execute a parameterized query

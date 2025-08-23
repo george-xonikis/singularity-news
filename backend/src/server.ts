@@ -3,7 +3,7 @@ import cors from 'cors';
 import { errorHandler, notFoundHandler } from './shared/middleware/error-handler';
 
 const app: express.Application = express();
-const PORT = process.env.PORT || 3002;
+const PORT = parseInt(process.env.PORT || '3002', 10);
 
 // Middleware
 const allowedOrigins: string[] = [
@@ -33,7 +33,13 @@ app.use((req, res, next) => {
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV ?? 'development',
+    port: PORT,
+    version: '1.0.0'
+  });
 });
 
 // Public routes
@@ -49,8 +55,13 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🏥 Health check available at: /health`);
+}).on('error', (err) => {
+  console.error('❌ Server failed to start:', err);
+  process.exit(1);
 });
 
 export default app;
