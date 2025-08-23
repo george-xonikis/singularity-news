@@ -6,8 +6,18 @@ const app: express.Application = express();
 const PORT = process.env.PORT || 3002;
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:3000', 
+  'http://localhost:3001', 
+  'http://localhost:3004',
+  // Add your Vercel frontend URL here when deployed
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3004'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? allowedOrigins 
+    : true, // Allow all origins in development
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 }));
