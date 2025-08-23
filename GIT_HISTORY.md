@@ -13,6 +13,31 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-23
 
+#### `587b072` - **feat**: Migrate from single topic to multiple topics array
+- Completely restructured topic system to support multiple topics per article
+- **Database Changes**:
+  - Created migration script to convert existing topic column to topics array
+  - Updated schema.sql with topics TEXT[] and GIN index for performance
+  - Migrated 7 existing articles to new structure
+  - Removed foreign key constraint (complex for array elements in PostgreSQL)
+- **Backend Architecture**:
+  - Updated Article interface to use topics: string[] instead of topic: string
+  - Modified all DTOs with comprehensive array validation
+  - Enhanced repository queries with PostgreSQL && operator for array overlap
+  - Updated service layer methods for array handling
+- **Frontend Implementation**:
+  - Built multi-select topic interface with SearchableTopicDropdown
+  - Added topic badges throughout UI (ArticlesTable, MainContent, RelatedArticles)
+  - Implemented dynamic topic breadcrumbs in ArticleDetail
+  - Enhanced ArticleForm with add/remove topic functionality
+- **User Experience Improvements**:
+  - Visual topic badges with blue color scheme
+  - Dropdown filters out already selected topics
+  - Click-to-remove functionality for selected topics
+  - Maintains backward compatibility with existing data
+
+#### `85d40d9` - **docs**: Update GIT_HISTORY.md with deployment configuration commit
+
 #### `fe22a37` - **build**: Add Vercel deployment configuration for monorepo
 - Added vercel.json configuration file for proper Vercel deployment
   - Custom build command that builds shared package before frontend
