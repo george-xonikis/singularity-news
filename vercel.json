@@ -1,0 +1,12 @@
+{
+  "buildCommand": "pnpm --filter shared build && pnpm --filter frontend build:vercel",
+  "outputDirectory": "frontend/.next",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/ shared/",
+  "functions": {
+    "frontend/app/api/**": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}
