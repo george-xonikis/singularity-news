@@ -13,7 +13,28 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-23
 
-#### `pending` - **refactor**: Improve admin UI with elegant color scheme and fix UI issues
+#### `pending` - **feat**: Implement always-visible Navigation and WSJ-style article design
+- Implemented always-visible Navigation component across all public pages
+  - Created (public) route group with shared layout including Header, Navigation, Footer
+  - Moved homepage and article pages to route group structure
+  - Navigation now appears on home page, article detail pages, and future public pages
+- Redesigned article detail page following Wall Street Journal design principles
+  - Centered layout with max-width container for better readability
+  - Large, bold headline (4xl/5xl) with proper hierarchy
+  - Topic breadcrumb with blue links and separator (TOPIC | CATEGORY style)
+  - Clean action bar with Share, font resize (Aa), and Listen features
+  - Professional typography with justified text and optimal line spacing
+  - Author and publication date prominently displayed
+- Enhanced pre-commit hooks with TypeScript checking
+  - Added pnpm tsc validation to catch type errors before commit
+  - Maintains existing lint fixes and GIT_HISTORY.md validation
+  - Provides clear error messages and guidance for developers
+- Fixed linting errors to ensure clean builds
+  - Replaced HTML anchor tags with Next.js Link components
+  - Fixed HTML entity escaping for apostrophes
+  - Removed trailing spaces from components
+
+#### `42e4abf` - **refactor**: Improve admin UI with elegant color scheme and fix UI issues
 - Implemented elegant navy/amber color scheme across admin interface
   - Deep slate-700 sidebar with amber-500 accents for active states
   - Light slate-50 background for main content area

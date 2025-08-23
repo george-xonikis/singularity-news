@@ -78,7 +78,7 @@ export function AdminDashboard() {
           Dashboard
         </h1>
         <p className="mt-2 text-gray-600">
-          Welcome back to Singularity News admin panel
+          Welcome back to Admin Panel
         </p>
       </div>
 

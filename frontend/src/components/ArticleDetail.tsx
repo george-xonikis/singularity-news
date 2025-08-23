@@ -56,7 +56,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
   };
 
   return (
-    <div className={isPreview ? 'bg-white border rounded-lg p-6' : 'min-h-screen bg-white'}>
+    <div className={isPreview ? 'bg-white border rounded-lg p-6' : 'bg-white'}>
       {/* Preview Mode Indicator */}
       {isPreview && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6 flex items-center gap-2">
@@ -65,84 +65,66 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
         </div>
       )}
 
-      {/* Navigation Breadcrumb */}
-      {!isPreview && (
-        <div className="border-b border-gray-200 py-2">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Article Content */}
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Topic Breadcrumb */}
+        {!isPreview && (
+          <div className="text-center mb-8">
             <Link
               href={`/topics/${article.topic.toLowerCase()}`}
-              className="text-sm font-medium text-blue-600 hover:text-blue-800 uppercase tracking-wide"
+              className="text-sm font-semibold text-blue-600 hover:text-blue-700 uppercase tracking-wider"
             >
               {article.topic}
             </Link>
+            <span className="text-gray-400 mx-2">|</span>
+            <span className="text-sm text-gray-600 uppercase tracking-wider">Economy</span>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Article Content */}
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Headline */}
-        <h1
-          className="font-bold text-gray-900 leading-tight mb-4"
-          style={{ fontSize: `${fontSize * 2}px` }}
-        >
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-8 text-center max-w-4xl mx-auto">
           {article.title}
         </h1>
 
         {/* Summary */}
         {article.summary && (
-          <p
-            className="text-gray-600 leading-relaxed mb-8"
-            style={{ fontSize: `${fontSize * 1.125}px` }}
-          >
+          <p className="text-xl text-gray-700 leading-relaxed mb-12 text-center font-light max-w-2xl mx-auto">
             {article.summary}
           </p>
         )}
 
-        {/* Author and Meta Information */}
-        <div className="mb-8 pb-6 border-b border-gray-200">
-          {/* First Row: Author and Views */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-600">By</span>
-              <span className="font-bold text-gray-900">{article.author || 'Editorial Team'}</span>
-            </div>
-            <span className="font-bold text-gray-900">{article.views.toLocaleString()} views</span>
+        {/* Action Buttons Row */}
+        <div className="flex items-center justify-center space-x-6 mb-8 pb-8 border-b border-gray-200">
+          <button
+            onClick={handleShare}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
+            title="Share"
+          >
+            <ShareIcon className="h-5 w-5" />
+            <span className="text-sm font-medium">Share</span>
+          </button>
+
+          <div className="flex items-center space-x-1">
+            <button
+              onClick={() => adjustFontSize(false)}
+              className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
+              title="Decrease font size"
+            >
+              <ChevronDownIcon className="h-4 w-4 text-gray-600" />
+            </button>
+            <span className="text-sm font-medium text-gray-600">Aa</span>
+            <button
+              onClick={() => adjustFontSize(true)}
+              className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
+              title="Increase font size"
+            >
+              <ChevronUpIcon className="h-4 w-4 text-gray-600" />
+            </button>
           </div>
 
-          {/* Second Row: Updated Date */}
-          <p className="text-gray-500 text-sm italic mb-4">
-            {formatDate(article.publishedDate || article.createdAt)}
-          </p>
-
-          {/* Third Row: Action Buttons */}
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={handleShare}
-              className="flex items-center space-x-2 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-all duration-200 transform hover:scale-105 cursor-pointer"
-              title="Share"
-            >
-              <ShareIcon className="h-5 w-5" />
-              <span className="text-sm font-semibold">Share</span>
-            </button>
-
-            <div className="flex items-center space-x-1">
-              <button
-                onClick={() => adjustFontSize(false)}
-                className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
-                title="Decrease font size"
-              >
-                <ChevronDownIcon className="h-5 w-5 text-gray-600" />
-              </button>
-              <span className="text-sm font-bold text-gray-600 mx-2">Aa</span>
-              <button
-                onClick={() => adjustFontSize(true)}
-                className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
-                title="Increase font size"
-              >
-                <ChevronUpIcon className="h-5 w-5 text-gray-600" />
-              </button>
-            </div>
+          <div className="flex items-center space-x-2 text-gray-600">
+            <span className="text-sm">👂</span>
+            <span className="text-sm font-medium">Listen (1 min)</span>
           </div>
         </div>
 
@@ -165,12 +147,22 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
           </figure>
         )}
 
+        {/* Author and Date */}
+        <div className="mb-8 text-center">
+          <p className="text-sm text-gray-600 mb-2">
+            By <span className="font-medium text-gray-900">{article.author || 'Editorial Team'}</span>
+          </p>
+          <p className="text-sm text-gray-500">
+            {formatDate(article.publishedDate || article.createdAt)}
+          </p>
+        </div>
+
         {/* Article Content */}
         <div
-          className="prose prose-lg max-w-none"
+          className="prose prose-lg max-w-none text-justify"
           style={{
             fontSize: `${fontSize}px`,
-            lineHeight: '1.8',
+            lineHeight: '1.7',
             letterSpacing: '0.01em'
           }}
         >

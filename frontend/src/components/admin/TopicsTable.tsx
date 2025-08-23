@@ -44,8 +44,8 @@ export function TopicsTable({ topics, onEdit, onDelete }: TopicsTableProps) {
               </tr>
             ) : (
               topics.map((topic, index) => (
-                <tr 
-                  key={topic.id} 
+                <tr
+                  key={topic.id}
                   className={`${index !== topics.length - 1 ? 'border-b border-slate-200' : ''} hover:bg-slate-50 cursor-pointer transition-colors duration-150`}
                 >
                   <TableCell>
