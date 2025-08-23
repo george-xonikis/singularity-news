@@ -37,7 +37,7 @@ export function ArticleForm({
       content: '',
       summary: '',
       author: '',
-      topic: '',
+      topics: [],
       coverPhoto: '',
       coverPhotoCaption: '',
       tags: [],
@@ -46,6 +46,7 @@ export function ArticleForm({
     }
   );
   const [currentTag, setCurrentTag] = useState('');
+  const [topicDropdownKey, setTopicDropdownKey] = useState(0); // For forcing dropdown reset
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [_uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadPreview, setUploadPreview] = useState<string>('');
@@ -68,7 +69,7 @@ export function ArticleForm({
       formData.content?.trim() !== '' &&
       formData.summary?.trim() !== '' &&
       formData.author?.trim() !== '' &&
-      formData.topic?.trim() !== '' &&
+      (formData.topics?.length || 0) > 0 &&
       (formData.coverPhoto?.trim() !== '' || uploadPreview !== '') &&
       formData.coverPhotoCaption?.trim() !== '' &&
       (formData.tags?.length || 0) > 0
@@ -131,6 +132,28 @@ export function ArticleForm({
     }));
   };
 
+  const handleAddTopic = (topic: string) => {
+    if (topic && !(formData.topics || []).includes(topic)) {
+      setFormData(prev => ({
+        ...prev,
+        topics: [...(prev.topics || []), topic]
+      }));
+      // Clear any validation error once a topic is added
+      if (errors.topics) {
+        setErrors(prev => ({ ...prev, topics: '' }));
+      }
+      // Reset dropdown by changing key to force re-render
+      setTopicDropdownKey(prev => prev + 1);
+    }
+  };
+
+  const handleRemoveTopic = (topicToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      topics: (prev.topics || []).filter(topic => topic !== topicToRemove)
+    }));
+  };
+
   // Convert form data to Article format for preview
   const getPreviewArticle = (): Article => {
     return {
@@ -140,7 +163,7 @@ export function ArticleForm({
       content: formData.content || '',
       summary: formData.summary,
       author: formData.author,
-      topic: formData.topic || '',
+      topics: formData.topics || [],
       tags: formData.tags || [],
       coverPhoto: uploadPreview || formData.coverPhoto,
       coverPhotoCaption: formData.coverPhotoCaption,
@@ -168,8 +191,8 @@ export function ArticleForm({
     if (!formData.author?.trim()) {
       newErrors.author = 'Author is required';
     }
-    if (!formData.topic?.trim()) {
-      newErrors.topic = 'Topic is required';
+    if (!formData.topics || formData.topics.length === 0) {
+      newErrors.topics = 'At least one topic is required';
     }
     if (!formData.coverPhoto?.trim() && !uploadPreview) {
       newErrors.coverPhoto = 'Cover photo is required';
@@ -308,19 +331,40 @@ export function ArticleForm({
         )}
       </div>
 
-      {/* Topic */}
+      {/* Topics */}
       <div>
-        <label htmlFor="topic" className="block text-sm font-medium text-gray-700">
-          Topic <span className="text-red-500">*</span>
+        <label htmlFor="topics" className="block text-sm font-medium text-gray-700">
+          Topics <span className="text-red-500">*</span>
         </label>
         <SearchableTopicDropdown
-          topics={topics}
-          value={formData.topic || ''}
-          onChange={(value) => setFormData(prev => ({ ...prev, topic: value }))}
-          error={!!errors.topic}
+          key={topicDropdownKey}
+          topics={topics.filter(topic => !(formData.topics || []).includes(topic.name))}
+          value={''}
+          onChange={(value) => handleAddTopic(value)}
+          error={!!errors.topics}
+          placeholder="Select a topic to add..."
         />
-        {errors.topic && (
-          <p className="mt-1 text-sm text-red-600">{errors.topic}</p>
+        {formData.topics && formData.topics.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {formData.topics.map((topic) => (
+              <span
+                key={topic}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+              >
+                {topic}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTopic(topic)}
+                  className="ml-1 inline-flex items-center justify-center w-4 h-4 text-blue-400 hover:text-blue-600 cursor-pointer"
+                >
+                  <XMarkIcon className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        {errors.topics && (
+          <p className="mt-1 text-sm text-red-600">{errors.topics}</p>
         )}
       </div>
 

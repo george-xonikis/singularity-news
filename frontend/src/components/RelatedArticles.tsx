@@ -7,19 +7,19 @@ import type { Article } from '@singularity-news/shared';
 
 interface RelatedArticlesProps {
   currentArticleId: string;
-  currentTopic: string;
+  currentTopics: string[];
   currentTags?: string[];
 }
 
-export function RelatedArticles({ currentArticleId, currentTopic, currentTags = [] }: RelatedArticlesProps) {
+export function RelatedArticles({ currentArticleId, currentTopics, currentTags = [] }: RelatedArticlesProps) {
   const [relatedArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Fetch related articles based on topic and tags
+    // TODO: Fetch related articles based on topics and tags
     // For now, we'll just show a placeholder
     setLoading(false);
-  }, [currentArticleId, currentTopic, currentTags]);
+  }, [currentArticleId, currentTopics, currentTags]);
 
   if (loading) {
     return (
@@ -75,7 +75,13 @@ export function RelatedArticles({ currentArticleId, currentTopic, currentTags = 
                 {article.summary}
               </p>
               <div className="mt-2 flex items-center text-xs text-gray-500">
-                <span>{article.topic}</span>
+                <div className="flex flex-wrap gap-1">
+                  {article.topics.map((topic, idx) => (
+                    <span key={idx} className="bg-gray-100 px-1 py-0.5 rounded text-xs">
+                      {topic}
+                    </span>
+                  ))}
+                </div>
                 <span className="mx-2">•</span>
                 <span>{new Date(article.publishedDate || article.createdAt).toLocaleDateString()}</span>
               </div>

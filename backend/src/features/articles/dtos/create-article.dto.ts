@@ -3,11 +3,11 @@ import { CreateArticleInput } from '@singularity-news/shared';
 export class CreateArticleDto {
   private readonly data: CreateArticleInput;
 
-  constructor(input: Partial<CreateArticleInput> & { title: string; content: string; topic: string }) {
+  constructor(input: Partial<CreateArticleInput> & { title: string; content: string; topics: string[] }) {
     this.data = {
       title: input.title,
       content: input.content,
-      topic: input.topic,
+      topics: input.topics,
       tags: input.tags || [],
       published: input.published ?? true,
       ...(input.slug !== undefined && { slug: input.slug }),
@@ -34,8 +34,16 @@ export class CreateArticleDto {
       errors.push('Content is required');
     }
 
-    if (!this.data.topic || this.data.topic.trim().length === 0) {
-      errors.push('Topic is required');
+    if (!this.data.topics || this.data.topics.length === 0) {
+      errors.push('At least one topic is required');
+    }
+    
+    if (this.data.topics && !Array.isArray(this.data.topics)) {
+      errors.push('Topics must be an array');
+    }
+    
+    if (this.data.topics && this.data.topics.some(topic => !topic || topic.trim().length === 0)) {
+      errors.push('All topics must be non-empty strings');
     }
 
     if (!this.data.summary || this.data.summary.trim().length === 0) {
@@ -82,7 +90,7 @@ export class CreateArticleDto {
   // Convenience getters for individual properties
   get title() { return this.data.title; }
   get content() { return this.data.content; }
-  get topic() { return this.data.topic; }
+  get topics() { return this.data.topics; }
   get slug() { return this.data.slug; }
   get summary() { return this.data.summary; }
   get author() { return this.data.author; }

@@ -75,7 +75,7 @@ export function ArticlesTable() {
                 <SortButton field="title">Title</SortButton>
               </TableHeader>
               <TableHeader>
-                <SortButton field="topic">Topic</SortButton>
+                <SortButton field="topics">Topics</SortButton>
               </TableHeader>
               <TableHeader>
                 <SortButton field="views">Views</SortButton>
@@ -104,7 +104,13 @@ export function ArticlesTable() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-slate-600">{article.topic}</span>
+                  <div className="flex flex-wrap gap-1">
+                    {article.topics.map((topic, idx) => (
+                      <span key={idx} className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
                 </TableCell>
                 <TableCell>
                   <span className="text-slate-600 font-medium">{article.views.toLocaleString()}</span>

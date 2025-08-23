@@ -45,7 +45,7 @@ export default async function ArticlePage({ params }: PageProps) {
     <ArticleDetail article={article}>
       <RelatedArticles
         currentArticleId={article.id}
-        currentTopic={article.topic}
+        currentTopics={article.topics}
         currentTags={article.tags}
       />
     </ArticleDetail>

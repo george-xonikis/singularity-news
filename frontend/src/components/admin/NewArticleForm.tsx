@@ -18,7 +18,7 @@ export function NewArticleForm() {
 
     try {
       // Validate required fields
-      if (!formData.title || !formData.content || !formData.topic || !formData.tags) {
+      if (!formData.title || !formData.content || !formData.topics || !formData.tags) {
         throw new Error('Missing required fields');
       }
 
@@ -26,7 +26,7 @@ export function NewArticleForm() {
       const submitData: CreateArticleInput = {
         title: formData.title,
         content: formData.content,
-        topic: formData.topic,
+        topics: formData.topics,
         tags: formData.tags,
         published: publish,
         summary: formData.summary,

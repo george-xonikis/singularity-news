@@ -48,7 +48,7 @@ export const createInitialFilters = (): ArticleFilters => ({
 
   // Filters
   search: '',
-  topic: '',
+  topics: undefined,
   minViews: undefined,
   maxViews: undefined,
   startDate: '',

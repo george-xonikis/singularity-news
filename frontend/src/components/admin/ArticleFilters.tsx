@@ -15,6 +15,9 @@ export function ArticleFilters() {
   const handleFilterChange = (key: keyof IArticleFilters, value: string | number) => {
     if (key === 'minViews' || key === 'maxViews') {
       setFilters({ [key]: value ? parseInt(value as string) : undefined });
+    } else if (key === 'topics') {
+      // Convert single topic selection to array
+      setFilters({ [key]: value ? [value as string] : undefined });
     } else {
       setFilters({ [key]: value });
     }
@@ -58,8 +61,8 @@ export function ArticleFilters() {
               Topic
             </label>
             <select
-              value={filters.topic || ''}
-              onChange={(e) => handleFilterChange('topic', e.target.value)}
+              value={filters.topics?.[0] || ''}
+              onChange={(e) => handleFilterChange('topics', e.target.value)}
               className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
             >
               <option value="">All Topics</option>

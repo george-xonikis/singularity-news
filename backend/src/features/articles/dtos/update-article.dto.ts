@@ -24,8 +24,14 @@ export class UpdateArticleDto {
       errors.push('Content cannot be empty');
     }
 
-    if (this.data.topic !== undefined && this.data.topic.trim().length === 0) {
-      errors.push('Topic cannot be empty');
+    if (this.data.topics !== undefined) {
+      if (!Array.isArray(this.data.topics)) {
+        errors.push('Topics must be an array');
+      } else if (this.data.topics.length === 0) {
+        errors.push('At least one topic is required');
+      } else if (this.data.topics.some(topic => !topic || topic.trim().length === 0)) {
+        errors.push('All topics must be non-empty strings');
+      }
     }
 
     if (this.data.slug !== undefined && !/^[a-z0-9-]+$/.test(this.data.slug)) {
@@ -51,7 +57,7 @@ export class UpdateArticleDto {
   // Convenience getters for individual properties
   get title() { return this.data.title; }
   get content() { return this.data.content; }
-  get topic() { return this.data.topic; }
+  get topics() { return this.data.topics; }
   get slug() { return this.data.slug; }
   get summary() { return this.data.summary; }
   get author() { return this.data.author; }

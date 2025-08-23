@@ -10,7 +10,7 @@ export interface DatabaseArticle {
   summary: string | null;
   author: string | null;
   content: string;
-  topic: string;
+  topics: string[];
   cover_photo: string | null;
   cover_photo_caption: string | null;
   tags: string[];
@@ -30,7 +30,7 @@ export const transformArticleFromDb = (dbArticle: DatabaseArticle): Article => {
     title: dbArticle.title,
     slug: dbArticle.slug,
     content: dbArticle.content,
-    topic: dbArticle.topic,
+    topics: dbArticle.topics || [],
     tags: dbArticle.tags || [],
     createdAt: dbArticle.created_at,
     updatedAt: dbArticle.updated_at,
@@ -72,7 +72,7 @@ export const transformArticleToDb = (article: Partial<Article>): Partial<Databas
   if (article.title) result.title = article.title;
   if (article.slug) result.slug = article.slug;
   if (article.content) result.content = article.content;
-  if (article.topic) result.topic = article.topic;
+  if (article.topics) result.topics = article.topics;
   if (article.summary !== undefined) result.summary = article.summary || null;
   if (article.author !== undefined) result.author = article.author || null;
   if (article.coverPhoto !== undefined) result.cover_photo = article.coverPhoto || null;

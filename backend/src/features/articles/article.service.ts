@@ -79,7 +79,7 @@ export class ArticleService {
       content: data.content,
       summary: data.summary || null,
       author: data.author || null,
-      topic: data.topic,
+      topics: data.topics,
       cover_photo: data.coverPhoto || null,
       cover_photo_caption: data.coverPhotoCaption || null,
       tags: data.tags || [],
@@ -114,7 +114,7 @@ export class ArticleService {
       content: string;
       summary: string | null;
       author: string | null;
-      topic: string;
+      topics: string[];
       cover_photo: string | null;
       cover_photo_caption: string | null;
       tags: string[];
@@ -126,7 +126,7 @@ export class ArticleService {
     if (data.content !== undefined) updates.content = data.content;
     if (data.summary !== undefined) updates.summary = data.summary;
     if (data.author !== undefined) updates.author = data.author;
-    if (data.topic !== undefined) updates.topic = data.topic;
+    if (data.topics !== undefined) updates.topics = data.topics;
     if (data.coverPhoto !== undefined) updates.cover_photo = data.coverPhoto;
     if (data.coverPhotoCaption !== undefined) updates.cover_photo_caption = data.coverPhotoCaption;
     if (data.tags !== undefined) updates.tags = data.tags;
@@ -165,11 +165,11 @@ export class ArticleService {
   }
 
   /**
-   * Get articles by topic
+   * Get articles by topics
    */
-  async getArticlesByTopic(topic: string, limit = 50, offset = 0): Promise<Article[]> {
+  async getArticlesByTopics(topics: string[], limit = 50, offset = 0): Promise<Article[]> {
     return this.repository.findAll({
-      topic,
+      topics,
       published: true,
       limit,
       offset

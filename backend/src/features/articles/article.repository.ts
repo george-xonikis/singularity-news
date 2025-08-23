@@ -9,7 +9,7 @@ export class ArticleRepository {
    */
   async findAll(filters: ArticleFilters = {}): Promise<Article[]> {
     const {
-      topic,
+      topics,
       search,
       published,
       limit = 50,
@@ -23,7 +23,7 @@ export class ArticleRepository {
     } = filters;
 
     let sql = 'SELECT * FROM articles WHERE 1=1';
-    const params: (string | number | boolean)[] = [];
+    const params: (string | string[] | number | boolean)[] = [];
     let paramCount = 0;
 
     if (published !== undefined) {
@@ -31,9 +31,9 @@ export class ArticleRepository {
       params.push(published);
     }
 
-    if (topic) {
-      sql += ` AND topic = $${++paramCount}`;
-      params.push(topic);
+    if (topics && topics.length > 0) {
+      sql += ` AND topics && $${++paramCount}`;
+      params.push(topics);
     }
 
     if (search) {
@@ -62,7 +62,7 @@ export class ArticleRepository {
     }
 
     // Add sorting
-    const allowedSortFields = ['title', 'created_at', 'updated_at', 'published_date', 'views', 'topic'];
+    const allowedSortFields = ['title', 'created_at', 'updated_at', 'published_date', 'views', 'topics'];
     const validSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'created_at';
     const validSortOrder = ['ASC', 'DESC'].includes(sortOrder) ? sortOrder : 'DESC';
     
@@ -146,7 +146,7 @@ export class ArticleRepository {
   async create(article: Partial<DatabaseArticle>): Promise<Article> {
     const result = await query(
       `INSERT INTO articles (
-        title, slug, content, summary, author, topic, 
+        title, slug, content, summary, author, topics, 
         cover_photo, cover_photo_caption, tags, published_date, published, views
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
       RETURNING *`,
@@ -154,13 +154,13 @@ export class ArticleRepository {
         article.title,
         article.slug,
         article.content,
-        article.summary || null,
-        article.author || null,
-        article.topic,
-        article.cover_photo || null,
-        article.cover_photo_caption || null,
-        article.tags || [],
-        article.published_date || new Date(),
+        article.summary ?? null,
+        article.author ?? null,
+        article.topics,
+        article.cover_photo ?? null,
+        article.cover_photo_caption ?? null,
+        article.tags ?? [],
+        article.published_date ?? new Date(),
         article.published ?? true,
         0
       ]
@@ -228,7 +228,7 @@ export class ArticleRepository {
    */
   async count(filters: ArticleFilters = {}): Promise<number> {
     const { 
-      topic, 
+      topics, 
       search, 
       published, 
       minViews, 
@@ -238,7 +238,7 @@ export class ArticleRepository {
     } = filters;
     
     let sql = 'SELECT COUNT(*) as count FROM articles WHERE 1=1';
-    const params: (string | number | boolean)[] = [];
+    const params: (string | string[] | number | boolean)[] = [];
     let paramCount = 0;
 
     if (published !== undefined) {
@@ -246,9 +246,9 @@ export class ArticleRepository {
       params.push(published);
     }
 
-    if (topic) {
-      sql += ` AND topic = $${++paramCount}`;
-      params.push(topic);
+    if (topics && topics.length > 0) {
+      sql += ` AND topics && $${++paramCount}`;
+      params.push(topics);
     }
 
     if (search) {

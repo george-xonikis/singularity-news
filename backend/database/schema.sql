@@ -20,7 +20,7 @@ CREATE TABLE articles (
   content TEXT NOT NULL,
   summary TEXT,
   author VARCHAR(200),
-  topic VARCHAR(100) NOT NULL,
+  topics TEXT[] NOT NULL DEFAULT '{}', -- Array of topic names
   cover_photo TEXT,
   cover_photo_caption VARCHAR(500),
   tags TEXT[], -- Array of tags for SEO and filtering
@@ -30,16 +30,13 @@ CREATE TABLE articles (
   views INTEGER DEFAULT 0,
   published BOOLEAN DEFAULT TRUE,
   
-  -- Add foreign key constraint to topics
-  CONSTRAINT fk_articles_topic 
-    FOREIGN KEY (topic) 
-    REFERENCES topics(name) 
-    ON UPDATE CASCADE 
-    ON DELETE RESTRICT
+  -- Note: Foreign key constraints on array elements are complex in PostgreSQL
+  -- We'll handle topic validation in the application layer
+  -- Each element in topics array should correspond to a topics.name
 );
 
 -- Indexes for better query performance
-CREATE INDEX idx_articles_topic ON articles(topic);
+CREATE INDEX idx_articles_topics ON articles USING gin(topics); -- GIN index for array operations
 CREATE INDEX idx_articles_published ON articles(published);
 CREATE INDEX idx_articles_created_at ON articles(created_at DESC);
 CREATE INDEX idx_articles_published_date ON articles(published_date DESC);

@@ -68,21 +68,26 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
       {/* Article Content */}
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Topic Breadcrumb */}
-        {!isPreview && (
+        {article.topics && article.topics.length > 0 && (
           <div className="text-center mb-8">
-            <Link
-              href={`/topics/${article.topic.toLowerCase()}`}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700 uppercase tracking-wider"
-            >
-              {article.topic}
-            </Link>
-            <span className="text-gray-400 mx-2">|</span>
-            <span className="text-sm text-gray-600 uppercase tracking-wider">Economy</span>
+            {article.topics.map((topic, index) => (
+              <span key={topic}>
+                <Link
+                  href={`/topics/${topic.toLowerCase()}`}
+                  className="text-sm font-semibold text-blue-600 hover:text-blue-700 uppercase tracking-wider"
+                >
+                  {topic}
+                </Link>
+                {index < article.topics.length - 1 && (
+                  <span className="text-gray-400 mx-2">|</span>
+                )}
+              </span>
+            ))}
           </div>
         )}
 
         {/* Headline */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-8 text-center max-w-4xl mx-auto">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-8 text-center max-w-4xl mx-auto">
           {article.title}
         </h1>
 

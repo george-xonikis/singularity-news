@@ -44,7 +44,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
 
     try {
       // Validate required fields
-      if (!formData.title || !formData.content || !formData.topic || !formData.tags) {
+      if (!formData.title || !formData.content || !formData.topics || !formData.tags) {
         throw new Error('Missing required fields');
       }
 
@@ -52,7 +52,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
       const submitData: UpdateArticleInput = {
         title: formData.title,
         content: formData.content,
-        topic: formData.topic,
+        topics: formData.topics,
         tags: formData.tags,
         published: publish,
         summary: formData.summary,
@@ -115,7 +115,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     content: article.content,
     summary: article.summary || '',
     author: article.author || '',
-    topic: article.topic,
+    topics: article.topics,
     coverPhoto: article.coverPhoto || '',
     coverPhotoCaption: article.coverPhotoCaption || '',
     tags: article.tags,

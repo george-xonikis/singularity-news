@@ -22,7 +22,13 @@ export default function MainContent({ articles }: MainContentProps) {
                 {article.summary || article.content.substring(0, 150)}
               </p>
               <div className="flex justify-between items-center text-sm text-gray-500">
-                <span className="bg-gray-100 px-2 py-1 rounded">{article.topic}</span>
+                <div className="flex flex-wrap gap-1">
+                  {article.topics.map((topic, idx) => (
+                    <span key={idx} className="bg-gray-100 px-2 py-1 rounded text-xs">
+                      {topic}
+                    </span>
+                  ))}
+                </div>
                 <span>{article.views.toLocaleString()} views</span>
               </div>
             </article>
