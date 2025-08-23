@@ -19,60 +19,65 @@ export function TopicsTable({ topics, onEdit, onDelete }: TopicsTableProps) {
   };
 
   return (
-    <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr className="border-b border-gray-200">
-            <TableHeader>
-              Name
-            </TableHeader>
-            <TableHeader>
-              Slug
-            </TableHeader>
-            <TableHeader align="right">
-              Actions
-            </TableHeader>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {topics.length === 0 ? (
-            <tr>
-              <td colSpan={3} className="px-6 py-8 text-center text-gray-500">
-                No topics found. Create your first topic to get started.
-              </td>
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse">
+          <thead className="bg-slate-100">
+            <tr className="border-b border-slate-200">
+              <TableHeader>
+                Name
+              </TableHeader>
+              <TableHeader>
+                Slug
+              </TableHeader>
+              <TableHeader align="right">
+                Actions
+              </TableHeader>
             </tr>
-          ) : (
-            topics.map((topic) => (
-              <tr key={topic.id} className="hover:bg-gray-50 transition-colors">
-                <TableCell>
-                  <div className="font-medium text-gray-900 whitespace-nowrap">{topic.name}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="text-gray-500 font-mono whitespace-nowrap">{topic.slug}</div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <button
-                      onClick={() => onEdit(topic)}
-                      className="text-indigo-600 hover:text-indigo-900 p-1 hover:bg-indigo-50 rounded transition-colors cursor-pointer"
-                      title="Edit"
-                    >
-                      <PencilIcon className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(topic.id)}
-                      className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors cursor-pointer"
-                      title="Delete"
-                    >
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                </TableCell>
+          </thead>
+          <tbody>
+            {topics.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="px-6 py-8 text-center text-slate-500">
+                  No topics found. Create your first topic to get started.
+                </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              topics.map((topic, index) => (
+                <tr 
+                  key={topic.id} 
+                  className={`${index !== topics.length - 1 ? 'border-b border-slate-200' : ''} hover:bg-slate-50 cursor-pointer transition-colors duration-150`}
+                >
+                  <TableCell>
+                    <div className="font-medium text-slate-900 whitespace-nowrap">{topic.name}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-slate-600 font-mono whitespace-nowrap">{topic.slug}</div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => onEdit(topic)}
+                        className="text-amber-600 hover:text-amber-700 p-1 hover:bg-amber-50 rounded transition-colors cursor-pointer"
+                        title="Edit"
+                      >
+                        <PencilIcon className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(topic.id)}
+                        className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors duration-200 cursor-pointer"
+                        title="Delete"
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </TableCell>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

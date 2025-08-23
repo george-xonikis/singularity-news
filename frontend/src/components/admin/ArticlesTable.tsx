@@ -51,23 +51,23 @@ export function ArticlesTable() {
   const SortButton = ({ field, children }: { field: string; children: React.ReactNode }) => (
     <button
       onClick={() => setSort(field)}
-      className="flex items-center gap-1 hover:text-indigo-600 transition-colors cursor-pointer"
+      className="flex items-center gap-1 hover:text-amber-600 transition-colors cursor-pointer"
     >
       {children}
       {sortBy === field && (
         sortOrder === 'ASC' ?
-          <ArrowUpIcon className="h-4 w-4" /> :
-          <ArrowDownIcon className="h-4 w-4" />
+          <ArrowUpIcon className="h-4 w-4 text-amber-500" /> :
+          <ArrowDownIcon className="h-4 w-4 text-amber-500" />
       )}
     </button>
   );
 
   return (
-    <div className="bg-white rounded-lg">
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="min-w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
+        <table className="min-w-full border-collapse">
+          <thead className="bg-slate-100">
+            <tr className="border-b border-slate-200">
               <TableHeader>
                 <SortButton field="created_at">Date</SortButton>
               </TableHeader>
@@ -92,22 +92,22 @@ export function ArticlesTable() {
             {articles.map((article, index) => (
               <tr
                 key={article.id}
-                className={`${index !== articles.length - 1 ? 'border-b border-gray-100' : ''} hover:bg-gray-50 cursor-pointer`}
+                className={`${index !== articles.length - 1 ? 'border-b border-slate-200' : ''} hover:bg-slate-50 cursor-pointer transition-colors duration-150`}
                 onClick={() => window.open(`/admin/articles/${article.id}/edit`, '_blank')}
               >
                 <TableCell>
-                  <span className="text-gray-600">{formatDate(article.createdAt)}</span>
+                  <span className="text-slate-600">{formatDate(article.createdAt)}</span>
                 </TableCell>
                 <TableCell>
-                  <div className="font-medium text-gray-900" title={article.title}>
+                  <div className="font-medium text-slate-900" title={article.title}>
                     {article.title.length > 60 ? article.title.substring(0, 60) + '...' : article.title}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-gray-600">{article.topic}</span>
+                  <span className="text-slate-600">{article.topic}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="text-gray-600">{article.views.toLocaleString()}</span>
+                  <span className="text-slate-600 font-medium">{article.views.toLocaleString()}</span>
                 </TableCell>
                 <TableCell>
                   <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
@@ -137,50 +137,50 @@ export function ArticlesTable() {
 
       {articles.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No articles found</p>
+          <p className="text-slate-500">No articles found</p>
         </div>
       )}
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+        <div className="bg-white px-4 py-3 border-t border-slate-200 sm:px-6">
           <div className="flex items-center justify-between">
             <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                className="relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               >
                 Previous
               </button>
               <button
                 onClick={() => setPage(Math.min(pagination.totalPages, currentPage + 1))}
                 disabled={currentPage === pagination.totalPages}
-                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                className="ml-3 relative inline-flex items-center px-4 py-2 border border-slate-300 text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               >
                 Next
               </button>
             </div>
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-slate-700">
                   Showing{' '}
-                  <span className="font-medium">{(currentPage - 1) * pagination.limit + 1}</span>
+                  <span className="font-medium text-slate-900">{(currentPage - 1) * pagination.limit + 1}</span>
                   {' '}to{' '}
-                  <span className="font-medium">
+                  <span className="font-medium text-slate-900">
                     {Math.min(currentPage * pagination.limit, pagination.total)}
                   </span>
                   {' '}of{' '}
-                  <span className="font-medium">{pagination.total}</span>
+                  <span className="font-medium text-slate-900">{pagination.total}</span>
                   {' '}results
                 </p>
               </div>
               <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <nav className="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
                   <button
                     onClick={() => setPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-2 py-2 rounded-l-lg border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                   >
                     <ChevronLeftIcon className="h-5 w-5" />
                   </button>
@@ -191,10 +191,10 @@ export function ArticlesTable() {
                       <button
                         key={page}
                         onClick={() => setPage(page)}
-                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer ${
+                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer transition-colors ${
                           currentPage === page
-                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                            ? 'z-10 bg-amber-50 border-amber-500 text-amber-600'
+                            : 'bg-white border-slate-300 text-slate-500 hover:bg-slate-50'
                         }`}
                       >
                         {page}
@@ -205,7 +205,7 @@ export function ArticlesTable() {
                   <button
                     onClick={() => setPage(Math.min(pagination.totalPages, currentPage + 1))}
                     disabled={currentPage === pagination.totalPages}
-                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-2 py-2 rounded-r-lg border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                   >
                     <ChevronRightIcon className="h-5 w-5" />
                   </button>

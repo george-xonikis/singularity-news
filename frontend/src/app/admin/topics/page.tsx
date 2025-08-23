@@ -78,12 +78,12 @@ export default function TopicsPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Topics</h1>
-          <p className="text-gray-600">Manage article categories and topics</p>
+          <h1 className="text-3xl font-bold text-slate-800">Topics</h1>
+          <p className="text-slate-600">Manage article categories and topics</p>
         </div>
         <button
           onClick={openAddModal}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors cursor-pointer"
+          className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2.5 rounded-lg flex items-center gap-2 transition-colors cursor-pointer font-medium shadow-sm"
         >
           <PlusIcon className="h-5 w-5" />
           Add Topic
@@ -107,9 +107,9 @@ export default function TopicsPage() {
 
       {/* Loading Overlay */}
       {loading && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-40">
+        <div className="fixed inset-0 bg-slate-500 bg-opacity-50 flex items-center justify-center z-40">
           <div className="bg-white rounded-lg p-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
           </div>
         </div>
       )}
