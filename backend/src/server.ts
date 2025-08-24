@@ -30,8 +30,7 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: SERVER_CONFIG.NODE_ENV,
     port: PORT,
-    version: '1.0.0',
-    fe_url: CORS_CONFIG.FRONTEND_URL
+    version: '1.0.0'
   });
 });
 
