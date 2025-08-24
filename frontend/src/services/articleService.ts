@@ -1,7 +1,7 @@
 import type { Article, ArticleFilters } from '@singularity-news/shared';
-import { BE_API_URL } from '@/config/env';
+import { NEXT_PUBLIC_BE_API_URL } from '@/config/env';
 
-const API_BASE_URL = BE_API_URL;
+const API_BASE_URL = NEXT_PUBLIC_BE_API_URL;
 
 export interface PaginatedArticlesResponse {
   data: Article[];

@@ -17,5 +17,6 @@ export const APP_CONFIG = {
 
 // Export individual values for convenience
 export const BE_API_URL = API_CONFIG.BASE_URL;
+export const NEXT_PUBLIC_BE_API_URL = process.env.NEXT_PUBLIC_BE_API_URL;
 export const IS_PRODUCTION = APP_CONFIG.IS_PRODUCTION;
 export const IS_DEVELOPMENT = APP_CONFIG.IS_DEVELOPMENT;
