@@ -13,6 +13,30 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `[PENDING]` - **fix(database)**: Enhance SQL parsing and add comprehensive logging
+- **SQL statement parsing improvements**:
+  - Fixed SQL statement parsing logic that caused malformed CREATE TABLE statements
+  - Enhanced $$ delimiter handling for PostgreSQL functions with accurate dollar-sign counting
+  - Proper tracking of function boundaries to prevent premature statement splitting
+  - Resolved production deployment CREATE TABLE parsing issues causing "relation does not exist" errors
+- **Comprehensive logging system**:
+  - Added statement-by-statement execution progress logging (X/Y format)
+  - Included timing information for each SQL statement execution
+  - Added PostgreSQL error codes for better debugging in production
+  - Statement previews displayed when errors occur for troubleshooting
+  - Clear distinction between critical errors and "already exists" conditions
+- **Database state verification**:
+  - Added comprehensive database verification after initialization
+  - Checks for required tables (topics, articles) existence
+  - Lists all created tables and indexes for debugging
+  - Provides detailed logging of database state
+- **Error handling improvements**:
+  - Enhanced error categorization (critical vs skippable errors)
+  - Better handling of "object already exists" scenarios
+  - Improved error messages with statement context
+- **Files affected**:
+  - backend/src/shared/database/init.ts: Enhanced SQL parsing, logging, and error handling
+
 #### `0504172` - **fix**: Resolve production deployment schema path detection
 - **Database initialization fixes**:
   - Fixed schema file path detection for both development and production environments
