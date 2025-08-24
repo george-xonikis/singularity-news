@@ -13,7 +13,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
-#### `TBD` - **fix**: update vercel.json to use nextjs framework with custom output directory
+#### `d2cda25` - **fix**: update vercel.json to use nextjs framework with custom output directory
 - Updated vercel.json configuration to use "framework": "nextjs" instead of null
 - Added "outputDirectory": "frontend/.next" to specify build output location
 - This configuration should work with Next.js framework detection while still using custom build commands
