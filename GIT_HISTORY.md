@@ -13,7 +13,16 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
-#### `[PENDING]` - **fix(database)**: Enhance SQL parsing and add comprehensive logging
+#### `0e334ac` - **feat(api)**: add frontend URL to health check response
+- **Health check endpoint enhancement**:
+  - Added `fe_url: CORS_CONFIG.FRONTEND_URL` to health check JSON response
+  - Provides visibility into the backend's understanding of the frontend URL configuration
+  - Helps with debugging CORS issues during deployment and development
+  - Makes it easier to verify CORS configuration correctness
+- **Files affected**:
+  - backend/src/server.ts: Added fe_url field to /health endpoint response
+
+#### `d799c97` - **fix(database)**: resolve critical SQL parsing and add comprehensive logging
 - **SQL statement parsing improvements**:
   - Fixed SQL statement parsing logic that caused malformed CREATE TABLE statements
   - Enhanced $$ delimiter handling for PostgreSQL functions with accurate dollar-sign counting
