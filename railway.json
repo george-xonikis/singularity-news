@@ -9,5 +9,14 @@
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
+  },
+  "watch": {
+    "patterns": [
+      "backend/**",
+      "shared/**",
+      "package.json",
+      "pnpm-workspace.yaml",
+      "railway.json"
+    ]
   }
 }
