@@ -7,13 +7,30 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 0504172)
+- **master**: Production-ready code (last commit: aef3a38)
 
 ## Complete Commit History
 
 ### 2025-08-24
 
-#### `[PENDING]` - **fix(frontend)**: resolve hardcoded API URL in public article detail page
+#### `aef3a38` - **fix(frontend)**: resolve static rendering error preventing home page build
+- **Next.js ISR implementation**:
+  - Replaced `cache: 'no-store'` with `next: { revalidate: 300 }` for articles in server-data.ts
+  - Replaced `cache: 'no-store'` with `next: { revalidate: 600 }` for topics in server-data.ts
+  - Articles now revalidate every 5 minutes, topics every 10 minutes for performance optimization
+- **Build error resolution**:
+  - Fixed "Route / couldn't be rendered statically because it used revalidate: 0 fetch" error
+  - Error was caused by `cache: 'no-store'` preventing static generation at build time
+  - Home page can now be statically generated during build process
+- **Performance improvements**:
+  - Enables static generation of home page for instant loading
+  - Implements Incremental Static Regeneration (ISR) for fresh content delivery
+  - Maintains reasonable content freshness with periodic background updates
+  - Topics revalidate less frequently as they change less often than articles
+- **Files affected**:
+  - frontend/src/lib/server-data.ts: Updated fetch configurations for both articles and topics endpoints
+
+#### `4178768` - **fix(frontend)**: resolve hardcoded API URL in public article detail page
 - **Hardcoded API URL fix**:
   - Removed hardcoded `http://localhost:3002/api/articles/${slug}` from article detail page
   - Added proper import for `API_CONFIG` from environment configuration
@@ -1048,7 +1065,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 43 (41 in master, 2 unique to feat-001)
+- **Total Commits**: 44 (42 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

@@ -3,7 +3,9 @@ import { API_CONFIG } from '@/config/env';
 
 export async function getArticles(): Promise<Article[]> {
   try {
-    const response = await fetch(`${API_CONFIG.SERVER_URL}/articles`, { cache: 'no-store' });
+    const response = await fetch(`${API_CONFIG.SERVER_URL}/articles`, {
+      next: { revalidate: 300 } // Revalidate every 5 minutes
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -19,7 +21,7 @@ export async function getArticles(): Promise<Article[]> {
 export async function getTopics(): Promise<Topic[]> {
   try {
     const response = await fetch(`${API_CONFIG.SERVER_URL}/topics`, {
-      cache: 'no-store' // Always fetch fresh data
+      next: { revalidate: 600 } // Topics change less frequently, revalidate every 10 minutes
     });
 
     if (!response.ok) {
