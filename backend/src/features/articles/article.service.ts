@@ -61,8 +61,6 @@ export class ArticleService {
    */
   async createArticle(dto: CreateArticleDto): Promise<Article> {
     const data = dto.validatedData;
-
-    console.log(data);
     
     // Generate slug if not provided
     const slug = data.slug || generateSlug(data.title);

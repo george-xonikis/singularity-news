@@ -11,6 +11,21 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ## Complete Commit History
 
+### 2025-08-24
+
+#### `[pending]` - **chore**: Clean up unused backend files and code
+- Removed 4 unused files from early development phases
+  - backend/src/types/database.ts (replaced by @singularity-news/shared types)
+  - backend/src/lib/client.ts (unused database abstraction layer)
+  - backend/src/lib/supabase.ts (unused Supabase client configuration)
+  - backend/src/shared/utils/topic.mapper.ts (duplicate mapper functionality)
+- Removed empty directories after file cleanup
+  - backend/src/types/ directory
+  - backend/src/lib/ directory
+- Cleaned up debug code from article.service.ts
+  - Removed console.log statement from createArticle method
+- All remaining backend files are actively used and necessary
+
 ### 2025-08-23
 
 #### `3220be4` - **fix**: Enhance Railway deployment with improved logging and error handling
