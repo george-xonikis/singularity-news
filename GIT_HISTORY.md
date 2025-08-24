@@ -7,11 +7,30 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 3f601ee)
+- **master**: Production-ready code (last commit: d271fb9)
 
 ## Complete Commit History
 
 ### 2025-08-24
+
+#### `d271fb9` - **refactor**: Simplify environment variable configuration
+- **Environment variable refactoring**:
+  - Removed redundant getEnvVar utility function from frontend/src/config/env.ts
+  - Simplified environment variable access to use process.env directly
+  - Cleaned up API URL configuration across all services
+- **Code cleanup**:
+  - Removed unused imports and variables from apiClient.ts
+  - Simplified BE_API_URL exports and usage in env.ts
+  - Updated all service files to use simplified environment configuration
+  - Fixed Header.tsx import path consistency
+- **Files affected**:
+  - frontend/src/api/apiClient.ts: Removed unused getEnvVar import
+  - frontend/src/components/Header.tsx: Import path consistency
+  - frontend/src/config/env.ts: Removed getEnvVar function, simplified exports
+  - frontend/src/lib/server-data.ts: Updated to use simplified env config
+  - frontend/src/services/articleService.ts: Updated import and usage
+  - frontend/src/services/dashboardService.ts: Simplified API URL usage
+  - frontend/src/services/topicService.ts: Updated import and usage
 
 #### `3f601ee` - **fix**: Merge vercel-deployment branch to master
 - **MERGE COMMIT**: Combined multiple deployment and environment configuration fixes

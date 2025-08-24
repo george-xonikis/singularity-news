@@ -1,9 +1,9 @@
 import { Article, Topic } from '@singularity-news/shared';
-import { BE_API_URL } from '@/config/env';
+import { API_CONFIG } from '@/config/env';
 
 export async function getArticles(): Promise<Article[]> {
   try {
-    const response = await fetch(`${BE_API_URL}/articles`, { cache: 'no-store' });
+    const response = await fetch(`${API_CONFIG.SERVER_URL}/articles`, { cache: 'no-store' });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -18,7 +18,7 @@ export async function getArticles(): Promise<Article[]> {
 
 export async function getTopics(): Promise<Topic[]> {
   try {
-    const response = await fetch(`${BE_API_URL}/topics`, {
+    const response = await fetch(`${API_CONFIG.SERVER_URL}/topics`, {
       cache: 'no-store' // Always fetch fresh data
     });
 

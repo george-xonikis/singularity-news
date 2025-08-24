@@ -1,6 +1,4 @@
-import { BE_API_URL } from '@/config/env';
-
-const API_BASE_URL = BE_API_URL;
+import { API_CONFIG } from '@/config/env';
 
 export interface DashboardStats {
   totalArticles: number;
@@ -24,7 +22,7 @@ export interface RecentArticle {
 
 export class DashboardService {
   static async getStats(): Promise<DashboardStats> {
-    const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`);
+    const response = await fetch(`${API_CONFIG.NEXT_URL}/admin/dashboard/stats`);
     if (!response.ok) {
       throw new Error('Failed to fetch dashboard stats');
     }
@@ -33,7 +31,7 @@ export class DashboardService {
   }
 
   static async getRecentArticles(): Promise<RecentArticle[]> {
-    const response = await fetch(`${API_BASE_URL}/admin/dashboard/recent-articles`);
+    const response = await fetch(`${API_CONFIG.NEXT_URL}/admin/dashboard/recent-articles`);
     if (!response.ok) {
       throw new Error('Failed to fetch recent articles');
     }
