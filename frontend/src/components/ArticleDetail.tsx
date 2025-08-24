@@ -131,7 +131,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
             <span className="text-sm">👂</span>
             <span className="text-sm font-medium">Listen (1 min)</span>
           </div> */}
-          
+
           <div className="flex items-center space-x-2 text-gray-600">
             <EyeIcon className="h-4 w-4" />
             <span className="text-sm font-medium">{article.views?.toLocaleString() || 0} views</span>
