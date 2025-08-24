@@ -1,22 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import { errorHandler, notFoundHandler } from './shared/middleware/error-handler';
+import { SERVER_CONFIG, CORS_CONFIG, PORT } from './config/env';
 
 const app: express.Application = express();
-const PORT = parseInt(process.env.PORT || '3002', 10);
 
 // Middleware
-const allowedOrigins: string[] = [
-  'http://localhost:3000', 
-  'http://localhost:3001', 
-  'http://localhost:3004',
-  // Add your Vercel frontend URL here when deployed
-  process.env.FRONTEND_URL
-].filter((origin): origin is string => Boolean(origin));
-
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? allowedOrigins 
+  origin: SERVER_CONFIG.IS_PRODUCTION 
+    ? CORS_CONFIG.ALLOWED_ORIGINS 
     : true, // Allow all origins in development
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
@@ -36,7 +28,7 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV ?? 'development',
+    environment: SERVER_CONFIG.NODE_ENV,
     port: PORT,
     version: '1.0.0'
   });
@@ -57,7 +49,7 @@ app.use(errorHandler);
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📊 Environment: ${SERVER_CONFIG.NODE_ENV}`);
   console.log(`🏥 Health check available at: /health`);
 }).on('error', (err) => {
   console.error('❌ Server failed to start:', err);

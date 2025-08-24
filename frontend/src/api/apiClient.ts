@@ -1,4 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+import { BE_API_URL } from '@/config/env';
+
+const BASE_URL = BE_API_URL;
 
 interface RequestOptions {
   method: string;

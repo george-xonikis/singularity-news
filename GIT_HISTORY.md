@@ -13,6 +13,20 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `[pending]` - **feat**: Add centralized environment configuration for frontend and backend
+- Created frontend/src/config/env.ts for centralized frontend environment configuration
+- Created backend/src/config/env.ts for centralized backend environment configuration
+- Updated frontend/src/api/apiClient.ts to use centralized config instead of direct process.env
+- Updated frontend/src/services/dashboardService.ts to use centralized config
+- Updated frontend/src/services/articleService.ts to use centralized config
+- Updated frontend/src/services/topicService.ts to use centralized config
+- Updated backend/src/server.ts to use centralized config for port and CORS origins
+- Updated backend/src/shared/database/connection.ts to use centralized config for database
+- Renamed environment variable from NEXT_PUBLIC_API_URL to BE_API_URL for consistency
+- Standardized default localhost port to 3002 across all services for unified development
+- Improved environment variable management with type-safe configuration objects
+- Enhanced code maintainability by centralizing all environment-dependent values
+
 #### `d51fa47` - **fix**: Remove invalid rootDirectory property from vercel.json
 - Removed invalid "rootDirectory" property from vercel.json (not supported in vercel.json schema)
 - Set "framework": null to use custom build commands instead of auto-detection
