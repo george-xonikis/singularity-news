@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:webpack": "next dev",
-    "build": "pnpm --filter shared build && next build",
+    "build": "pnpm --filter shared build && next build --turbopack",
     "build:vercel": "next build",
     "start": "next start",
     "lint": "next lint",
