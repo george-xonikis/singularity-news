@@ -13,6 +13,14 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `PENDING` - **fix**: Remove invalid rootDirectory property from vercel.json
+- Removed invalid "rootDirectory" property from vercel.json (not supported in vercel.json schema)
+- Set "framework": null to use custom build commands instead of auto-detection
+- Added "outputDirectory": "frontend/.next" to specify where build output is located
+- Reverted build and install commands to work from repository root
+- This fixes the schema validation error: "should NOT have additional property `rootDirectory`"
+- Modified: vercel.json (removed rootDirectory, changed framework to null, added outputDirectory)
+
 #### `2828f28` - **fix**: Set rootDirectory in Vercel config for monorepo Next.js detection
 - Added "rootDirectory": "frontend" to vercel.json configuration
 - Resolves "No Next.js version detected" error on Vercel deployment
