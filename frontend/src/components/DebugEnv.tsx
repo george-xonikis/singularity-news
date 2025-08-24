@@ -14,13 +14,13 @@ export default function DebugEnv() {
           <span className="font-semibold">BE_API_URL:</span> {BE_API_URL || 'undefined'}
         </div>
         <div>
-          <span className="font-semibold">VERCEL_ENV:</span> {process.env.VERCEL_ENV || 'undefined'}
+          <span className="font-semibold">ΝΕΧΤ_VERCEL_ENV:</span> {process.env.ΝΕΧΤ_VERCEL_ENV || 'undefined'}
         </div>
         <div>
           <span className="font-semibold">NODE_ENV:</span> {process.env.NODE_ENV || 'undefined'}
         </div>
         <div>
-          <span className="font-semibold">NEXT_PUBLIC_BE_API_URL:</span> {process.env.NEXT_PUBLIC_BE_API_URL || 'undefined'}
+          <span className="font-semibold">NEXT_BE_API_URL:</span> {process.env.NEXT_BE_API_URL || 'undefined'}
         </div>
       </div>
 
