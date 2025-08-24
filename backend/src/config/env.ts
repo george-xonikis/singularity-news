@@ -23,13 +23,14 @@ export const DATABASE_CONFIG = {
   CONNECTION_TIMEOUT: 2000,
 } as const;
 
+export const FRONTEND_URL = process.env.FRONTEND_URL;
+
 // CORS Configuration
 export const CORS_CONFIG = {
-  FRONTEND_URL: process.env.FRONTEND_URL,
   ALLOWED_ORIGINS: [
+    FRONTEND_URL,
     'http://localhost:3000',
     'http://localhost:3001', 
-    process.env.FRONTEND_URL,
   ].filter((origin): origin is string => Boolean(origin)),
 } as const;
 

@@ -13,6 +13,23 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `b17595c` - **feat(api)**: add frontend URL to health check with proper imports
+- **Environment variable improvements**:
+  - Added FRONTEND_URL as direct export from env.ts for proper import structure
+  - Updated server.ts imports to include FRONTEND_URL directly from config/env
+  - Modified health check response to use FE_Url field with properly imported FRONTEND_URL
+- **Implementation fixes**:
+  - Fixes incorrect implementation that accessed FRONTEND_URL through CORS_CONFIG object
+  - Provides clear visibility of backend's frontend URL configuration for debugging
+  - Ensures proper import/export structure for environment variables
+- **Deployment visibility**:
+  - Health check now shows configured frontend URL for CORS troubleshooting
+  - Makes it easier to verify environment configuration correctness
+  - Helps with debugging CORS issues during deployment and development
+- **Files affected**:
+  - backend/src/config/env.ts: Added FRONTEND_URL direct export for proper import
+  - backend/src/server.ts: Updated imports and health check response field
+
 #### `[PENDING]` - **fix(database)**: Enhance SQL parsing and add comprehensive logging
 - **SQL statement parsing improvements**:
   - Fixed SQL statement parsing logic that caused malformed CREATE TABLE statements

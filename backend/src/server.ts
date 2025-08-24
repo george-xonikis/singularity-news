@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { errorHandler, notFoundHandler } from './shared/middleware/error-handler';
-import { SERVER_CONFIG, CORS_CONFIG, PORT } from './config/env';
+import { SERVER_CONFIG, CORS_CONFIG, PORT, FRONTEND_URL } from './config/env';
 
 const app: express.Application = express();
 
@@ -30,7 +30,8 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: SERVER_CONFIG.NODE_ENV,
     port: PORT,
-    version: '1.0.0'
+    version: '1.0.0',
+    FE_Url: FRONTEND_URL
   });
 });
 
