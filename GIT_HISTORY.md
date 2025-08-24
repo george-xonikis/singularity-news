@@ -13,7 +13,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
-#### `PENDING` - **fix**: Remove invalid rootDirectory property from vercel.json
+#### `d51fa47` - **fix**: Remove invalid rootDirectory property from vercel.json
 - Removed invalid "rootDirectory" property from vercel.json (not supported in vercel.json schema)
 - Set "framework": null to use custom build commands instead of auto-detection
 - Added "outputDirectory": "frontend/.next" to specify where build output is located
