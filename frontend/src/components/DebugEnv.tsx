@@ -11,11 +11,16 @@ export default function DebugEnv() {
 
       <div className="space-y-2">
         <div>
+          <span className="font-semibold">ENV:</span> {JSON.stringify(process.env) || 'undefined'}
+        </div>
+
+        <div>
           <span className="font-semibold">BE_API_URL:</span> {BE_API_URL || 'undefined'}
         </div>
         <div>
-          <span className="font-semibold">ΝΕΧΤ_VERCEL_ENV:</span> {process.env.ΝΕΧΤ_VERCEL_ENV || 'undefined'}
+          <span className="font-semibold">ΝΕΧΤ_PUBLIC_VERCEL_ENV:</span> {process.env.ΝΕΧΤ_PUBLIC_VERCEL_ENV || 'undefined'}
         </div>
+
         <div>
           <span className="font-semibold">NODE_ENV:</span> {process.env.NODE_ENV || 'undefined'}
         </div>
