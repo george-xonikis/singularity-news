@@ -13,7 +13,23 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
-#### `9761b8e` - **chore**: Clean up unused backend files and code
+#### `ed25a22` - **fix**: Correct Vercel framework configuration for Next.js deployment
+- Fixed vercel.json configuration by changing framework from null to "nextjs"
+- Removed outputDirectory as it's automatically detected for Next.js projects
+- This resolves the 404 error on Vercel deployment by ensuring proper Next.js framework detection
+- Modified: vercel.json (changed framework setting and removed redundant outputDirectory)
+- Deployment should now properly serve the Next.js application on Vercel platform
+
+#### `e8b5886` - **revert**: Remove Vercel-specific backend handling
+- Reverted changes from commit 809bd1a that attempted to handle missing backend on Vercel
+  - Removed production environment checks that skip API calls
+  - Reverted API_BASE_URL to original configuration without NEXT_PUBLIC_API_URL
+  - Removed console.log statements for "Backend not configured" messages
+- Deleted frontend/vercel.json configuration file
+- Frontend now uses original API connection logic
+- This revert was necessary as the Vercel 404 issue was not related to backend availability
+
+#### `d443c5b` - **chore**: Clean up unused backend files and code
 - Removed 4 unused files from early development phases
   - backend/src/types/database.ts (replaced by @singularity-news/shared types)
   - backend/src/lib/client.ts (unused database abstraction layer)

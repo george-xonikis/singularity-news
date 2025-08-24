@@ -1,6 +1,5 @@
 {
   "buildCommand": "pnpm --filter shared build && pnpm --filter frontend build:vercel",
-  "outputDirectory": "frontend/.next",
   "installCommand": "pnpm install",
-  "framework": null
+  "framework": "nextjs"
 }
