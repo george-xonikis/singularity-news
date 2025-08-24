@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "dev:local": "NODE_ENV=development tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "tsc && cp -r database dist/",
     "build:prod": "pnpm install && pnpm --filter shared build && pnpm --filter backend build",
     "start": "node dist/server.js",
     "start:prod": "NODE_ENV=production node dist/server.js",

@@ -11,9 +11,35 @@ export async function initializeDatabase(): Promise<void> {
   console.log('🔧 Initializing database schema...');
   
   try {
-    // Read the schema file
-    const schemaPath = path.join(__dirname, '../../../database/schema.sql');
+    // Read schema file (now copied to dist during build)
+    const schemaPath = path.join(__dirname, '../../database/schema.sql');
+    console.log(`📁 Schema path: ${schemaPath}`);
+    
+    // Check if schema file exists
+    if (!fs.existsSync(schemaPath)) {
+      throw new Error(`Schema file not found at: ${schemaPath}. Make sure 'database' folder is copied during build.`);
+    }
+    
     let schemaSQL = fs.readFileSync(schemaPath, 'utf-8');
+    console.log(`📄 Schema file loaded, ${schemaSQL.length} characters`);
+    
+    // Test database connection and permissions
+    await query('SELECT 1 as test');
+    console.log('🔗 Database connection verified');
+    
+    // Check database permissions
+    try {
+      const permCheck = await query(`
+        SELECT has_database_privilege(current_user, current_database(), 'CREATE') as can_create_objects
+      `);
+      console.log(`🔑 CREATE permissions: ${permCheck.rows[0].can_create_objects}`);
+      
+      if (!permCheck.rows[0].can_create_objects) {
+        throw new Error('Database user does not have CREATE permissions');
+      }
+    } catch (permError: any) {
+      console.error('⚠️  Could not check database permissions:', permError.message);
+    }
     
     // Make the schema safe by replacing CREATE TABLE with CREATE TABLE IF NOT EXISTS
     schemaSQL = schemaSQL.replace(/CREATE TABLE\s+(\w+)/g, 'CREATE TABLE IF NOT EXISTS $1');
@@ -46,27 +72,46 @@ export async function initializeDatabase(): Promise<void> {
     }
     
     // Execute each statement
+    let criticalErrors: string[] = [];
     for (const statement of statements) {
       try {
         await query(statement);
       } catch (error: any) {
-        // Ignore errors for already existing objects
-        if (!error.message.includes('already exists')) {
-          console.error(`  ⚠️  Failed to execute statement:`, error.message.substring(0, 100));
+        // Only ignore errors for objects that already exist
+        if (error.message.includes('already exists')) {
+          console.log(`  ℹ️  Skipped existing: ${error.message.split('"')[1] || 'object'}`);
+        } else {
+          // Critical errors should fail the initialization
+          const errorMsg = `Failed to execute statement: ${error.message}`;
+          console.error(`  ❌ ${errorMsg}`);
+          criticalErrors.push(errorMsg);
         }
       }
     }
     
+    // Fail if there were critical errors
+    if (criticalErrors.length > 0) {
+      throw new Error(`Database initialization failed with ${criticalErrors.length} critical errors:\n${criticalErrors.join('\n')}`);
+    }
+    
     console.log('✅ Database schema initialized from schema.sql');
     
-    // Check if tables were created
+    // Check if tables were created and verify critical tables exist
     const tableCheck = await query(`
       SELECT table_name FROM information_schema.tables 
       WHERE table_schema = 'public' 
       AND table_type = 'BASE TABLE'
     `);
     
-    console.log(`✅ Tables ready: ${tableCheck.rows.map(r => r.table_name).join(', ')}`);
+    const tableNames = tableCheck.rows.map(r => r.table_name);
+    const requiredTables = ['topics', 'articles'];
+    const missingTables = requiredTables.filter(table => !tableNames.includes(table));
+    
+    if (missingTables.length > 0) {
+      throw new Error(`Critical tables are missing: ${missingTables.join(', ')}`);
+    }
+    
+    console.log(`✅ Tables ready: ${tableNames.join(', ')}`);
     console.log('🎉 Database initialization completed successfully');
     
   } catch (error) {

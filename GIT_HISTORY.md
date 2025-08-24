@@ -7,11 +7,26 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 5737036)
+- **master**: Production-ready code (last commit: c7dcdf0)
 
 ## Complete Commit History
 
 ### 2025-08-24
+
+#### `c7dcdf0` - **fix**: Resolve database initialization failures in production
+- **Database initialization fixes**:
+  - Fixed schema file path detection for both development and production environments
+  - Added database file copying to build process (database folder -> dist/database)  
+  - Improved error handling to fail fast on critical database errors instead of claiming success
+  - Added database permission and connection verification
+  - Schema path now auto-detects: ../../../database/schema.sql (dev) vs ../../database/schema.sql (prod)
+- **Build process improvements**:
+  - Modified backend build script to copy database folder to dist for production
+  - Maintains single source of truth for schema (no manual sync needed)
+  - Works in both tsx dev mode and compiled production mode
+- **Files affected**:
+  - backend/package.json: Added database folder copying to build script
+  - backend/src/shared/database/init.ts: Fixed path detection and error handling
 
 #### `5737036` - **feat**: Add Railway deployment watch paths to optimize build triggers
 - **Railway deployment optimization**:
