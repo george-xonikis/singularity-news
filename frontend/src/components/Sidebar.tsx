@@ -14,7 +14,7 @@ export default function Sidebar({ articles, topics }: SidebarProps) {
         <ul className="space-y-3">
           {articles.map((article, index) => (
             <li key={article.id} className="text-sm">
-              <span className="font-bold text-lg  mr-2">{index + 1}.</span>
+              <span className="font-bold text-gray-600 text-lg mr-2">{index + 1}.</span>
               <Link href={`/articles/${article.slug}`} className="hover:text-blue-600 text-black">
                 {article.title}
               </Link>
