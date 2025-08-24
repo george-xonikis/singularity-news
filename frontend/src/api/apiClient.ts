@@ -1,7 +1,5 @@
 import { BE_API_URL } from '@/config/env';
 
-const BASE_URL = BE_API_URL;
-
 interface RequestOptions {
   method: string;
   headers?: Record<string, string>;
@@ -10,7 +8,7 @@ interface RequestOptions {
 
 class ApiClient {
   private async request<T>(endpoint: string, options: RequestOptions): Promise<T> {
-    const url = `${BASE_URL}${endpoint}`;
+    const url = `${BE_API_URL}${endpoint}`;
 
     const config: RequestInit = {
       method: options.method,
