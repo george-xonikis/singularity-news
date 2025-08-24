@@ -7,11 +7,34 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: aef3a38)
+- **master**: Production-ready code (last commit: a8a81b0)
 
 ## Complete Commit History
 
 ### 2025-08-24
+
+#### `a8a81b0` - **fix(frontend)**: improve mobile UI visibility and replace listen feature
+- **Mobile visibility improvements**:
+  - Added `text-black` class to Header.tsx for "AI NEWS" title visibility on mobile devices
+  - Added `text-black` class to Navigation.tsx for better visibility of topic links (HOME, TECH, ECONOMY, etc.)
+  - Enhanced hover states with `hover:text-blue-600` for improved user interaction feedback
+- **Listen feature replacement**:
+  - Commented out placeholder "Listen (1 min)" feature in ArticleDetail.tsx
+  - Replaced with functional article views counter displaying actual view statistics
+  - Uses EyeIcon component for consistent iconography
+  - Implements proper number formatting with toLocaleString() for large view counts (e.g., "1,234 views")
+- **UI consistency**:
+  - Maintains same styling and layout structure as original Listen feature
+  - Preserves component positioning and spacing for seamless replacement
+  - Ensures visual consistency across article detail pages
+- **Accessibility improvements**:
+  - Resolves light gray text visibility issues on mobile devices
+  - Improves contrast for header and navigation elements
+  - Better hover states for interactive elements
+- **Files affected**:
+  - frontend/src/components/Header.tsx: Added text-black for title visibility
+  - frontend/src/components/Navigation.tsx: Added text-black and hover states for links
+  - frontend/src/components/ArticleDetail.tsx: Replaced Listen feature with views counter
 
 #### `aef3a38` - **fix(frontend)**: resolve static rendering error preventing home page build
 - **Next.js ISR implementation**:
@@ -1065,7 +1088,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 44 (42 in master, 2 unique to feat-001)
+- **Total Commits**: 45 (43 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)
