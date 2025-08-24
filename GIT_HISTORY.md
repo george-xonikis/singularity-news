@@ -7,28 +7,35 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: fc4f371)
+- **master**: Production-ready code (last commit: 3f601ee)
 
 ## Complete Commit History
 
 ### 2025-08-24
 
-#### `d2cda25` - **fix**: update vercel.json to use nextjs framework with custom output directory
-- Updated vercel.json configuration to use "framework": "nextjs" instead of null
+#### `3f601ee` - **fix**: Merge vercel-deployment branch to master
+- **MERGE COMMIT**: Combined multiple deployment and environment configuration fixes
+- **vercel.json updates**:
+  - Updated to use "framework": "nextjs" for proper Next.js detection
+  - Removed invalid "rootDirectory" property that caused schema validation errors
+  - Added "outputDirectory": "frontend/.next" for monorepo build output
+- **railway.json updates**:
+  - Fixed monorepo build process: `pnpm install && pnpm --filter shared build && pnpm --filter backend build && pnpm --filter backend start:prod`
+  - Ensures shared package builds before backend to resolve TypeScript import errors
+- **Centralized environment configuration**:
+  - Created frontend/src/config/env.ts and backend/src/config/env.ts
+  - Updated all services to use centralized configuration instead of direct process.env
+  - Fixed server-data.ts to use BE_API_URL from centralized config instead of API_URL
+  - Standardized API base URL handling across frontend and backend
+- **Files affected**:
+  - .gitignore, package.json, pnpm-lock.yaml
+  - vercel.json, railway.json
+  - frontend/package.json, frontend/src/config/env.ts, frontend/src/lib/server-data.ts
+  - frontend/src/api/apiClient.ts, frontend/src/services/*.ts
+  - backend/src/config/env.ts, backend/src/server.ts, backend/src/shared/database/connection.ts
+- **Deployment fixes**: Resolved Vercel build failures and Railway TypeScript errors
+- **Environment consistency**: All services now use BE_API_URL with http://localhost:3002/api default
 
-#### `672b50c` - **feat**: Add centralized environment configuration for frontend and backend
-- Created frontend/src/config/env.ts for centralized frontend environment configuration
-- Created backend/src/config/env.ts for centralized backend environment configuration
-- Updated frontend/src/api/apiClient.ts to use centralized config instead of direct process.env
-- Updated frontend/src/services/dashboardService.ts to use centralized config
-- Updated frontend/src/services/articleService.ts to use centralized config
-- Updated frontend/src/services/topicService.ts to use centralized config
-- Updated backend/src/server.ts to use centralized config for port and CORS origins
-- Updated backend/src/shared/database/connection.ts to use centralized config for database
-- Renamed environment variable from NEXT_PUBLIC_API_URL to BE_API_URL for consistency
-- Standardized default localhost port to 3002 across all services for unified development
-- Improved environment variable management with type-safe configuration objects
-- Enhanced code maintainability by centralizing all environment-dependent values
 
 #### `d443c5b` - **chore**: Clean up unused backend files and code
 - Removed 4 unused files from early development phases
