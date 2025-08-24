@@ -4,6 +4,7 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import DebugEnv from '@/components/DebugEnv';
 
 export default async function Home() {
   const [articles, topics] = await Promise.all([
@@ -13,6 +14,8 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      <DebugEnv />
+
       <Header />
       <Navigation topics={topics} />
       <main className="container mx-auto px-4 py-8">
