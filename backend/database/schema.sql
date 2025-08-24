@@ -28,7 +28,7 @@ CREATE TABLE articles (
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   published_date TIMESTAMPTZ, -- When article was published (can be scheduled)
   views INTEGER DEFAULT 0,
-  published BOOLEAN DEFAULT TRUE,
+  published BOOLEAN DEFAULT TRUE
   
   -- Note: Foreign key constraints on array elements are complex in PostgreSQL
   -- We'll handle topic validation in the application layer

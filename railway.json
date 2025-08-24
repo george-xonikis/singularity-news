@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "pnpm install && pnpm --filter shared build && pnpm --filter backend build && pnpm --filter backend start:prod",
+    "startCommand": "pnpm --filter backend build:prod && pnpm --filter backend start:prod",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",

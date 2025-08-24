@@ -9,8 +9,7 @@
 		"tsc": "pnpm --parallel --filter backend --filter frontend --filter shared exec tsc --noEmit",
 		"lint": "pnpm --parallel --filter backend --filter frontend --filter shared lint",
 		"lint:fix": "pnpm --parallel --filter backend --filter frontend --filter shared lint:fix",
-		"db:reset": "docker-compose down -v && docker-compose up -d",
-		"db:clean": "docker-compose down -v && docker volume prune -f"
+		"db:reset": "docker-compose down -v && docker-compose up -d"
 	},
 	"devDependencies": {
 		"eslint-plugin-react-hooks": "^5.2.0",
