@@ -13,6 +13,22 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `[PENDING]` - **fix(frontend)**: resolve hardcoded API URL in public article detail page
+- **Hardcoded API URL fix**:
+  - Removed hardcoded `http://localhost:3002/api/articles/${slug}` from article detail page
+  - Added proper import for `API_CONFIG` from environment configuration
+  - Updated fetch call to use `${API_CONFIG.SERVER_URL}/articles/${slug}` for consistency
+- **Environment consistency**:
+  - Ensures public article detail pages use same environment-based API configuration as rest of app
+  - Resolves bug where articles were visible in listing but returned "not found" when clicked
+  - Makes application work consistently across development and production environments
+- **Bug resolution**:
+  - Fixed issue where public article detail pages failed to load due to incorrect API URLs
+  - Maintains proper separation between development (localhost) and production API endpoints
+  - Ensures all frontend API calls use centralized environment configuration
+- **Files affected**:
+  - frontend/src/app/(public)/articles/[slug]/page.tsx: Added API_CONFIG import and updated fetch URL
+
 #### `b17595c` - **feat(api)**: add frontend URL to health check with proper imports
 - **Environment variable improvements**:
   - Added FRONTEND_URL as direct export from env.ts for proper import structure

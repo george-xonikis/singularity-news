@@ -2,6 +2,7 @@ import { ArticleDetail } from '@/components/ArticleDetail';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import { notFound } from 'next/navigation';
 import type { Article } from '@singularity-news/shared';
+import { API_CONFIG } from '@/config/env';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -16,7 +17,7 @@ interface ApiResponse<T> {
 
 async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
-    const response = await fetch(`http://localhost:3002/api/articles/${slug}`, {
+    const response = await fetch(`${API_CONFIG.SERVER_URL}/articles/${slug}`, {
       cache: 'no-store'
     });
 
