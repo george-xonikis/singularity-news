@@ -7,11 +7,19 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: d271fb9)
+- **master**: Production-ready code (last commit: 80ecdeb)
 
 ## Complete Commit History
 
 ### 2025-08-24
+
+#### `80ecdeb` - **fix**: Correct SQL query in dashboard repository for topics array
+- **Database query fix**:
+  - Fixed getRecentArticles query to select 'topics' array instead of non-existent 'topic' column
+  - Updated result mapping to handle topics array properly, using first topic or 'No Topic' as fallback
+  - Resolves "Failed to fetch recent articles" error in admin dashboard
+- **Files affected**:
+  - backend/src/features/dashboard/dashboard.repository.ts: Fixed SQL query and result mapping
 
 #### `d271fb9` - **refactor**: Simplify environment variable configuration
 - **Environment variable refactoring**:

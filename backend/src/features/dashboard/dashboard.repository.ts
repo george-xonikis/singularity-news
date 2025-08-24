@@ -60,7 +60,7 @@ export class DashboardRepository {
         views,
         published,
         created_at,
-        topic
+        topics
       FROM articles
       ORDER BY created_at DESC
       LIMIT $1`,
@@ -73,7 +73,7 @@ export class DashboardRepository {
       views: row.views,
       published: row.published,
       createdAt: row.created_at,
-      topic: row.topic
+      topic: row.topics && row.topics.length > 0 ? row.topics[0] : 'No Topic'
     }));
   }
 }
