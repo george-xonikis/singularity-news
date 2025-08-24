@@ -1,6 +1,6 @@
 'use client';
 
-import { BE_API_URL, APP_CONFIG } from '@/config/env';
+import { BE_API_URL } from '@/config/env';
 
 export default function DebugEnv() {
   // Get all environment variables that are available
