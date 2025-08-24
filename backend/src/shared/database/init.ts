@@ -11,9 +11,15 @@ export async function initializeDatabase(): Promise<void> {
   console.log('🔧 Initializing database schema...');
   
   try {
-    // Read schema file (now copied to dist during build)
-    const schemaPath = path.join(__dirname, '../../database/schema.sql');
-    console.log(`📁 Schema path: ${schemaPath}`);
+    // Determine schema path based on environment
+    // In development: running from src/, schema is at ../../../database/schema.sql
+    // In production: running from dist/, schema is at ../database/schema.sql
+    const isDevelopment = __dirname.includes('/src/');
+    const schemaPath = isDevelopment 
+      ? path.join(__dirname, '../../../database/schema.sql')
+      : path.join(__dirname, '../../database/schema.sql');
+    
+    console.log(`📁 Schema path: ${schemaPath} (${isDevelopment ? 'development' : 'production'} mode)`);
     
     // Check if schema file exists
     if (!fs.existsSync(schemaPath)) {

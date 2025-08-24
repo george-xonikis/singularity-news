@@ -13,6 +13,23 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `PENDING` - **fix**: Resolve production deployment schema path detection
+- **Database initialization fixes**:
+  - Fixed schema file path detection for both development and production environments
+  - Auto-detects environment based on __dirname containing '/src/' (development) vs not (production)
+  - Development mode: ../../../database/schema.sql, Production mode: ../../database/schema.sql
+  - Added detailed logging showing detected environment and computed path
+  - Resolves production deployment failures where schema.sql wasn't found in build output
+- **Build process integration**:
+  - Leverages existing database folder copying in build script (cp -r database dist/)
+  - Maintains single source of truth for schema files
+  - Works seamlessly with tsx dev mode and compiled production builds
+- **Error handling improvements**:
+  - More descriptive error messages for missing schema files
+  - Environment-specific path resolution with fallback detection
+- **Files affected**:
+  - backend/src/shared/database/init.ts: Fixed path detection and added environment logging
+
 #### `c7dcdf0` - **fix**: Resolve database initialization failures in production
 - **Database initialization fixes**:
   - Fixed schema file path detection for both development and production environments
