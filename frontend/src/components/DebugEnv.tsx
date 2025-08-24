@@ -4,7 +4,7 @@ import { BE_API_URL } from '@/config/env';
 
 export default function DebugEnv() {
   // Get all environment variables that are available
-  const envVars = Object.entries(process.env).sort(([a], [b]) => a.localeCompare(b));
+  const envVars = Object.entries(process).sort(([a], [b]) => a.localeCompare(b));
 
   return (
     <div className="fixed bottom-4 right-4 z-50 bg-white border-2 border-gray-800 rounded-lg shadow-xl p-4 min-w-[400px] max-h-[80vh] overflow-y-auto">
