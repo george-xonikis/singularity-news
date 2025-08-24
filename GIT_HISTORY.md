@@ -13,6 +13,22 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
+#### `[PENDING]` - **fix(frontend)**: improve mobile text visibility in MainContent
+- **Mobile text visibility improvements**:
+  - Updated MainContent.tsx to change text colors from light gray (text-gray-600, text-gray-500) to black (text-black)
+  - Fixed article summary text color from text-gray-600 to text-black for better mobile readability
+  - Fixed article metadata text color from text-gray-500 to text-black for improved visibility
+- **Consistency with previous fixes**:
+  - Follows same pattern as previous Header.tsx and Navigation.tsx mobile visibility improvements
+  - Maintains consistent text visibility across all main content components
+  - Ensures readable text on mobile devices with varying screen brightness and conditions
+- **UI improvements**:
+  - Better contrast for article summaries and metadata on mobile devices
+  - Improved accessibility for users with visual impairments
+  - Maintains existing layout and spacing while improving readability
+- **Files affected**:
+  - frontend/src/components/MainContent.tsx: Changed article summary and metadata text colors to text-black
+
 #### `a8a81b0` - **fix(frontend)**: improve mobile UI visibility and replace listen feature
 - **Mobile visibility improvements**:
   - Added `text-black` class to Header.tsx for "AI NEWS" title visibility on mobile devices
