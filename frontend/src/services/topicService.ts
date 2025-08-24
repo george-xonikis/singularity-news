@@ -1,6 +1,7 @@
 import type { Topic, CreateTopicInput, UpdateTopicInput } from '@singularity-news/shared';
+import { BE_API_URL } from '@/config/env';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+const API_BASE_URL = BE_API_URL;
 
 export class TopicService {
   private static handleResponse = async <T>(response: Response): Promise<T> => {

@@ -1,15 +1,16 @@
 import { Pool, QueryResult } from 'pg';
+import { DATABASE_CONFIG } from '../../config/env';
 
 // Database configuration from environment variables
 const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5433'),
-  database: process.env.DB_NAME || 'singularity_news',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'dev_password_123',
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  host: DATABASE_CONFIG.HOST,
+  port: DATABASE_CONFIG.PORT,
+  database: DATABASE_CONFIG.NAME,
+  user: DATABASE_CONFIG.USER,
+  password: DATABASE_CONFIG.PASSWORD,
+  max: DATABASE_CONFIG.MAX_CONNECTIONS,
+  idleTimeoutMillis: DATABASE_CONFIG.IDLE_TIMEOUT,
+  connectionTimeoutMillis: DATABASE_CONFIG.CONNECTION_TIMEOUT,
 };
 
 // Create a single pool instance to be reused

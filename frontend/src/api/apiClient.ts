@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+import { BE_API_URL } from '@/config/env';
 
 interface RequestOptions {
   method: string;
@@ -8,7 +8,7 @@ interface RequestOptions {
 
 class ApiClient {
   private async request<T>(endpoint: string, options: RequestOptions): Promise<T> {
-    const url = `${BASE_URL}${endpoint}`;
+    const url = `${BE_API_URL}${endpoint}`;
 
     const config: RequestInit = {
       method: options.method,

@@ -13,37 +13,22 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
-#### `d51fa47` - **fix**: Remove invalid rootDirectory property from vercel.json
-- Removed invalid "rootDirectory" property from vercel.json (not supported in vercel.json schema)
-- Set "framework": null to use custom build commands instead of auto-detection
-- Added "outputDirectory": "frontend/.next" to specify where build output is located
-- Reverted build and install commands to work from repository root
-- This fixes the schema validation error: "should NOT have additional property `rootDirectory`"
-- Modified: vercel.json (removed rootDirectory, changed framework to null, added outputDirectory)
+#### `d2cda25` - **fix**: update vercel.json to use nextjs framework with custom output directory
+- Updated vercel.json configuration to use "framework": "nextjs" instead of null
 
-#### `2828f28` - **fix**: Set rootDirectory in Vercel config for monorepo Next.js detection
-- Added "rootDirectory": "frontend" to vercel.json configuration
-- Resolves "No Next.js version detected" error on Vercel deployment
-- Tells Vercel to look for Next.js in the frontend/ directory where package.json contains Next.js dependency
-- Fixes build error by pointing Vercel to correct monorepo structure
-- Ensures proper framework detection for monorepo deployment
-- Modified: vercel.json (added rootDirectory property)
-
-#### `ed25a22` - **fix**: Correct Vercel framework configuration for Next.js deployment
-- Fixed vercel.json configuration by changing framework from null to "nextjs"
-- Removed outputDirectory as it's automatically detected for Next.js projects
-- This resolves the 404 error on Vercel deployment by ensuring proper Next.js framework detection
-- Modified: vercel.json (changed framework setting and removed redundant outputDirectory)
-- Deployment should now properly serve the Next.js application on Vercel platform
-
-#### `e8b5886` - **revert**: Remove Vercel-specific backend handling
-- Reverted changes from commit 809bd1a that attempted to handle missing backend on Vercel
-  - Removed production environment checks that skip API calls
-  - Reverted API_BASE_URL to original configuration without NEXT_PUBLIC_API_URL
-  - Removed console.log statements for "Backend not configured" messages
-- Deleted frontend/vercel.json configuration file
-- Frontend now uses original API connection logic
-- This revert was necessary as the Vercel 404 issue was not related to backend availability
+#### `672b50c` - **feat**: Add centralized environment configuration for frontend and backend
+- Created frontend/src/config/env.ts for centralized frontend environment configuration
+- Created backend/src/config/env.ts for centralized backend environment configuration
+- Updated frontend/src/api/apiClient.ts to use centralized config instead of direct process.env
+- Updated frontend/src/services/dashboardService.ts to use centralized config
+- Updated frontend/src/services/articleService.ts to use centralized config
+- Updated frontend/src/services/topicService.ts to use centralized config
+- Updated backend/src/server.ts to use centralized config for port and CORS origins
+- Updated backend/src/shared/database/connection.ts to use centralized config for database
+- Renamed environment variable from NEXT_PUBLIC_API_URL to BE_API_URL for consistency
+- Standardized default localhost port to 3002 across all services for unified development
+- Improved environment variable management with type-safe configuration objects
+- Enhanced code maintainability by centralizing all environment-dependent values
 
 #### `d443c5b` - **chore**: Clean up unused backend files and code
 - Removed 4 unused files from early development phases

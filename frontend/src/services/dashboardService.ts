@@ -1,4 +1,6 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+import { BE_API_URL } from '@/config/env';
+
+const API_BASE_URL = BE_API_URL;
 
 export interface DashboardStats {
   totalArticles: number;
