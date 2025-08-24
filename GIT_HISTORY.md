@@ -13,7 +13,15 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-08-24
 
-#### `[pending]` - **feat**: Add centralized environment configuration for frontend and backend
+#### `TBD` - **fix**: update vercel.json to use nextjs framework with custom output directory
+- Updated vercel.json configuration to use "framework": "nextjs" instead of null
+- Added "outputDirectory": "frontend/.next" to specify build output location
+- This configuration should work with Next.js framework detection while still using custom build commands
+- Maintains backward compatibility with existing build commands
+- Fixes potential deployment issues by explicitly setting Next.js framework
+- Modified: vercel.json (changed framework from null to "nextjs", added outputDirectory)
+
+#### `672b50c` - **feat**: Add centralized environment configuration for frontend and backend
 - Created frontend/src/config/env.ts for centralized frontend environment configuration
 - Created backend/src/config/env.ts for centralized backend environment configuration
 - Updated frontend/src/api/apiClient.ts to use centralized config instead of direct process.env
