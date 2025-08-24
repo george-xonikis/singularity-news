@@ -5,7 +5,7 @@
 
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: process.env.BE_API_URL || 'http://localhost:3002/api',
+  BASE_URL: process.env.NEXT_PUBLIC_BE_API_URL || 'http://localhost:3002/api',
 } as const;
 
 // App Configuration
