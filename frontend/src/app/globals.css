@@ -134,6 +134,11 @@ body {
   margin: 0.5rem 0;
 }
 
+/* Fix Quill editor bullet list rendering issue in readonly view only */
+.prose ol li[data-list='bullet'] {
+  list-style-type: disc;
+}
+
 .prose p {
   margin: 1rem 0;
   line-height: 1.6;
