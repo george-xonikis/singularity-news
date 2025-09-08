@@ -51,6 +51,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
       // Prepare the data for update
       const submitData: UpdateArticleInput = {
         title: formData.title,
+        slug: formData.slug,
         content: formData.content,
         topics: formData.topics,
         tags: formData.tags,

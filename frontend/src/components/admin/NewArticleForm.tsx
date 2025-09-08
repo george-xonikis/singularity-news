@@ -25,6 +25,7 @@ export function NewArticleForm() {
       // Prepare the data for creation
       const submitData: CreateArticleInput = {
         title: formData.title,
+        slug: formData.slug,
         content: formData.content,
         topics: formData.topics,
         tags: formData.tags,

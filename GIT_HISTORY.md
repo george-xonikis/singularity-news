@@ -13,7 +13,20 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-08
 
-#### `a77a15e` - **feat(frontend)**: add optional slug input to article creation form
+#### `[PENDING]` - **fix(frontend)**: ensure slug field is sent to backend in article forms
+- **Fixed missing slug field in form submissions**:
+  - Added slug field to submitData in NewArticleForm
+  - Added slug field to submitData in EditArticleForm
+  - Both forms now properly pass the slug value to ArticleService
+- **Completes slug feature implementation**:
+  - ArticleForm component collects the slug
+  - NewArticleForm and EditArticleForm now send it to backend
+  - Backend DTOs already validate and process the slug field
+- **Files affected**:
+  - frontend/src/components/admin/NewArticleForm.tsx: Added slug to submitData
+  - frontend/src/components/admin/EditArticleForm.tsx: Added slug to submitData
+
+#### `69ecf21` - **feat(frontend)**: add optional slug input to article creation form
 - **Added slug field to ArticleForm component**:
   - New optional input field positioned after the title field
   - Auto-sanitizes input to ensure URL-friendly format (lowercase, alphanumeric, and hyphens only)
