@@ -11,6 +11,26 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ## Complete Commit History
 
+### 2025-09-08
+
+#### `a77a15e` - **feat(frontend)**: add optional slug input to article creation form
+- **Added slug field to ArticleForm component**:
+  - New optional input field positioned after the title field
+  - Auto-sanitizes input to ensure URL-friendly format (lowercase, alphanumeric, and hyphens only)
+  - Real-time validation removing invalid characters as user types
+- **User experience improvements**:
+  - Clear labeling as "Optional - auto-generated if left empty"
+  - Helpful placeholder text showing expected format
+  - Descriptive hint text explaining URL-friendly requirements
+- **Preview support**:
+  - Custom slug is used in article preview mode when provided
+  - Falls back to auto-generated slug from title if field is empty
+- **Backend integration ready**:
+  - Slug field included in form submission data
+  - Backend will auto-generate if not provided, ensuring uniqueness
+- **Files affected**:
+  - frontend/src/components/admin/ArticleForm.tsx: Added slug input field and preview logic
+
 ### 2025-08-24
 
 #### `241afeb` - **fix(frontend)**: improve mobile text visibility in MainContent

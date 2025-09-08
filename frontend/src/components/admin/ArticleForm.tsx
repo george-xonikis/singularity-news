@@ -158,7 +158,7 @@ export function ArticleForm({
   const getPreviewArticle = (): Article => {
     return {
       id: 'preview',
-      slug: formData.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'preview',
+      slug: formData.slug || formData.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'preview',
       title: formData.title || 'Untitled Article',
       content: formData.content || '',
       summary: formData.summary,
@@ -280,6 +280,25 @@ export function ArticleForm({
         {errors.title && (
           <p className="mt-1 text-sm text-red-600">{errors.title}</p>
         )}
+      </div>
+
+      {/* Slug (Optional) */}
+      <div>
+        <label htmlFor="slug" className="block text-sm font-medium text-gray-700">
+          Slug <span className="text-sm text-gray-500">(Optional - auto-generated if left empty)</span>
+        </label>
+        <input
+          type="text"
+          id="slug"
+          value={formData.slug || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') }))}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+          placeholder="Enter slug"
+          pattern="[a-z0-9-]*"
+        />
+        <p className="mt-1 text-xs text-gray-500">
+          URL-friendly version of the title. Only lowercase letters, numbers, and hyphens allowed.
+        </p>
       </div>
 
       {/* Summary */}
