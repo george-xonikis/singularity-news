@@ -1,8 +1,14 @@
 import { query } from '../../shared/database/connection';
 import { Article, ArticleFilters } from '@singularity-news/shared';
 import { DatabaseArticle, transformArticleFromDb } from './article.mapper';
+import { TopicRepository } from '../topics/topic.repository';
 
 export class ArticleRepository {
+  private topicRepository: TopicRepository;
+
+  constructor() {
+    this.topicRepository = new TopicRepository();
+  }
   /**
    * Get all articles with optional filters
    * Optimized query that sorts by views for popularity
@@ -32,7 +38,7 @@ export class ArticleRepository {
     }
 
     if (topics && topics.length > 0) {
-      sql += ` AND topics && $${++paramCount}`;
+      sql += ` AND topics && $${++paramCount}::uuid[]`;
       params.push(topics);
     }
 
@@ -72,7 +78,31 @@ export class ArticleRepository {
     params.push(limit, offset);
 
     const result = await query(sql, params);
-    return result.rows.map(transformArticleFromDb);
+    const articles = result.rows.map(transformArticleFromDb);
+    return this.populateTopicNames(articles);
+  }
+
+  /**
+   * Populate topic names from topic IDs
+   */
+  private async populateTopicNames(articles: Article[]): Promise<Article[]> {
+    if (articles.length === 0) return articles;
+
+    // Get all unique topic IDs from articles
+    const allTopicIds = new Set<string>();
+    articles.forEach(article => {
+      article.topics.forEach(topicId => allTopicIds.add(topicId));
+    });
+
+    // Fetch all topics at once
+    const topics = await this.topicRepository.findAll();
+    const topicMap = new Map(topics.map(topic => [topic.id, topic.name]));
+
+    // Replace topic IDs with topic names
+    return articles.map(article => ({
+      ...article,
+      topics: article.topics.map(topicId => topicMap.get(topicId) || topicId)
+    }));
   }
 
   /**
@@ -84,7 +114,11 @@ export class ArticleRepository {
       [id]
     );
 
-    return result.rows[0] ? transformArticleFromDb(result.rows[0]) : null;
+    if (!result.rows[0]) return null;
+    
+    const article = transformArticleFromDb(result.rows[0]);
+    const [populatedArticle] = await this.populateTopicNames([article]);
+    return populatedArticle || null;
   }
 
   /**
@@ -100,14 +134,20 @@ export class ArticleRepository {
          RETURNING *`,
         [slug]
       );
-      return result.rows[0] ? transformArticleFromDb(result.rows[0]) : null;
+      if (!result.rows[0]) return null;
+      const article = transformArticleFromDb(result.rows[0]);
+      const [populatedArticle] = await this.populateTopicNames([article]);
+      return populatedArticle || null;
     }
 
     const result = await query(
       'SELECT * FROM articles WHERE slug = $1 AND published = TRUE',
       [slug]
     );
-    return result.rows[0] ? transformArticleFromDb(result.rows[0]) : null;
+    if (!result.rows[0]) return null;
+    const article = transformArticleFromDb(result.rows[0]);
+    const [populatedArticle] = await this.populateTopicNames([article]);
+    return populatedArticle || null;
   }
 
   /**
@@ -122,7 +162,8 @@ export class ArticleRepository {
       [limit]
     );
 
-    return result.rows.map(transformArticleFromDb);
+    const articles = result.rows.map(transformArticleFromDb);
+    return this.populateTopicNames(articles);
   }
 
   /**
@@ -137,7 +178,8 @@ export class ArticleRepository {
       [limit]
     );
 
-    return result.rows.map(transformArticleFromDb);
+    const articles = result.rows.map(transformArticleFromDb);
+    return this.populateTopicNames(articles);
   }
 
   /**
@@ -166,7 +208,9 @@ export class ArticleRepository {
       ]
     );
 
-    return transformArticleFromDb(result.rows[0]);
+    const newArticle = transformArticleFromDb(result.rows[0]);
+    const [populatedArticle] = await this.populateTopicNames([newArticle]);
+    return populatedArticle || newArticle;
   }
 
   /**
@@ -198,7 +242,10 @@ export class ArticleRepository {
     `;
 
     const result = await query(sql, values);
-    return result.rows[0] ? transformArticleFromDb(result.rows[0]) : null;
+    if (!result.rows[0]) return null;
+    const article = transformArticleFromDb(result.rows[0]);
+    const [populatedArticle] = await this.populateTopicNames([article]);
+    return populatedArticle || null;
   }
 
   /**
@@ -247,7 +294,7 @@ export class ArticleRepository {
     }
 
     if (topics && topics.length > 0) {
-      sql += ` AND topics && $${++paramCount}`;
+      sql += ` AND topics && $${++paramCount}::uuid[]`;
       params.push(topics);
     }
 
