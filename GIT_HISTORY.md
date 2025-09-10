@@ -7,13 +7,43 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 241afeb)
+- **master**: Production-ready code (last commit: 9e8de27)
 
 ## Complete Commit History
 
 ### 2025-09-10
 
-#### `[PENDING]` - **feat**: update articles API to return full topic objects
+#### `[PENDING]` - **refactor**: simplify migration system to use pure SQL
+- **Migration system overhaul**:
+  - Replaced complex JS migration runner with single SQL file approach
+  - Removed backend/scripts/ directory and Node.js migration dependencies
+  - Created database/run-migrations.sql containing all migrations in one file
+  - Uses PostgreSQL DO blocks for conditional migration logic
+- **Deployment improvements**:
+  - Updated package.json to use simple psql commands instead of Node.js scripts
+  - Migration now uses DATABASE_URL for Railway/production compatibility
+  - Migrations automatically run during build:prod process
+  - Added comprehensive DEPLOYMENT.md with platform-specific instructions
+- **Code cleanup**:
+  - Removed old migrate-topics-to-ids.sql file
+  - Removed backend/database/migrations/ directory structure
+  - Streamlined build process without unnecessary JS complexity
+- **Benefits**:
+  - Zero JS dependencies for migrations - pure PostgreSQL
+  - Simpler Railway deployment using psql $DATABASE_URL
+  - Single source of truth for all database migrations
+  - Native PostgreSQL features for better performance and reliability
+  - Easier to maintain, debug, and extend
+- **Files affected**:
+  - backend/package.json: Updated migration commands to use psql
+  - backend/DEPLOYMENT.md: New comprehensive deployment documentation
+  - backend/database/run-migrations.sql: New unified migration file
+  - package.json: Updated root migration commands
+  - backend/scripts/: Removed entire directory
+  - backend/database/migrations/: Removed directory structure
+  - backend/database/migrate-topics-to-ids.sql: Removed old file
+
+#### `9e8de27` - **feat**: update articles API to return full topic objects
 - **Backend enhancements**:
   - Updated Article interface to use Topic[] instead of string[] for topics field
   - Added ArticleWithTopicIds intermediate type for database layer transformation
