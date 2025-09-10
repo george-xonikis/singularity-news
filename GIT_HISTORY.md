@@ -13,7 +13,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-08
 
-#### `[PENDING]` - **chore**: add .future files to gitignore for stashed migrations
+#### `370a21e` - **chore**: add .future files to gitignore for stashed migrations
 - **Added gitignore patterns**:
   - Added `*.future` pattern to ignore future migration files
   - Added `*.future/` pattern to ignore future migration directories
