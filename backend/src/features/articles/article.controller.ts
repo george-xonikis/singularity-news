@@ -33,7 +33,7 @@ export class ArticleController {
         published: true
       };
       
-      if (queryDto.topic) filters.topic = queryDto.topic;
+      if (queryDto.topic) filters.topicSlug = queryDto.topic; // Will be resolved to ID in service
       if (queryDto.search) filters.search = queryDto.search;
       
       const result = await this.service.getAllArticles(filters);

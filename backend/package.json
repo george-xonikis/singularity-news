@@ -10,6 +10,7 @@
     "build:prod": "pnpm install && pnpm --filter shared build && pnpm --filter backend build",
     "start": "node dist/server.js",
     "start:prod": "NODE_ENV=production node dist/server.js",
+    "db:migrate:topics": "PGPASSWORD=dev_password_123 psql -h localhost -p 5433 -U postgres -d singularity_news -f database/migrate-topics-to-ids.sql",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts"

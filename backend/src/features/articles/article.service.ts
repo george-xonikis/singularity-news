@@ -2,19 +2,41 @@ import { Article, ArticleFilters } from '@singularity-news/shared';
 import { ArticleRepository } from './article.repository';
 import { CreateArticleDto, UpdateArticleDto } from './dtos';
 import { generateSlug } from '../../shared/utils/slug.utils';
+import { TopicRepository } from '../topics/topic.repository';
 
 export class ArticleService {
-  constructor(private readonly repository: ArticleRepository) {}
+  private topicRepository: TopicRepository;
+  
+  constructor(private readonly repository: ArticleRepository) {
+    this.topicRepository = new TopicRepository();
+  }
 
   /**
    * Get all articles with filters
    */
-  async getAllArticles(filters: ArticleFilters): Promise<{
+  async getAllArticles(filters: ArticleFilters & { topicSlug?: string }): Promise<{
     articles: Article[];
     total: number;
     page: number;
     limit: number;
   }> {
+    // Convert topic slug to topic ID if provided
+    if (filters.topicSlug) {
+      const topic = await this.topicRepository.findBySlug(filters.topicSlug.toLowerCase());
+      if (topic) {
+        filters.topics = [topic.id];
+      } else {
+        // If topic not found, return empty results
+        return {
+          articles: [],
+          total: 0,
+          page: 1,
+          limit: filters.limit || 50,
+        };
+      }
+      delete filters.topicSlug;
+    }
+
     const [articles, total] = await Promise.all([
       this.repository.findAll(filters),
       this.repository.count(filters)

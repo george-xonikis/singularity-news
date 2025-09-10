@@ -29,10 +29,6 @@ CREATE TABLE articles (
   published_date TIMESTAMPTZ, -- When article was published (can be scheduled)
   views INTEGER DEFAULT 0,
   published BOOLEAN DEFAULT TRUE
-  
-  -- Note: Foreign key constraints on array elements are complex in PostgreSQL
-  -- We'll handle topic validation in the application layer
-  -- Each element in topics array should correspond to a topics.name
 );
 
 -- Indexes for better query performance
@@ -48,6 +44,8 @@ CREATE INDEX idx_articles_slug ON articles(slug);
 -- Full-text search indexes
 CREATE INDEX idx_articles_search 
 ON articles USING gin(to_tsvector('english', title || ' ' || content));
+
+-- Note: Topics are stored as names for now, will be migrated to UUIDs later
 
 -- Function to automatically update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()

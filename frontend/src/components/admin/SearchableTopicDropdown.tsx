@@ -7,7 +7,7 @@ import type { Topic } from '@singularity-news/shared';
 interface SearchableTopicDropdownProps {
   topics: Topic[];
   value: string;
-  onChange: (topicName: string) => void;
+  onChange: (topicId: string) => void;
   placeholder?: string;
   className?: string;
   error?: boolean;
@@ -33,7 +33,7 @@ export function SearchableTopicDropdown({
   );
 
   // Get display value - either selected topic name or empty
-  const selectedTopic = topics.find(topic => topic.name === value);
+  const selectedTopic = topics.find(topic => topic.id === value);
   const displayValue = selectedTopic ? selectedTopic.name : '';
 
   // Close dropdown when clicking outside
@@ -77,7 +77,7 @@ export function SearchableTopicDropdown({
       case 'Enter':
         e.preventDefault();
         if (highlightedIndex >= 0 && filteredTopics[highlightedIndex]) {
-          onChange(filteredTopics[highlightedIndex].name);
+          onChange(filteredTopics[highlightedIndex].id);
           setIsOpen(false);
           setSearchQuery('');
           setHighlightedIndex(-1);
@@ -97,8 +97,8 @@ export function SearchableTopicDropdown({
     setHighlightedIndex(-1);
   };
 
-  const handleOptionClick = (topicName: string) => {
-    onChange(topicName);
+  const handleOptionClick = (topicId: string) => {
+    onChange(topicId);
     setIsOpen(false);
     setSearchQuery('');
     setHighlightedIndex(-1);
@@ -147,12 +147,12 @@ export function SearchableTopicDropdown({
             filteredTopics.map((topic, index) => (
               <div
                 key={topic.id}
-                onClick={() => handleOptionClick(topic.name)}
+                onClick={() => handleOptionClick(topic.id)}
                 className={`px-3 py-2 cursor-pointer transition-colors ${
                   index === highlightedIndex
                     ? 'bg-blue-100 text-blue-900'
                     : 'hover:bg-gray-100'
-                } ${value === topic.name ? 'bg-blue-50 text-blue-700 font-medium' : ''}`}
+                } ${value === topic.id ? 'bg-blue-50 text-blue-700 font-medium' : ''}`}
               >
                 <div className="font-medium">{topic.name}</div>
                 <div className="text-xs text-gray-500">{topic.slug}</div>

@@ -13,6 +13,35 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-08
 
+#### `b7c6235` - **feat(backend/frontend)**: migrate topics from TEXT[] to UUID[] for referential integrity
+- **Database migration completed**:
+  - Added migration script `migrate-topics-to-ids.sql` to convert existing data
+  - Updated schema to use `topics UUID[]` instead of `topics TEXT[]`
+  - Added validation function to ensure topic IDs exist
+  - Added CHECK constraint for referential integrity
+- **Backend changes**:
+  - Updated ArticleService to handle topic slug to ID conversion
+  - Enhanced queries to work with UUID arrays
+  - Added migration command `pnpm db:migrate:topics` to package.json
+- **Frontend changes**:
+  - Updated SearchableTopicDropdown to work with topic IDs internally
+  - Modified ArticleForm to handle topic IDs while displaying names
+  - Updated topic filtering and display logic
+  - Preview functionality converts IDs back to names for display
+- **Migration benefits**:
+  - Proper referential integrity between articles and topics
+  - Database constraints prevent orphaned topic references
+  - More efficient queries using UUID indexes
+  - Foundation for future topic management features
+- **Files affected**:
+  - backend/database/schema.sql: Updated to use UUID[] for topics
+  - backend/database/migrate-topics-to-ids.sql: New migration script
+  - backend/database/seed.sql: Updated with topic UUIDs
+  - backend/package.json: Added migration command
+  - backend/src/features/articles/*: Updated for UUID handling
+  - frontend/src/components/admin/SearchableTopicDropdown.tsx: Updated for topic IDs
+  - frontend/src/components/admin/ArticleForm.tsx: Updated topic handling
+
 #### `370a21e` - **chore**: add .future files to gitignore for stashed migrations
 - **Added gitignore patterns**:
   - Added `*.future` pattern to ignore future migration files

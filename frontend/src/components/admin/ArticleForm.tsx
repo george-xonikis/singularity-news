@@ -156,6 +156,11 @@ export function ArticleForm({
 
   // Convert form data to Article format for preview
   const getPreviewArticle = (): Article => {
+    // Convert topic IDs to names for preview
+    const topicNames = (formData.topics || []).map(topicId => 
+      topics.find(t => t.id === topicId)?.name || 'Unknown Topic'
+    );
+    
     return {
       id: 'preview',
       slug: formData.slug || formData.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'preview',
@@ -163,7 +168,7 @@ export function ArticleForm({
       content: formData.content || '',
       summary: formData.summary,
       author: formData.author,
-      topics: formData.topics || [],
+      topics: topicNames,
       tags: formData.tags || [],
       coverPhoto: uploadPreview || formData.coverPhoto,
       coverPhotoCaption: formData.coverPhotoCaption,
@@ -357,7 +362,7 @@ export function ArticleForm({
         </label>
         <SearchableTopicDropdown
           key={topicDropdownKey}
-          topics={topics.filter(topic => !(formData.topics || []).includes(topic.name))}
+          topics={topics.filter(topic => !(formData.topics || []).includes(topic.id))}
           value={''}
           onChange={(value) => handleAddTopic(value)}
           error={!!errors.topics}
@@ -365,21 +370,24 @@ export function ArticleForm({
         />
         {formData.topics && formData.topics.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-2">
-            {formData.topics.map((topic) => (
-              <span
-                key={topic}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-              >
-                {topic}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveTopic(topic)}
-                  className="ml-1 inline-flex items-center justify-center w-4 h-4 text-blue-400 hover:text-blue-600 cursor-pointer"
+            {formData.topics.map((topicId) => {
+              const topicObj = topics.find(t => t.id === topicId);
+              return (
+                <span
+                  key={topicId}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
                 >
-                  <XMarkIcon className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
+                  {topicObj?.name || 'Unknown Topic'}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveTopic(topicId)}
+                    className="ml-1 inline-flex items-center justify-center w-4 h-4 text-blue-400 hover:text-blue-600 cursor-pointer"
+                  >
+                    <XMarkIcon className="h-3 w-3" />
+                  </button>
+                </span>
+              );
+            })}
           </div>
         )}
         {errors.topics && (

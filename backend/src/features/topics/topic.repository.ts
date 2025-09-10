@@ -100,7 +100,7 @@ export class TopicRepository {
    */
   async hasArticles(topicName: string): Promise<boolean> {
     const result = await query(
-      'SELECT COUNT(*) as count FROM articles WHERE topic = $1',
+      'SELECT COUNT(*) as count FROM articles WHERE $1 = ANY(topics)',
       [topicName]
     );
     return parseInt(result.rows[0].count) > 0;
