@@ -76,7 +76,7 @@ export function RelatedArticles({ currentArticleId, currentTopics, currentTags =
               </p>
               <div className="mt-2 flex items-center text-xs text-gray-500">
                 <div className="flex flex-wrap gap-1">
-                  {article.topics.map((topic, idx) => (
+                  {article.topics.map((topic) => (
                     <span key={topic.id} className="bg-gray-100 px-1 py-0.5 rounded text-xs">
                       {topic.name}
                     </span>
