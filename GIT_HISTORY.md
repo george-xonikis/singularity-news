@@ -7,11 +7,27 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 5fc07fe)
+- **master**: Production-ready code (last commit: 5f7ea41)
 
 ## Complete Commit History
 
 ### 2025-09-10
+
+#### `5f7ea41` - **fix(frontend)**: update topic page for Next.js 15 async params compatibility
+- **Next.js 15 compatibility update**:
+  - Updated TopicPageProps interface to use Promise<{slug: string}> for params property
+  - Modified topic page component to handle async params with await destructuring
+  - Updated generateMetadata function to await params before accessing slug property
+- **Implementation details**:
+  - Changed params type from {slug: string} to Promise<{slug: string}> in interface
+  - Added await keyword when destructuring {slug} from params in page component
+  - Added await keyword when accessing params.slug in generateMetadata function
+- **Next.js 15 async params requirement**:
+  - Addresses breaking change where route parameters are now asynchronous
+  - Ensures proper type safety with Promise-based params interface
+  - Maintains backward compatibility with existing functionality
+- **Files affected**:
+  - frontend/src/app/(public)/topics/[slug]/page.tsx: Updated interface and async handling
 
 #### `5fc07fe` - **feat(frontend)**: add topic page to show articles by topic
 - **New topic page feature**:

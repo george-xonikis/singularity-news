@@ -4,9 +4,9 @@ import { Article } from '@singularity-news/shared';
 import { API_CONFIG } from '@/config/env';
 
 interface TopicPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 async function getArticlesByTopic(topicSlug: string): Promise<Article[]> {
@@ -29,7 +29,7 @@ async function getArticlesByTopic(topicSlug: string): Promise<Article[]> {
 }
 
 export default async function TopicPage({ params }: TopicPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const articles = await getArticlesByTopic(slug);
 
   // Convert slug to display name
@@ -102,7 +102,8 @@ export default async function TopicPage({ params }: TopicPageProps) {
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: TopicPageProps) {
-  const topicDisplayName = params.slug.charAt(0).toUpperCase() + params.slug.slice(1).toLowerCase();
+  const { slug } = await params;
+  const topicDisplayName = slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
 
   return {
     title: `${topicDisplayName} News - AI News`,
