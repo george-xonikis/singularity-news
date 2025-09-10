@@ -157,10 +157,10 @@ export function ArticleForm({
   // Convert form data to Article format for preview
   const getPreviewArticle = (): Article => {
     // Convert topic IDs to Topic objects for preview
-    const topicObjects = (formData.topics || []).map(topicId => 
+    const topicObjects = (formData.topics || []).map(topicId =>
       topics.find(t => t.id === topicId) || { id: topicId, name: 'Unknown Topic', slug: 'unknown' }
     );
-    
+
     return {
       id: 'preview',
       slug: formData.slug || formData.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'preview',
