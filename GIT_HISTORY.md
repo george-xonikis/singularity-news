@@ -13,6 +13,39 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-10
 
+#### `[PENDING]` - **feat(frontend)**: add topic page to show articles by topic
+- **New topic page feature**:
+  - Created dynamic topic page at `/topics/[slug]` route
+  - Shows articles filtered by specific topic using topic slug
+  - Fetches articles from API endpoint with topic filtering
+  - Includes article count display and responsive grid layout
+- **UI/UX improvements**:
+  - Responsive grid: 1 column mobile, 2 tablet, 3 desktop
+  - Article cards with cover images, titles, summaries, and metadata
+  - Hover effects and smooth transitions
+  - Empty state handling when no articles found in topic
+- **Performance optimizations**:
+  - Uses Next.js Image component instead of img tag for better LCP
+  - ISR with 60-second revalidation for fresh content
+  - Proper error handling for failed API requests
+- **SEO enhancements**:
+  - Dynamic metadata generation for each topic page
+  - Proper title and description for search engines
+  - Topic name capitalization for better readability
+- **Files affected**:
+  - frontend/src/app/(public)/topics/[slug]/page.tsx: New topic page component
+
+#### `f7631e0` - **chore**: update GIT_HISTORY.md with commit hash and fix linting
+- **Documentation updates**:
+  - Updated GIT_HISTORY.md with actual commit hash 48ba5e7 for migration refactor
+  - Updated branch info to reflect latest commit
+- **Code quality**:
+  - Fixed linting issues in ArticleForm.tsx (whitespace formatting)
+  - Improved code consistency across components
+- **Files affected**:
+  - GIT_HISTORY.md: Updated commit hash and branch information
+  - frontend/src/components/admin/ArticleForm.tsx: Linting fixes
+
 #### `48ba5e7` - **refactor**: simplify migration system to use pure SQL
 - **Migration system overhaul**:
   - Replaced complex JS migration runner with single SQL file approach
