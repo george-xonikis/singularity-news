@@ -37,3 +37,7 @@ Thumbs.db
 # Logs
 *.log
 .vercel
+
+# Future migration files (stashed for later)
+*.future
+*.future/

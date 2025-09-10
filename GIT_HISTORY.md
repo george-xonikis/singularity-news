@@ -13,6 +13,14 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-08
 
+#### `[PENDING]` - **chore**: add .future files to gitignore for stashed migrations
+- **Added gitignore patterns**:
+  - Added `*.future` pattern to ignore future migration files
+  - Added `*.future/` pattern to ignore future migration directories
+  - Helps keep git status clean while preserving migration work for later
+- **Files affected**:
+  - .gitignore: Added patterns for .future files and directories
+
 #### `11d94c2` - **fix(backend)**: resolve TypeScript errors in article repository
 - **Fixed undefined return type errors**:
   - Added null fallback when populateTopicNames returns undefined
