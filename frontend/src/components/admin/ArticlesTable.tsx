@@ -106,8 +106,8 @@ export function ArticlesTable() {
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
                     {article.topics.map((topic, idx) => (
-                      <span key={idx} className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">
-                        {topic}
+                      <span key={topic.id} className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded">
+                        {topic.name}
                       </span>
                     ))}
                   </div>

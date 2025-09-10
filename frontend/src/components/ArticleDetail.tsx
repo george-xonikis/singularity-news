@@ -71,12 +71,12 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
         {article.topics && article.topics.length > 0 && (
           <div className="text-center mb-8">
             {article.topics.map((topic, index) => (
-              <span key={topic}>
+              <span key={topic.id}>
                 <Link
-                  href={`/topics/${topic.toLowerCase()}`}
+                  href={`/topics/${topic.slug}`}
                   className="text-sm font-semibold text-blue-600 hover:text-blue-700 uppercase tracking-wider"
                 >
-                  {topic}
+                  {topic.name}
                 </Link>
                 {index < article.topics.length - 1 && (
                   <span className="text-gray-400 mx-2">|</span>

@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Article } from '@singularity-news/shared';
+import type { Article, Topic } from '@singularity-news/shared';
 
 interface RelatedArticlesProps {
   currentArticleId: string;
-  currentTopics: string[];
+  currentTopics: Topic[];
   currentTags?: string[];
 }
 
@@ -77,8 +77,8 @@ export function RelatedArticles({ currentArticleId, currentTopics, currentTags =
               <div className="mt-2 flex items-center text-xs text-gray-500">
                 <div className="flex flex-wrap gap-1">
                   {article.topics.map((topic, idx) => (
-                    <span key={idx} className="bg-gray-100 px-1 py-0.5 rounded text-xs">
-                      {topic}
+                    <span key={topic.id} className="bg-gray-100 px-1 py-0.5 rounded text-xs">
+                      {topic.name}
                     </span>
                   ))}
                 </div>

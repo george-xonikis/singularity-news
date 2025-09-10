@@ -11,6 +11,41 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ## Complete Commit History
 
+### 2025-09-10
+
+#### `[PENDING]` - **feat**: update articles API to return full topic objects
+- **Backend enhancements**:
+  - Updated Article interface to use Topic[] instead of string[] for topics field
+  - Added ArticleWithTopicIds intermediate type for database layer transformation
+  - Enhanced populateTopics method to convert topic IDs to full Topic objects
+  - Fixed all TypeScript compilation errors in article repository
+  - Updated article mapper to handle proper type conversions
+- **Frontend updates**:
+  - Updated all components to handle Topic objects instead of topic strings
+  - Fixed ArticleDetail to use topic.id, topic.name, and topic.slug properties
+  - Updated MainContent, RelatedArticles, and ArticlesTable for proper topic rendering
+  - Modified admin forms to convert between Topic objects and topic IDs
+  - Updated ArticleService to use proper CreateArticleInput and UpdateArticleInput types
+- **Data integrity fixes**:
+  - Corrected seed data to use actual topic UUIDs from database
+  - Fixed topic references in all 7 seeded articles
+  - Ensured proper UUID relationships between articles and topics tables
+- **Type safety improvements**:
+  - All workspaces now compile without TypeScript errors
+  - Proper separation between display types (Topic[]) and form input types (string[])
+  - Enhanced error handling in repository layer
+- **API enhancement**:
+  - Articles now return complete topic information (id, name, slug)
+  - Frontend no longer needs separate API calls for topic details
+  - Improved performance and user experience
+- **Files affected**:
+  - shared/src/types/article.ts: Updated Article interface and input types
+  - backend/src/features/articles/article.mapper.ts: Added intermediate types
+  - backend/src/features/articles/article.repository.ts: Enhanced topic population
+  - backend/database/seed.sql: Fixed topic UUID references
+  - frontend/src/components/: Updated all article display components
+  - frontend/src/services/articleService.ts: Updated service method signatures
+
 ### 2025-09-08
 
 #### `b7c6235` - **feat(backend/frontend)**: migrate topics from TEXT[] to UUID[] for referential integrity

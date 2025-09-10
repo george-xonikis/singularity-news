@@ -116,7 +116,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     content: article.content,
     summary: article.summary || '',
     author: article.author || '',
-    topics: article.topics,
+    topics: article.topics.map(topic => topic.id),
     coverPhoto: article.coverPhoto || '',
     coverPhotoCaption: article.coverPhotoCaption || '',
     tags: article.tags,

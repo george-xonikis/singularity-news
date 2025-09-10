@@ -22,10 +22,31 @@ export interface DatabaseArticle {
 }
 
 /**
- * Transform database article to domain article
+ * Article with topic IDs (intermediate type before populating topics)
  */
-export const transformArticleFromDb = (dbArticle: DatabaseArticle): Article => {
-  const result: Article = {
+export interface ArticleWithTopicIds {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  summary?: string;
+  author?: string;
+  topics: string[];
+  coverPhoto?: string;
+  coverPhotoCaption?: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  publishedDate?: string | null;
+  views: number;
+  published: boolean;
+}
+
+/**
+ * Transform database article to article with topic IDs
+ */
+export const transformArticleFromDb = (dbArticle: DatabaseArticle): ArticleWithTopicIds => {
+  const result: ArticleWithTopicIds = {
     id: dbArticle.id, // Keep UUID as string
     title: dbArticle.title,
     slug: dbArticle.slug,
@@ -72,7 +93,7 @@ export const transformArticleToDb = (article: Partial<Article>): Partial<Databas
   if (article.title) result.title = article.title;
   if (article.slug) result.slug = article.slug;
   if (article.content) result.content = article.content;
-  if (article.topics) result.topics = article.topics;
+  if (article.topics) result.topics = article.topics.map(topic => topic.id);
   if (article.summary !== undefined) result.summary = article.summary || null;
   if (article.author !== undefined) result.author = article.author || null;
   if (article.coverPhoto !== undefined) result.cover_photo = article.coverPhoto || null;

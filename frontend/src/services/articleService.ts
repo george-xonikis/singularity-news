@@ -1,4 +1,4 @@
-import type { Article, ArticleFilters } from '@singularity-news/shared';
+import type { Article, ArticleFilters, CreateArticleInput, UpdateArticleInput } from '@singularity-news/shared';
 import { API_CONFIG } from '@/config/env';
 
 const API_BASE_URL = API_CONFIG.NEXT_URL;
@@ -90,7 +90,7 @@ export class ArticleService {
   /**
    * Create new article
    */
-  static async createArticle(articleData: Partial<Article>): Promise<Article> {
+  static async createArticle(articleData: CreateArticleInput): Promise<Article> {
     const response = await fetch(`${API_BASE_URL}/admin/articles`, {
       method: 'POST',
       headers: {
@@ -106,7 +106,7 @@ export class ArticleService {
   /**
    * Update existing article
    */
-  static async updateArticle(id: string, articleData: Partial<Article>): Promise<Article> {
+  static async updateArticle(id: string, articleData: UpdateArticleInput): Promise<Article> {
     const response = await fetch(`${API_BASE_URL}/admin/articles/${id}`, {
       method: 'PUT',
       headers: {

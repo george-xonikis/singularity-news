@@ -23,9 +23,9 @@ export default function MainContent({ articles }: MainContentProps) {
               </p>
               <div className="flex justify-between items-center text-sm text-black">
                 <div className="flex flex-wrap gap-1">
-                  {article.topics.map((topic, idx) => (
-                    <span key={idx} className="bg-gray-100 px-2 py-1 rounded text-xs">
-                      {topic}
+                  {article.topics.map((topic) => (
+                    <span key={topic.id} className="bg-gray-100 px-2 py-1 rounded text-xs">
+                      {topic.name}
                     </span>
                   ))}
                 </div>
