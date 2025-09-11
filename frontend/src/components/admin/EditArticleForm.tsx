@@ -21,7 +21,6 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
 
   useEffect(() => {
     fetchArticle();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleId]);
 
   const fetchArticle = async () => {
@@ -113,6 +112,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
   // Prepare initial data for the form
   const initialData: ArticleFormData = {
     title: article.title,
+    slug: article.slug,
     content: article.content,
     summary: article.summary || '',
     author: article.author || '',
