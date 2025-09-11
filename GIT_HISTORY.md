@@ -13,7 +13,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-11
 
-#### `[WILL_UPDATE_AFTER_COMMIT]` - **chore**: remove migration scripts and simplify deployment
+#### `6514085` - **chore**: remove migration scripts and simplify deployment
 - **Migration system removal**:
   - Deleted database/run-migrations.sql containing all migration logic and SQL execution
   - Removed src/scripts/migrate.ts TypeScript migration runner and dependencies
