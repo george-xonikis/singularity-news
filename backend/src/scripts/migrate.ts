@@ -1,21 +1,22 @@
 import { Client } from 'pg';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import * as dotenv from 'dotenv';
-
-// Load environment variables
-dotenv.config();
 
 async function runMigrations() {
+  // Railway provides DATABASE_URL directly, no need for dotenv in production
   const databaseUrl = process.env.DATABASE_URL;
   
   if (!databaseUrl) {
     console.error('❌ DATABASE_URL environment variable is not set');
-    console.error('Available env vars:', Object.keys(process.env).filter(key => key.includes('DATABASE') || key.includes('PG')));
+    console.error('Available env vars:', Object.keys(process.env).filter(key => 
+      key.includes('DATABASE') || key.includes('PG') || key.includes('RAILWAY')
+    ));
+    console.error('NODE_ENV:', process.env.NODE_ENV);
     process.exit(1);
   }
 
-  console.warn(`Connecting to database: ${databaseUrl.substring(0, 20)}...`);
+  console.warn(`Connecting to database: ${databaseUrl.substring(0, 30)}...`);
+  console.warn('NODE_ENV:', process.env.NODE_ENV);
   
   const client = new Client({
     connectionString: databaseUrl,

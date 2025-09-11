@@ -7,11 +7,35 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: d81b400)
+- **master**: Production-ready code (last commit: d04c022)
 
 ## Complete Commit History
 
 ### 2025-09-11
+
+#### `d04c022` - **fix(deploy)**: separate Railway build and start phases for proper deployment
+- **Railway deployment architecture fix**:
+  - Split Railway deployment into distinct build and start phases
+  - Added explicit buildCommand to handle compilation during build phase only
+  - Changed startCommand to only run start:prod (includes migrations with DATABASE_URL available)
+  - Fixed timing issue where migrations ran before DATABASE_URL was available in containers
+- **Migration script improvements**:
+  - Removed dotenv dependency from migration script since Railway provides DATABASE_URL directly
+  - Added better debugging output showing available environment variables and NODE_ENV
+  - Extended debugging output to show Railway-specific environment variables
+  - Improved connection string display length for better debugging visibility
+- **Deployment flow optimization**:
+  - Build phase: Install dependencies and compile TypeScript (no migrations)
+  - Start phase: Run migrations (with DATABASE_URL available) then start server
+  - Eliminates race conditions where migrations failed due to missing environment variables
+- **Technical details**:
+  - Updated railway.json buildCommand to use pnpm install && pnpm --filter shared build && pnpm --filter backend build
+  - Updated railway.json startCommand to use pnpm --filter backend start:prod only
+  - Removed dotenv.config() from migrate.ts as Railway provides environment variables natively
+  - Enhanced error messages in migration script for better production debugging
+- **Files affected**:
+  - railway.json: Separated build and start commands for proper Railway deployment phases
+  - backend/src/scripts/migrate.ts: Removed dotenv dependency and enhanced debugging output
 
 #### `d81b400` - **fix(deploy)**: resolve Railway migration runtime DATABASE_URL issue
 - **Railway deployment fix for DATABASE_URL availability**:
