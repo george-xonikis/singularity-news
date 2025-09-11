@@ -13,6 +13,34 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-11
 
+#### `[WILL_UPDATE_AFTER_COMMIT]` - **chore**: remove migration scripts and simplify deployment
+- **Migration system removal**:
+  - Deleted database/run-migrations.sql containing all migration logic and SQL execution
+  - Removed src/scripts/migrate.ts TypeScript migration runner and dependencies
+  - Eliminated migration complexity that was causing Railway deployment failures
+- **Package.json simplification**:
+  - Removed migration commands (db:migrate:prod, db:migrate:dev) from scripts
+  - Simplified start:prod to only run the server directly (no migration step)
+  - Cleaned up unused database migration dependencies
+- **Railway configuration reset**:
+  - Reverted railway.json to last known working state from commit 9e8de27
+  - Restored build and start command separation for proper Railway deployment phases
+  - Eliminated migration-related build complexity that was preventing successful deployments
+- **Database approach change**:
+  - Production database will be wiped and rebuilt from scratch using schema.sql and seed.sql
+  - No migration preservation needed - fresh start approach
+  - Removes all technical debt from failed migration implementation attempts
+- **Deployment benefits**:
+  - Eliminates race conditions and environment variable timing issues with migrations
+  - Reduces deployment complexity and potential failure points
+  - Returns to proven deployment configuration that worked previously
+  - Build and lint tests pass with simplified configuration
+- **Files affected**:
+  - backend/database/run-migrations.sql: Deleted migration SQL script
+  - backend/src/scripts/migrate.ts: Deleted migration TypeScript runner
+  - backend/package.json: Removed migration commands and simplified start:prod
+  - railway.json: Reverted to working configuration from commit 9e8de27
+
 #### `d04c022` - **fix(deploy)**: separate Railway build and start phases for proper deployment
 - **Railway deployment architecture fix**:
   - Split Railway deployment into distinct build and start phases
