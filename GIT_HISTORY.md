@@ -7,11 +7,34 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 5f7ea41)
+- **master**: Production-ready code (last commit: 2551293)
 
 ## Complete Commit History
 
 ### 2025-09-10
+
+#### `2551293` - **fix(deploy)**: replace psql with node script for railway migrations
+- **Railway deployment fix**:
+  - Created Node.js migration script at src/scripts/migrate.ts using existing pg dependency
+  - Replaced `psql $DATABASE_URL -f database/run-migrations.sql` with `node dist/scripts/migrate.js`
+  - Railway containers don't include psql binary, causing deployment failures
+- **Migration script features**:
+  - Uses existing pg Client from package dependencies (no additional installations)
+  - Connects using DATABASE_URL environment variable
+  - Includes SSL configuration for production (rejectUnauthorized: false)
+  - Proper error handling with exit codes for deployment failure detection
+- **Code quality improvements**:
+  - Fixed console.log lint warnings by using console.warn for informational messages
+  - Added comprehensive error handling with descriptive messages
+  - Script provides clear success/failure feedback for deployment monitoring
+- **Deployment benefits**:
+  - Eliminates psql dependency for Railway deployments
+  - Maintains same SQL execution functionality as previous approach
+  - Uses existing project dependencies (no bloat)
+  - Works in both development and production environments
+- **Files affected**:
+  - backend/package.json: Updated db:migrate:prod script command
+  - backend/src/scripts/migrate.ts: New Node.js migration script
 
 #### `5f7ea41` - **fix(frontend)**: update topic page for Next.js 15 async params compatibility
 - **Next.js 15 compatibility update**:
@@ -1299,7 +1322,7 @@ Reduced page.tsx from 127 to 53 lines.
 - PR review fixes and text updates
 
 ## Statistics
-- **Total Commits**: 45 (43 in master, 2 unique to feat-001)
+- **Total Commits**: 46 (44 in master, 2 unique to feat-001)
 - **Contributors**: georgexon, George Xonikis
 - **Active Development Period**: August 7-17, 2025
 - **Most Active Day**: August 10, 2025 (16 commits)

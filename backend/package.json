@@ -11,7 +11,7 @@
     "start": "node dist/server.js",
     "start:prod": "NODE_ENV=production node dist/server.js",
     "db:migrate:dev": "PGPASSWORD=dev_password_123 psql -h localhost -p 5433 -U postgres -d singularity_news -f database/run-migrations.sql",
-    "db:migrate:prod": "psql $DATABASE_URL -f database/run-migrations.sql",
+    "db:migrate:prod": "node dist/scripts/migrate.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts"
