@@ -1,10 +1,24 @@
 import { Client } from 'pg';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import * as dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
 
 async function runMigrations() {
+  const databaseUrl = process.env.DATABASE_URL;
+  
+  if (!databaseUrl) {
+    console.error('❌ DATABASE_URL environment variable is not set');
+    console.error('Available env vars:', Object.keys(process.env).filter(key => key.includes('DATABASE') || key.includes('PG')));
+    process.exit(1);
+  }
+
+  console.warn(`Connecting to database: ${databaseUrl.substring(0, 20)}...`);
+  
   const client = new Client({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: databaseUrl,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   });
 

@@ -7,13 +7,37 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 2551293)
+- **master**: Production-ready code (last commit: 47c561b)
 
 ## Complete Commit History
 
+### 2025-09-11
+
+#### `PENDING` - **fix(deploy)**: resolve Railway migration runtime DATABASE_URL issue
+- **Railway deployment fix for DATABASE_URL availability**:
+  - Moved database migration from build phase to runtime in start:prod script
+  - Railway containers don't have DATABASE_URL available during build phase
+  - Migration now runs at runtime when environment variables are properly loaded
+- **Migration script enhancements**:
+  - Added dotenv.config() to load environment variables explicitly
+  - Added DATABASE_URL existence check with helpful error messages  
+  - Added debug logging to show connection attempts for troubleshooting
+  - Improved error handling for missing environment variables
+- **Package.json script updates**:
+  - Removed db:migrate:prod from build:prod script (DATABASE_URL not available at build time)
+  - Added migration execution to start:prod before server startup
+  - Ensures migrations run when DATABASE_URL is available at runtime
+- **Production deployment benefits**:
+  - Eliminates "ECONNREFUSED ::1:5432" errors during Railway builds
+  - Ensures database migrations run successfully in production environment
+  - Maintains same functionality while working with Railway's environment variable timing
+- **Files affected**:
+  - backend/package.json: Updated build:prod and start:prod scripts
+  - backend/src/scripts/migrate.ts: Added environment loading and validation
+
 ### 2025-09-10
 
-#### `2551293` - **fix(deploy)**: replace psql with node script for railway migrations
+#### `47c561b` - **fix(deploy)**: replace psql with node script for railway migrations
 - **Railway deployment fix**:
   - Created Node.js migration script at src/scripts/migrate.ts using existing pg dependency
   - Replaced `psql $DATABASE_URL -f database/run-migrations.sql` with `node dist/scripts/migrate.js`
