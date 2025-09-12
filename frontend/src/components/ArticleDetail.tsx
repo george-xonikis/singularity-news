@@ -169,7 +169,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
 
         {/* Article Content */}
         <div
-          className="prose prose-lg max-w-none text-justify"
+          className="px-2 prose prose-lg max-w-none text-justify"
           style={{
             fontSize: `${fontSize}px`,
             lineHeight: '1.7',

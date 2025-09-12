@@ -40,7 +40,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold text-black mb-8">{topicDisplayName}</h1>
         <div className="text-center py-12">
-          <p className="text-gray-600 text-lg mb-4">No articles found in this topic yet.</p>
+          <p className="text-gray-600 text-lg mb-4">Δεν βρέθηκε άρθρο στην κατηγορία</p>
           <Link href="/" className="text-blue-600 hover:text-blue-700 underline">
             Return to home
           </Link>
@@ -54,7 +54,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-black mb-2">{topicDisplayName}</h1>
         <p className="text-gray-600">
-          {articles.length} article{articles.length !== 1 ? 's' : ''} in this topic
+          {articles.length} σε αυτή την κατηγορία
         </p>
       </div>
 

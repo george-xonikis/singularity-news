@@ -24,7 +24,7 @@ export function RelatedArticles({ currentArticleId, currentTopics, currentTags =
   if (loading) {
     return (
       <div className="mt-16 pt-8 border-t border-gray-200">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Συναφή Άρθρα</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <div key={i} className="animate-pulse">
@@ -41,15 +41,15 @@ export function RelatedArticles({ currentArticleId, currentTopics, currentTags =
   if (relatedArticles.length === 0) {
     return (
       <div className="mt-16 pt-8 border-t border-gray-200">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
-        <p className="text-gray-600 italic">No related articles found.</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Συναφή Άρθρα</h2>
+        <p className="text-gray-600 italic">Δεν βρέθηκαν</p>
       </div>
     );
   }
 
   return (
     <div className="mt-16 pt-8 border-t border-gray-200">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Συναφή Άρθρα</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {relatedArticles.map((article) => (
           <Link

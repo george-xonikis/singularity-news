@@ -7,9 +7,38 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: e8f421b)
+- **master**: Production-ready code (last commit: d704ec0)
 
 ## Complete Commit History
+
+### 2025-09-12
+
+#### `[PENDING]` - **feat(frontend)**: add mobile thumbnails and complete Greek localization
+- **Mobile thumbnail implementation**:
+  - Added mobile article thumbnails above titles matching Greek news site design
+  - Implemented responsive layout with separate mobile/desktop article cards
+  - Used article.coverPhoto property for thumbnail images
+  - Added full-width rounded images (w-full h-48 object-cover rounded-lg)
+- **Greek localization completion**:
+  - Changed "views" to "αναγνώσεις" throughout the application
+  - Updated topics page with Greek text for article counts and no articles message
+  - Localized RelatedArticles component with "Συναφή Άρθρα" heading
+  - Updated Footer with Greek text about AI-generated unbiased articles
+- **Mobile UI improvements**:
+  - Improved mobile spacing and layout consistency
+  - Added proper link hover effects and transitions
+  - Enhanced article detail padding for better mobile reading experience
+  - Fixed mobile text visibility with proper color contrast
+- **Database schema fix**:
+  - Resolved topics array database schema from text[] to uuid[] conversion
+  - Fixed topic pages loading errors (500 status) with proper UUID handling
+  - Ensured referential integrity between articles and topics tables
+- **Files affected**:
+  - frontend/src/components/MainContent.tsx: Added mobile thumbnails and Greek localization
+  - frontend/src/app/(public)/topics/[slug]/page.tsx: Greek text localization
+  - frontend/src/components/RelatedArticles.tsx: Greek headings
+  - frontend/src/components/Footer.tsx: Greek text about AI neutrality
+  - frontend/src/components/ArticleDetail.tsx: Mobile padding improvements
 
 ### 2025-09-11
 
