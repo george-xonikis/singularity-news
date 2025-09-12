@@ -13,6 +13,47 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-12
 
+#### `PENDING` - **feat(backend)**: implement Greek slug support and fix topic deletion
+- **Comprehensive Greek transliteration system**:
+  - Added complete Greek-to-Latin character mapping with proper transliteration rules
+  - Implemented Greek vowels (α, ε, η, ι, ο, υ, ω) with accent support (ά, έ, ή, ί, ό, ύ, ώ)
+  - Added Greek consonants including multi-character mappings (θ→th, χ→ch, ψ→ps)
+  - Created transliterateGreek function to handle Greek text before slug generation
+- **Slug utilities enhancement**:
+  - Complete rewrite of slug.utils.ts with Greek language support
+  - Added isValidSlug function with strict validation (lowercase, alphanumeric, hyphens only)
+  - Added generateUniqueSlug function with async existence checking
+  - Consolidated duplicate slug generation code from multiple services
+- **Critical bug fixes**:
+  - Fixed topic deletion bug by using topic ID instead of topic name in hasArticles query
+  - Updated hasArticles method to use UUID instead of TEXT for proper database queries
+  - Fixed SQL query to use $1::uuid = ANY(topics) for correct UUID array comparison
+- **Comprehensive testing implementation**:
+  - Added Jest configuration file (jest.config.js) for backend testing
+  - Created extensive test suite with 94 test cases covering all slug functionality
+  - Added Greek transliteration accuracy tests for all character combinations
+  - Implemented unique slug generation tests with mock async functions
+  - Added edge case testing for empty strings, special characters, and mixed content
+- **Slug validation integration**:
+  - Updated ArticleService to use isValidSlug for custom slug validation
+  - Added proper error messages for invalid slug formats
+  - Enhanced topic creation with slug validation and proper error handling
+  - Integrated shared slug utilities across ArticleService and TopicService
+- **Workspace testing configuration**:
+  - Added Jest dependencies (@types/jest, jest, ts-jest) to backend package.json
+  - Created test, test:watch, and test:coverage scripts in backend
+  - Updated root package.json with unified test commands across all workspaces
+  - Configured Jest for TypeScript with proper coverage reporting
+- **Files affected**:
+  - backend/jest.config.js: New Jest configuration for testing environment
+  - backend/src/shared/utils/slug.utils.test.ts: Comprehensive test suite (157 lines)
+  - backend/package.json: Added Jest dependencies and test scripts
+  - backend/src/features/articles/article.service.ts: Added slug validation with isValidSlug
+  - backend/src/features/topics/topic.repository.ts: Fixed hasArticles to use topic UUID
+  - backend/src/features/topics/topic.service.ts: Updated to use shared slug utilities
+  - backend/src/shared/utils/slug.utils.ts: Complete rewrite with Greek transliteration
+  - package.json: Added workspace-wide test commands
+
 #### `2539213` - **feat(database)**: add Greek content and improve database workflow
 - **Database tooling improvements**:
   - Added db:seed command to package.json for easy database seeding

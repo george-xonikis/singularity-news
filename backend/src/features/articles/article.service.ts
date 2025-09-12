@@ -1,7 +1,7 @@
 import { Article, ArticleFilters } from '@singularity-news/shared';
 import { ArticleRepository } from './article.repository';
 import { CreateArticleDto, UpdateArticleDto } from './dtos';
-import { generateSlug } from '../../shared/utils/slug.utils';
+import { generateSlug, isValidSlug } from '../../shared/utils/slug.utils';
 import { TopicRepository } from '../topics/topic.repository';
 
 export class ArticleService {
@@ -84,8 +84,16 @@ export class ArticleService {
   async createArticle(dto: CreateArticleDto): Promise<Article> {
     const data = dto.validatedData;
     
-    // Generate slug if not provided
-    const slug = data.slug || generateSlug(data.title);
+    // Generate slug if not provided, or validate if provided
+    let slug: string;
+    if (data.slug) {
+      if (!isValidSlug(data.slug)) {
+        throw new Error(`Invalid slug format: "${data.slug}". Slug must contain only lowercase letters, numbers, and hyphens.`);
+      }
+      slug = data.slug;
+    } else {
+      slug = generateSlug(data.title);
+    }
 
     // Check if slug already exists
     const existing = await this.repository.findBySlug(slug, false);

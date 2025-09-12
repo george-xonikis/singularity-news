@@ -10,7 +10,9 @@
 		"lint": "pnpm --parallel --filter backend --filter frontend --filter shared lint",
 		"lint:fix": "pnpm --parallel --filter backend --filter frontend --filter shared lint:fix",
 		"db:reset": "docker-compose down -v && docker-compose up -d",
-		"db:migrate:dev": "pnpm --filter backend db:migrate:dev"
+		"test": "pnpm --parallel --filter backend --filter frontend --filter shared test",
+		"test:watch": "pnpm --parallel --filter backend --filter frontend --filter shared test:watch",
+		"test:coverage": "pnpm --parallel --filter backend --filter frontend --filter shared test:coverage"
 	},
 	"devDependencies": {
 		"eslint-plugin-react-hooks": "^5.2.0",

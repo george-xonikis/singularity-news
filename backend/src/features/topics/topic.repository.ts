@@ -98,10 +98,10 @@ export class TopicRepository {
   /**
    * Check if a topic has associated articles
    */
-  async hasArticles(topicName: string): Promise<boolean> {
+  async hasArticles(topicId: string): Promise<boolean> {
     const result = await query(
-      'SELECT COUNT(*) as count FROM articles WHERE $1 = ANY(topics)',
-      [topicName]
+      'SELECT COUNT(*) as count FROM articles WHERE $1::uuid = ANY(topics)',
+      [topicId]
     );
     return parseInt(result.rows[0].count) > 0;
   }

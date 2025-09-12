@@ -1,5 +1,6 @@
 import { Topic, CreateTopicInput, UpdateTopicInput } from '@singularity-news/shared';
 import { TopicRepository } from './topic.repository';
+import { generateSlug, isValidSlug } from '../../shared/utils/slug.utils';
 
 export class TopicService {
   private topicRepository: TopicRepository;
@@ -27,8 +28,16 @@ export class TopicService {
       throw new Error(`Topic with name '${input.name}' already exists`);
     }
 
-    // Generate slug if not provided
-    const slug = input.slug || this.generateSlug(input.name);
+    // Generate slug if not provided, or validate if provided
+    let slug: string;
+    if (input.slug) {
+      if (!isValidSlug(input.slug)) {
+        throw new Error(`Invalid slug format: "${input.slug}". Slug must contain only lowercase letters, numbers, and hyphens.`);
+      }
+      slug = input.slug;
+    } else {
+      slug = generateSlug(input.name);
+    }
 
     // Check if slug already exists
     const existingSlug = await this.topicRepository.findBySlug(slug);
@@ -81,7 +90,7 @@ export class TopicService {
     }
 
     // Check if topic has associated articles
-    const hasArticles = await this.topicRepository.hasArticles(existingTopic.name);
+    const hasArticles = await this.topicRepository.hasArticles(existingTopic.id);
     if (hasArticles) {
       throw new Error('Cannot delete topic that has associated articles');
     }
@@ -93,13 +102,4 @@ export class TopicService {
     return this.topicRepository.count();
   }
 
-  private generateSlug(name: string): string {
-    return name
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, '-')
-      .replace(/[^\w-]+/g, '')
-      .replace(/--+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
 }
