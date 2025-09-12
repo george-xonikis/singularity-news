@@ -7,11 +7,29 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 2d8e4d0)
+- **master**: Production-ready code (last commit: be1fb65)
 
 ## Complete Commit History
 
 ### 2025-09-12
+
+#### `[PENDING]` - **fix(database)**: update schema.sql to match current UUID array implementation
+- **Schema synchronization**:
+  - Updated topics field definition from TEXT[] to UUID[] in schema.sql
+  - Fixed schema documentation to reflect UUID-based referential integrity
+  - Ensures schema.sql matches the current working database structure
+- **Database consistency improvements**:
+  - Resolves inconsistency between schema file and live database
+  - Schema now correctly defines UUID[] type with proper default value
+  - Updated comment from topic names to topic UUIDs explanation
+- **Deployment benefits**:
+  - Fresh database deployments will now use correct UUID array type from start
+  - Eliminates need for manual schema conversion in new environments
+  - Maintains referential integrity between articles and topics tables
+- **Files affected**:
+  - backend/database/schema.sql: Updated topics field type and documentation
+
+#### `be1fb65` - **docs**: update GIT_HISTORY.md with commit hash 2d8e4d0
 
 #### `2d8e4d0` - **feat(frontend)**: add mobile thumbnails and complete Greek localization
 - **Mobile thumbnail implementation**:

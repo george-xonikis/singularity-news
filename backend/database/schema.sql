@@ -20,7 +20,7 @@ CREATE TABLE articles (
   content TEXT NOT NULL,
   summary TEXT,
   author VARCHAR(200),
-  topics TEXT[] NOT NULL DEFAULT '{}', -- Array of topic names
+  topics UUID[] NOT NULL DEFAULT '{}'::uuid[], -- Array of topic UUIDs for referential integrity
   cover_photo TEXT,
   cover_photo_caption VARCHAR(500),
   tags TEXT[], -- Array of tags for SEO and filtering
@@ -45,7 +45,7 @@ CREATE INDEX idx_articles_slug ON articles(slug);
 CREATE INDEX idx_articles_search 
 ON articles USING gin(to_tsvector('english', title || ' ' || content));
 
--- Note: Topics are stored as names for now, will be migrated to UUIDs later
+-- Topics are stored as UUIDs for referential integrity with topics table
 
 -- Function to automatically update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
