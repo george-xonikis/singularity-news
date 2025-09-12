@@ -7,11 +7,32 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: b0c6c46)
+- **master**: Production-ready code (last commit: 047bf25)
 
 ## Complete Commit History
 
 ### 2025-09-12
+
+#### `[PENDING]` - **feat(frontend)**: enhance mobile article hover effects for better touch feedback
+- **Mobile touch interaction improvements**:
+  - Added comprehensive hover effects for mobile article cards
+  - Implemented subtle background color change on hover (hover:bg-gray-50)
+  - Added soft shadow effect on hover for depth perception
+  - Added active press effects with darker background and scale animation
+- **Visual feedback enhancements**:
+  - Active press state with scale-down effect (active:scale-[0.98]) for tactile feedback
+  - Image hover effects with subtle zoom (hover:scale-[1.02])
+  - Smooth transitions (duration-200) for all interactive elements
+  - Larger touch target with padding and negative margin (p-3 -m-3)
+- **User experience benefits**:
+  - Clear visual feedback when users tap articles on mobile
+  - Improved accessibility with obvious interactive states
+  - Professional polish matching modern mobile UI patterns
+  - Performance-optimized CSS animations
+- **Files affected**:
+  - frontend/src/components/MainContent.tsx: Enhanced mobile article card interactions
+
+#### `047bf25` - **docs**: update GIT_HISTORY.md with commit hash b0c6c46
 
 #### `b0c6c46` - **fix(database)**: update schema.sql to match current UUID array implementation
 - **Schema synchronization**:

@@ -16,7 +16,7 @@ export default function MainContent({ articles }: MainContentProps) {
             <article key={article.id} className="border-b border-gray-200 pb-6">
               {/* Mobile layout with thumbnail */}
               <div className="md:hidden">
-                <Link href={`/articles/${article.slug}`} className="block">
+                <Link href={`/articles/${article.slug}`} className="block p-3 -m-3 rounded-lg hover:bg-gray-50 hover:shadow-md active:bg-gray-100 active:scale-[0.98] transition-all duration-200">
                   {article.coverPhoto && (
                     <div className="mb-3">
                       <Image
@@ -24,11 +24,11 @@ export default function MainContent({ articles }: MainContentProps) {
                         alt={article.title}
                         width={400}
                         height={200}
-                        className="w-full h-48 object-cover rounded-lg"
+                        className="w-full h-48 object-cover rounded-lg transition-transform duration-200 hover:scale-[1.02]"
                       />
                     </div>
                   )}
-                  <h3 className="text-lg font-semibold text-black mb-2 hover:text-blue-600 transition-colors">
+                  <h3 className="text-lg font-semibold text-black mb-2 group-hover:text-blue-600 transition-colors">
                     {article.title}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-3">
