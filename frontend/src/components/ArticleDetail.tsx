@@ -11,6 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import type { Article } from '@singularity-news/shared';
 import { ShareService } from '@/services/shareService';
+import { TopicBreadcrumb } from './TopicBreadcrumb';
 
 interface ArticleDetailProps {
   article: Article;
@@ -68,23 +69,7 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
       {/* Article Content */}
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Topic Breadcrumb */}
-        {article.topics && article.topics.length > 0 && (
-          <div className="text-center mb-8">
-            {article.topics.map((topic, index) => (
-              <span key={topic.id}>
-                <Link
-                  href={`/topics/${topic.slug}`}
-                  className="text-sm font-semibold text-blue-600 hover:text-blue-700 uppercase tracking-wider"
-                >
-                  {topic.name}
-                </Link>
-                {index < article.topics.length - 1 && (
-                  <span className="text-gray-400 mx-2">|</span>
-                )}
-              </span>
-            ))}
-          </div>
-        )}
+        <TopicBreadcrumb topics={article.topics || []} articleTitle={article.title} />
 
         {/* Headline */}
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-8 text-center max-w-4xl mx-auto">

@@ -1,37 +1,19 @@
 import { ArticleDetail } from '@/components/ArticleDetail';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import { notFound } from 'next/navigation';
-import type { Article } from '@singularity-news/shared';
-import { API_CONFIG } from '@/config/env';
+import Script from 'next/script';
+import { getArticleBySlug } from '@/lib/server-data';
+import { generateArticleMetadata, generateArticleJsonLd } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
-
-async function getArticleBySlug(slug: string): Promise<Article | null> {
-  try {
-    const response = await fetch(`${API_CONFIG.SERVER_URL}/articles/${slug}`, {
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const { success, data }: ApiResponse<Article> = await response.json();
-
-    return success && data ? data : null;
-  } catch (error) {
-    console.error('Failed to fetch article:', error);
-    return null;
-  }
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+  return generateArticleMetadata(article, slug);
 }
 
 export default async function ArticlePage({ params }: PageProps) {
@@ -42,13 +24,22 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound();
   }
 
+  const jsonLd = generateArticleJsonLd(article, slug);
+
   return (
-    <ArticleDetail article={article}>
-      <RelatedArticles
-        currentArticleId={article.id}
-        currentTopics={article.topics}
-        currentTags={article.tags}
+    <>
+      <Script
+        id="json-ld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-    </ArticleDetail>
+      <ArticleDetail article={article}>
+        <RelatedArticles
+          currentArticleId={article.id}
+          currentTopics={article.topics}
+          currentTags={article.tags}
+        />
+      </ArticleDetail>
+    </>
   );
 }

@@ -13,6 +13,41 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-12
 
+#### `[PENDING]` - **refactor**: rebrand to Αμερόληπτα Νέα and create unified ArticleSummary component
+- **Complete branding transformation**:
+  - Replaced all instances of "Singularity News" with "Αμερόληπτα Νέα" and "Amerolipta Nea"
+  - Updated metadata.ts with new OpenGraph siteName and JSON-LD publisher information
+  - Modified manifest.json PWA app name and short name for Greek branding
+  - Updated package descriptions and build scripts with new brand identity
+- **Component refactoring with ArticleSummary consolidation**:
+  - Created unified ArticleSummary.tsx component to eliminate code duplication
+  - Supports multiple variants: card (default) and list for different layouts
+  - Includes responsive design, hover effects, and click interactions
+  - Refactored MainContent.tsx to use new component (reduced ~60 lines to 6 lines)
+  - Updated topics pages to use consistent list variant for unified UI
+- **Enhanced user experience**:
+  - Added TopicBreadcrumb component for improved topic navigation
+  - Implemented responsive grid layouts with proper breakpoints
+  - Added hover effects and smooth transitions for better interactivity
+  - Enhanced SEO with robots.ts and sitemap.ts for better search visibility
+- **Architecture improvements**:
+  - Consolidated duplicate article summary implementations across components
+  - Reduced total codebase by approximately 70 lines while maintaining functionality
+  - Created reusable component pattern for future article display needs
+  - Improved maintainability with single source of truth for article summaries
+- **Files affected**:
+  - frontend/src/lib/metadata.ts: Updated branding in OpenGraph and JSON-LD
+  - frontend/public/manifest.json: New PWA names with Greek branding
+  - frontend/src/app/(public)/topics/[slug]/page.tsx: Updated metadata generation
+  - frontend/src/app/(public)/page.tsx: Updated OpenGraph title
+  - shared/package.json: Updated package description
+  - build.sh: Updated build script message
+  - frontend/src/components/ArticleSummary.tsx: New unified component
+  - frontend/src/components/TopicBreadcrumb.tsx: New breadcrumb component
+  - frontend/src/components/MainContent.tsx: Refactored to use ArticleSummary
+  - frontend/src/app/robots.ts: New SEO robots configuration
+  - frontend/src/app/sitemap.ts: New SEO sitemap generation
+
 #### `2581009` - **feat(frontend)**: display actual topic names instead of formatted slugs
 
 - **Topic page functionality enhancement**:

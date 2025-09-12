@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Article, Topic } from '@singularity-news/shared';
 import { API_CONFIG } from '@/config/env';
+import { ArticleSummary } from '@/components/ArticleSummary';
 
 interface TopicPageProps {
   params: Promise<{
@@ -72,7 +72,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="container mx-auto px-4 py-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-black mb-2">{topicDisplayName}</h1>
         <p className="text-gray-600">
@@ -80,42 +80,13 @@ export default async function TopicPage({ params }: TopicPageProps) {
         </p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="space-y-6">
         {articles.map((article) => (
-          <article
+          <ArticleSummary
             key={article.id}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden"
-          >
-            {article.coverPhoto && (
-              <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                <Image
-                  src={article.coverPhoto}
-                  alt={article.title}
-                  width={400}
-                  height={192}
-                  className="w-full h-48 object-cover"
-                />
-              </div>
-            )}
-            <div className="p-6">
-              <Link href={`/articles/${article.slug}`}>
-                <h2 className="text-xl font-semibold text-black mb-2 hover:text-blue-600 cursor-pointer transition-colors line-clamp-2">
-                  {article.title}
-                </h2>
-              </Link>
-              <p className="text-gray-700 mb-4 line-clamp-3">
-                {article.summary || article.content.substring(0, 150)}
-              </p>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-500">
-                  {new Date(article.publishedDate || article.createdAt).toLocaleDateString()}
-                </span>
-                <span className="text-gray-500">
-                  {article.views?.toLocaleString() || 0} views
-                </span>
-              </div>
-            </div>
-          </article>
+            article={article}
+            variant="list"
+          />
         ))}
       </div>
     </div>
@@ -129,7 +100,7 @@ export async function generateMetadata({ params }: TopicPageProps) {
   const topicDisplayName = topic?.name || slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
 
   return {
-    title: `${topicDisplayName} - Singularity News`,
-    description: `Διαβάστε τα τελευταία νέα και άρθρα για ${topicDisplayName.toLowerCase()} στο Singularity News`,
+    title: `${topicDisplayName} - Αμερόληπτα Νέα`,
+    description: `Διαβάστε τα τελευταία νέα και άρθρα για ${topicDisplayName.toLowerCase()} στα Αμερόληπτα Νέα`,
   };
 }

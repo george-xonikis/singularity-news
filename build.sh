@@ -3,7 +3,7 @@
 # Build script for Vercel deployment
 set -e
 
-echo "Building Singularity News for deployment..."
+echo "Building Αμερόληπτα Νέα - Amerolipta Nea for deployment..."
 
 # Install dependencies
 echo "Installing dependencies..."
