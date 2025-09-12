@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { RichTextEditor } from './RichTextEditor';
 import { SearchableTopicDropdown } from './SearchableTopicDropdown';
-import { ArticleDetail } from '@/components/ArticleDetail';
+import { ArticleContent } from '@/components/ArticleContent';
 import { PhotoIcon, XMarkIcon, EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
 import type { CreateArticleInput, UpdateArticleInput, Article } from '@singularity-news/shared';
 import { useTopicStore } from '@/stores/topicStore';
@@ -261,7 +261,7 @@ export function ArticleForm({
       {/* Content Area */}
       {viewMode === 'preview' ? (
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <ArticleDetail article={getPreviewArticle()} isPreview={true} />
+          <ArticleContent article={getPreviewArticle()} isPreview={true} />
         </div>
       ) : (
         <form className="space-y-8 bg-white rounded-lg shadow-lg p-12">

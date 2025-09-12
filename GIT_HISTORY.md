@@ -13,7 +13,7 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-12
 
-#### `[PENDING]` - **refactor**: rebrand to Αμερόληπτα Νέα and create unified ArticleSummary component
+#### `72645cd` - **refactor**: rebrand to Αμερόληπτα Νέα and create unified ArticleSummary component
 - **Complete branding transformation**:
   - Replaced all instances of "Singularity News" with "Αμερόληπτα Νέα" and "Amerolipta Nea"
   - Updated metadata.ts with new OpenGraph siteName and JSON-LD publisher information

@@ -8,10 +8,10 @@ interface ArticleSummaryProps {
   showImage?: boolean;
 }
 
-export function ArticleSummary({ 
-  article, 
-  variant = 'list', 
-  showImage = true 
+export function ArticleSummary({
+  article,
+  variant = 'list',
+  showImage = true
 }: ArticleSummaryProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();

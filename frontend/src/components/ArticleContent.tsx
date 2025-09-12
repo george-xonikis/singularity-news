@@ -1,31 +1,20 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  ShareIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
-  EyeIcon
-} from '@heroicons/react/24/outline';
+import { EyeIcon } from '@heroicons/react/24/outline';
 import type { Article } from '@singularity-news/shared';
-import { ShareService } from '@/services/shareService';
 import { TopicBreadcrumb } from './TopicBreadcrumb';
+import { ArticleActions } from './ArticleActions';
 
-interface ArticleDetailProps {
+interface ArticleContentProps {
   article: Article;
   isPreview?: boolean;
   children?: React.ReactNode;
 }
 
-export function ArticleDetail({ article, isPreview = false, children }: ArticleDetailProps) {
-  const [fontSize, setFontSize] = useState(16);
-
+export function ArticleContent({ article, isPreview = false, children }: ArticleContentProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
 
-    // Format: Aug. 17, 2025 10:16 am (in user's local timezone)
     const month = date.toLocaleDateString('en-US', { month: 'short' });
     const day = date.getDate();
     const year = date.getFullYear();
@@ -35,30 +24,13 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
       hour12: true
     }).toLowerCase();
 
-    // Get timezone abbreviation (e.g., EST, PST, GMT)
     const timeZone = date.toLocaleDateString('en-US', { timeZoneName: 'short' }).split(', ').pop() || '';
 
     return `${month}. ${day}, ${year} ${time} ${timeZone}`;
   };
 
-  const handleShare = async () => {
-    if (isPreview) return; // Disable sharing in preview mode
-
-    const shareUrl = ShareService.generateArticleUrl(article.slug);
-    await ShareService.shareArticle(article.title, article.summary, shareUrl);
-  };
-
-  const adjustFontSize = (increase: boolean) => {
-    setFontSize(prev => {
-      if (increase && prev < 24) return prev + 2;
-      if (!increase && prev > 12) return prev - 2;
-      return prev;
-    });
-  };
-
   return (
     <div className={isPreview ? 'bg-white border rounded-lg p-6' : 'bg-white'}>
-      {/* Preview Mode Indicator */}
       {isPreview && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6 flex items-center gap-2">
           <EyeIcon className="h-5 w-5 text-yellow-600" />
@@ -66,64 +38,21 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
         </div>
       )}
 
-      {/* Article Content */}
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Topic Breadcrumb */}
         <TopicBreadcrumb topics={article.topics || []} articleTitle={article.title} />
 
-        {/* Headline */}
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-8 text-center max-w-4xl mx-auto">
           {article.title}
         </h1>
 
-        {/* Summary */}
         {article.summary && (
           <p className="text-xl text-gray-700 leading-relaxed mb-12 text-center font-light max-w-2xl mx-auto">
             {article.summary}
           </p>
         )}
 
-        {/* Action Buttons Row */}
-        <div className="flex items-center justify-center space-x-6 mb-8 pb-8 border-b border-gray-200">
-          <button
-            onClick={handleShare}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
-            title="Share"
-          >
-            <ShareIcon className="h-5 w-5" />
-            <span className="text-sm font-medium">Share</span>
-          </button>
+        <ArticleActions article={article} isPreview={isPreview} />
 
-          <div className="flex items-center space-x-1">
-            <button
-              onClick={() => adjustFontSize(false)}
-              className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
-              title="Decrease font size"
-            >
-              <ChevronDownIcon className="h-4 w-4 text-gray-600" />
-            </button>
-            <span className="text-sm font-medium text-gray-600">Aa</span>
-            <button
-              onClick={() => adjustFontSize(true)}
-              className="p-2 hover:bg-gray-100 rounded transition-colors duration-200 cursor-pointer"
-              title="Increase font size"
-            >
-              <ChevronUpIcon className="h-4 w-4 text-gray-600" />
-            </button>
-          </div>
-
-          {/* <div className="flex items-center space-x-2 text-gray-600">
-            <span className="text-sm">👂</span>
-            <span className="text-sm font-medium">Listen (1 min)</span>
-          </div> */}
-
-          <div className="flex items-center space-x-2 text-gray-600">
-            <EyeIcon className="h-4 w-4" />
-            <span className="text-sm font-medium">{article.views?.toLocaleString() || 0} αναγνώσεις</span>
-          </div>
-        </div>
-
-        {/* Cover Image */}
         {article.coverPhoto && (
           <figure className="mb-8">
             <Image
@@ -132,7 +61,8 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
               width={800}
               height={400}
               className="w-full h-auto rounded-lg shadow-lg"
-              priority
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 800px"
             />
             {article.coverPhotoCaption && (
               <figcaption className="mt-2 text-sm text-gray-600 italic">
@@ -142,7 +72,6 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
           </figure>
         )}
 
-        {/* Author and Date */}
         <div className="mb-8 text-center">
           <p className="text-sm text-gray-600 mb-2">
             By <span className="font-medium text-gray-900">{article.author || 'Editorial Team'}</span>
@@ -152,26 +81,17 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
           </p>
         </div>
 
-        {/* Article Content */}
         <div
-          className="px-2 prose prose-lg max-w-none"
+          id="article-content"
+          className="px-2 prose prose-lg max-w-none text-gray-900"
           style={{
-            fontSize: `${fontSize}px`,
             lineHeight: '1.7',
             letterSpacing: '0.01em'
           }}
         >
-          <div
-            dangerouslySetInnerHTML={{ __html: article.content }}
-            className="text-gray-900"
-            style={{
-              lineHeight: 'inherit',
-              letterSpacing: 'inherit'
-            }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
         </div>
 
-        {/* Tags */}
         {article.tags && article.tags.length > 0 && (
           <div className="mt-12 pt-8 border-t border-gray-200">
             <h3 className="text-sm font-medium text-gray-900 mb-3">Tags</h3>
@@ -189,7 +109,6 @@ export function ArticleDetail({ article, isPreview = false, children }: ArticleD
           </div>
         )}
 
-        {/* Related Articles Section - Content Projection */}
         {!isPreview && children}
       </article>
     </div>

@@ -1,4 +1,4 @@
-import { ArticleDetail } from '@/components/ArticleDetail';
+import { ArticleContent } from '@/components/ArticleContent';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
@@ -33,13 +33,13 @@ export default async function ArticlePage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ArticleDetail article={article}>
+      <ArticleContent article={article}>
         <RelatedArticles
           currentArticleId={article.id}
           currentTopics={article.topics}
           currentTags={article.tags}
         />
-      </ArticleDetail>
+      </ArticleContent>
     </>
   );
 }
