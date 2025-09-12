@@ -13,6 +13,24 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-12
 
+#### `[PENDING]` - **chore(deps)**: bump next from 15.4.5 to 15.5.2
+- **Next.js version bump**:
+  - Updated Next.js from 15.4.5 to 15.5.2 in frontend/package.json dependencies
+  - Updated eslint-config-next from 15.4.5 to 15.5.2 in frontend/package.json devDependencies
+  - Updated Next.js from 15.4.5 to 15.5.2 in root package.json devDependencies
+- **Package lock updates**:
+  - Updated pnpm-lock.yaml with new Next.js version and related dependencies
+  - Updated swc platform binaries to latest versions for Next.js 15.5.2
+  - Updated @next/eslint-plugin-next to version 15.5.2 for consistency
+- **Development dependencies alignment**:
+  - Ensures consistent Next.js version across frontend and root workspace
+  - Maintains matching eslint-config-next version with Next.js core
+  - Updates all Next.js platform-specific SWC binaries (darwin-arm64, darwin-x64, linux variants, win32 variants)
+- **Files affected**:
+  - frontend/package.json: Updated next and eslint-config-next versions
+  - package.json: Updated next version in root devDependencies
+  - pnpm-lock.yaml: Comprehensive package lock updates for new versions
+
 #### `d55033b` - **feat(backend)**: implement Greek slug support and fix topic deletion
 - **Comprehensive Greek transliteration system**:
   - Added complete Greek-to-Latin character mapping with proper transliteration rules
