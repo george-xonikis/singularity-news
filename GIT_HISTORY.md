@@ -7,11 +7,35 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: b5fe6d1)
+- **master**: Production-ready code (last commit: 5ed1e46)
 
 ## Complete Commit History
 
 ### 2025-09-12
+
+#### `[PENDING]` - **fix(frontend)**: resolve text alignment issues and respect rich text editor settings
+- **Text alignment fix**:
+  - Removed hardcoded text-justify that was causing uneven word spacing gaps
+  - Removed hardcoded text-left that was overriding rich text editor alignment settings
+  - Added complete Quill alignment class support in globals.css
+- **Rich text editor integration improvements**:
+  - Added missing .ql-align-left CSS class for proper left alignment
+  - Enhanced Quill alignment classes with proper organization and comments
+  - Added default left alignment for paragraphs without explicit alignment classes
+- **User experience benefits**:
+  - Text alignment in rich text editor now works correctly (left, center, right, justify)
+  - Eliminates unwanted text gaps caused by forced justification
+  - Respects user's alignment choices from the editor interface
+  - Defaults to readable left-aligned text when no alignment is specified
+- **CSS improvements**:
+  - Proper CSS specificity for alignment classes
+  - Clean default handling with :not() selector for unaligned paragraphs
+  - Maintains all existing prose styling while fixing alignment issues
+- **Files affected**:
+  - frontend/src/components/ArticleDetail.tsx: Removed hardcoded alignment classes
+  - frontend/src/app/globals.css: Enhanced Quill alignment support and defaults
+
+#### `5ed1e46` - **docs**: update GIT_HISTORY.md with commit hash b5fe6d1
 
 #### `b5fe6d1` - **feat(frontend)**: enhance mobile article hover effects for better touch feedback
 - **Mobile touch interaction improvements**:

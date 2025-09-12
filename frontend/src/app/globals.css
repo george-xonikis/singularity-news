@@ -160,6 +160,11 @@ body {
   border-radius: 0.5rem;
 }
 
+/* Quill alignment classes */
+.prose .ql-align-left {
+  text-align: left;
+}
+
 .prose .ql-align-center {
   text-align: center;
 }
@@ -170,6 +175,11 @@ body {
 
 .prose .ql-align-justify {
   text-align: justify;
+}
+
+/* Default text alignment for article content (override justify default) */
+.prose p:not([class*="ql-align"]) {
+  text-align: left;
 }
 
 /* Animations */
