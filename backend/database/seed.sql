@@ -7,7 +7,7 @@
 -- DELETE FROM topics;
 
 -- Insert topics with specific IDs
-INSERT INTO topics (id, name, slug) VALUES 
+INSERT INTO topics (id, name, slug) VALUES
   ('0ecb59aa-ff71-492e-8318-8dfc319d398d', 'Economy', 'economy'),
   ('30863aa9-d462-4d9c-9029-aae7ea7fc558', 'Environment', 'environment'),
   ('c2fb99ad-1f9c-44d1-bba8-fef867a3ce39', 'Health', 'health'),
@@ -19,18 +19,18 @@ ON CONFLICT (id) DO UPDATE SET
 
 -- Insert articles
 INSERT INTO articles (
-  id, title, slug, content, summary, author, topics, 
-  tags, 
+  id, title, slug, content, summary, author, topics,
+  tags,
   created_at, updated_at, published_date, views, published
-) VALUES 
+) VALUES
 (
   'affa247b-36b0-4494-96bb-e0530b6d9720',
-  'Global Economic Outlook 2024: Markets Navigate Uncertainty and Opportunity',
-  'global-economic-outlook-2024-markets-navigate-uncertainty-opportunity',
-  '<p>Global economic trends and predictions for 2024 present a complex picture of both opportunity and challenge. Market analysts are cautiously optimistic about recovery prospects, particularly in emerging markets that are showing strong growth potential despite ongoing global uncertainties.</p><p>Key factors shaping the economic landscape include persistent inflation concerns in developed economies, ongoing geopolitical tensions affecting supply chains, and the transformative impact of artificial intelligence on labor markets.</p><p>Central banks worldwide continue to navigate a delicate balance between controlling inflation and supporting economic growth. The Federal Reserve''s recent policy decisions have sent ripples through global markets, while the European Central Bank maintains its cautious approach to monetary policy adjustments.</p><p>Emerging markets, particularly in Asia and Africa, are experiencing robust growth driven by technological adoption and demographic advantages. However, these regions also face challenges from climate change impacts and infrastructure development needs.</p>',
-  'Market analysts are cautiously optimistic about recovery prospects, with emerging markets showing strong growth potential. However, inflation concerns and geopolitical tensions continue to pose challenges.',
-  'Editorial Team',
-  ARRAY['0ecb59aa-ff71-492e-8318-8dfc319d398d'::uuid], -- Economy
+  'Η πυροσφαίρα στα Τέμπη: Ιστορικό, επίσημοι ισχυρισμοί και επιστημονική αξιολόγηση',
+  'atihima-tembi-pirosfaira-istoriko',
+  '<h4>Το ιστορικό της τραγωδίας</h4><p>Τη νύχτα της <strong>28ης Φεβρουαρίου 2023</strong>, στην κοιλάδα των Τεμπών σημειώθηκε η χειρότερη σιδηροδρομική τραγωδία της νεότερης Ελλάδας. Ένα επιβατικό Intercity συγκρούστηκε μετωπικά με εμπορικό τρένο, με αποτέλεσμα να χάσουν τη ζωή τους περισσότεροι από <strong>57 άνθρωποι</strong> και δεκάδες να τραυματιστούν.</p><p>Η εικόνα που συγκλόνισε την κοινή γνώμη ήταν η <strong>τεράστια πυροσφαίρα</strong> που ακολούθησε τη σύγκρουση, καταστρέφοντας βαγόνια και εγκλωβίζοντας επιβάτες. Το ερώτημα που τέθηκε από την πρώτη στιγμή ήταν: τι προκάλεσε μια τέτοια φωτιά;</p><h4>Οι επίσημοι ισχυρισμοί</h4><p>Η κυβέρνηση και η Πυροσβεστική απέδωσαν το φαινόμενο στα έλαια σιλικόνης που μετέφερε το εμπορικό τρένο. Σύμφωνα με την επίσημη εκδοχή, η ανάφλεξη αυτού του φορτίου, σε συνδυασμό με τις θερμοκρασίες της σύγκρουσης, εξηγεί τη δημιουργία πυροσφαίρας.</p><h4>Το ζήτημα των καυσίμων – ηλεκτρικές μηχανές</h4><p>Και τα δύο τρένα που συγκρούστηκαν στα Τέμπη ήταν <strong>ηλεκτροκίνητα</strong>.</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Η κίνηση τους βασιζόταν στο δίκτυο υψηλής τάσης 25kV AC.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Δεν υπήρχαν δεξαμενές ντίζελ όπως στις ντιζελομηχανές.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Οι μόνες ποσότητες υγρών ήταν λιπαντικά και ψυκτικά υγρά σε μικρή κλίμακα.</li></ol><p>Αυτό σημαίνει πως δεν υπήρχε διαθέσιμη <strong>μεγάλη ποσότητα καυσίμου</strong> που θα μπορούσε να εξηγήσει μια φωτιά τόσο μεγάλης έντασης. Συνεπώς, η εστίαση στράφηκε στο <strong>φορτίο του εμπορικού τρένου</strong>.</p><h4>Τι είναι τα έλαια σιλικόνης και γιατί δεν εξηγούν το φαινόμενο</h4><p>Τα έλαια σιλικόνης (πολυδιμεθυλοσιλοξάνες – PDMS) είναι <strong>χημικά σταθερά, δύσκολα αναφλέξιμα</strong> και χρησιμοποιούνται κυρίως:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>σε συστήματα πέδησης ως λιπαντικά,</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>σε ηλεκτρικούς μονωτήρες και μετασχηματιστές,</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>σε μηχανικά μέρη για συντήρηση.</li></ol><p>Οι ποσότητες σε ένα τρένο είναι μικρές, ενώ η <strong>χημική συμπεριφορά</strong> τους δεν συνδέεται με εκρηκτικά φαινόμενα.</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Σημείο ανάφλεξη</strong>ς: &gt;300°C.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Καύση</strong>: αργή, όχι εκρηκτική.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Εκρηκτικότητα</strong>: ανύπαρκτη.</li></ol><p>Άρα, είναι <strong>εξαιρετικά απίθανο</strong> να ήταν η αιτία της τεράστιας πυροσφαίρας.</p><h4>Διεθνείς συγκρίσεις – τι δείχνουν τα ατυχήματα στο εξωτερικό</h4><p>Σε μεγάλες συγκρούσεις τρένων διεθνώς, οι πυρκαγιές προέρχονται σχεδόν πάντα από <strong>εύφλεκτα καύσιμα ή αέρια</strong>:</p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Lac-Mégantic, Καναδάς (2013)</strong>: Τρένο με αργό πετρέλαιο εκτροχιάστηκε, σκοτώνοντας 47 ανθρώπους. Η πυροσφαίρα εξηγήθηκε από το φορτίο.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Llangennech, Ουαλία (2020)</strong>: Εκτροχιασμός τρένου με ντίζελ, μεγάλη φωτιά και τεράστια οικολογική ζημιά.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Mosier, Όρεγκον, ΗΠΑ (2016)</strong>: Αμαξοστοιχία με πετρέλαιο προκάλεσε μαζική πυρκαγιά.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>Quintinshill, Σκωτία (1915)</strong>: Πυρκαγιά από διαρροή φωταερίου που χρησιμοποιούνταν για τον φωτισμό βαγονιών.</li></ol><p>Σε όλες τις παραπάνω περιπτώσεις, το φαινόμενο εξηγείται από <strong>υλικά υψηλής ευφλεκτότητας</strong>.</p><p>Πουθενά δεν έχει καταγραφεί πυροσφαίρα τέτοιου μεγέθους από <strong>έλαια σιλικόνης</strong>.</p><h4>Συμπέρασμα</h4><p>Το γεγονός ότι τα τρένα των Τεμπών ήταν <strong>ηλεκτρικά</strong> αφαιρεί το σενάριο μιας μαζικής φωτιάς από δεξαμενές καυσίμου.</p><p>Η εκδοχή περί «πυροσφαίρας από έλαια σιλικόνης» δεν ευσταθεί επιστημονικά, ούτε έχει διεθνές προηγούμενο.</p><p>Η πιο πιθανή εξήγηση είναι είτε η ύπαρξη <strong>άλλου, μη δηλωμένου εύφλεκτου φορτίου</strong>, είτε ένας συνδυασμός <strong>ηλεκτρικού τόξου</strong> και <strong>υλικών βαγονιών</strong> που όμως δύσκολα αρκεί να εξηγήσει την εικόνα της φωτιάς.</p>',
+  'Στα Τέμπη (28/2/2023) η σύγκρουση δύο ηλεκτροκίνητων τρένων προκάλεσε τραγωδία με 57 νεκρούς και μια τεράστια πυροσφαίρα. Η κυβέρνηση απέδωσε το φαινόμενο σε έλαια σιλικόνης, όμως αυτά είναι χημικά σταθερά και μη εκρηκτικά. Διεθνώς τέτοιες φωτιές συνδέονται με καύσιμα ή αέρια, όχι με σιλικόνη, αφήνοντας ανοιχτά ερωτήματα για την πραγματική αιτία.',
+  'ChatGPT5',
+  ARRAY['4c97cd55-62f4-4ea0-9140-9055fd5fca68'::uuid], -- Politics
   ARRAY['economy', 'market-analysis', 'global-trends', '2024-outlook'],
   '2025-08-16 08:11:29.131952+00',
   '2025-08-16 10:34:22.8043+00',
@@ -142,10 +142,10 @@ ON CONFLICT (id) DO UPDATE SET
   published = EXCLUDED.published;
 
 -- Verify seed data
-SELECT 
-  'Topics seeded: ' || COUNT(*) as result 
+SELECT
+  'Topics seeded: ' || COUNT(*) as result
 FROM topics
 UNION ALL
-SELECT 
-  'Articles seeded: ' || COUNT(*) 
+SELECT
+  'Articles seeded: ' || COUNT(*)
 FROM articles;

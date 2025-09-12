@@ -7,11 +7,35 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: c841ab2)
+- **master**: Production-ready code (last commit: e936283)
 
 ## Complete Commit History
 
 ### 2025-09-12
+
+#### `[PENDING]` - **feat(database)**: add Greek content and improve database workflow
+- **Database tooling improvements**:
+  - Added db:seed command to package.json for easy database seeding
+  - Enhanced development workflow with proper pnpm commands
+  - Documented Docker auto-initialization behavior for clarity
+- **Content localization**:
+  - Updated seed.sql with Greek article content about Tempe train tragedy
+  - Added comprehensive Greek article with proper formatting and structure
+  - Maintained existing English articles alongside new Greek content
+- **Article detail enhancements**:
+  - Updated ArticleDetail component styling and layout
+  - Improved views display with proper Greek localization
+  - Enhanced mobile and desktop reading experience
+- **Development experience**:
+  - Clarified database reset and seeding workflow
+  - Fixed understanding of Docker entrypoint auto-initialization
+  - Streamlined development database management commands
+- **Files affected**:
+  - package.json: Added db:seed script for manual seeding
+  - backend/database/seed.sql: Added Greek article content and updated structure
+  - frontend/src/components/ArticleDetail.tsx: UI improvements and localization
+
+#### `e936283` - **docs**: update GIT_HISTORY.md with commit hash c841ab2
 
 #### `c841ab2` - **fix(frontend)**: resolve text alignment issues and respect rich text editor settings
 - **Text alignment fix**:
