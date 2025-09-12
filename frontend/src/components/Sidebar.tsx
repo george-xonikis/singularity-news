@@ -10,7 +10,7 @@ export default function Sidebar({ articles, topics }: SidebarProps) {
   return (
     <aside className="lg:col-span-1">
       <div className="bg-gray-50 p-4 rounded">
-        <h3 className="text-lg text-black font-semibold mb-4">Popular Articles</h3>
+        <h3 className="text-lg text-black font-semibold mb-4">Δημοφιλή Άρθρα</h3>
         <ul className="space-y-3">
           {articles.map((article, index) => (
             <li key={article.id} className="text-sm">
@@ -24,7 +24,7 @@ export default function Sidebar({ articles, topics }: SidebarProps) {
       </div>
 
       <div className="mt-8 bg-gray-50 p-4 rounded">
-        <h3 className="text-lg text-black font-semibold mb-4">Topics</h3>
+        <h3 className="text-lg text-black font-semibold mb-4">Κατηγορίες</h3>
         <div className="flex flex-wrap gap-2">
           {topics.map(topic => (
             <Link

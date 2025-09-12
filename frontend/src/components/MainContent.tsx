@@ -8,7 +8,7 @@ interface MainContentProps {
 export default function MainContent({ articles }: MainContentProps) {
   return (
     <section className="lg:col-span-2">
-      <h2 className="text-2xl text-black font-bold mb-6">Latest Articles</h2>
+      <h2 className="text-2xl text-black font-bold mb-4">Τελευταία Άρθρα</h2>
       <div className="space-y-6">
         {articles.map(article => {
           return (

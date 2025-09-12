@@ -10,9 +10,14 @@ export default async function PublicLayout({
 }) {
   const topics = await getTopics();
 
+  // Debug logging (only in development)
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn('Topics fetched:', topics.length, topics.map(t => t.name));
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <Header topics={topics} />
       <Navigation topics={topics} />
       {children}
       <Footer />
