@@ -7,11 +7,33 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 0047229)
+- **master**: Production-ready code (last commit: [PENDING])
 
 ## Complete Commit History
 
 ### 2025-09-12
+
+#### `[PENDING]` - **feat(frontend)**: display actual topic names instead of formatted slugs
+
+- **Topic page functionality enhancement**:
+  - Added getTopicBySlug function to fetch topic information from API
+  - Updated topic pages to use real topic names (e.g., "Πολιτική" instead of "Politics")
+  - Used Promise.all to fetch both topic and articles data concurrently
+  - Fixed API endpoint URL to use correct /topics/slug/{slug} path
+- **SEO and UX improvements**:
+  - Updated metadata generation to use actual topic names for better SEO
+  - Enhanced page titles and descriptions with proper Greek topic names
+  - Added fallback to formatted slug if topic fetch fails
+- **Navigation consistency**:
+  - Removed uppercase class from navigation to preserve proper topic name display
+  - Ensures Greek topic names display correctly without forced capitalization
+- **Data integration benefits**:
+  - Topic pages now show authentic content instead of URL slug approximations
+  - Better user experience with proper Greek language support
+  - Maintains existing functionality while improving accuracy
+- **Files affected**:
+  - frontend/src/app/(public)/topics/[slug]/page.tsx: Added topic fetching and real name display
+  - frontend/src/components/Navigation.tsx: Removed uppercase styling to preserve topic names
 
 #### `0047229` - **chore(deps)**: bump next from 15.4.5 to 15.5.2
 - **Next.js version bump**:

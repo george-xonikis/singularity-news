@@ -1,12 +1,31 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Article } from '@singularity-news/shared';
+import { Article, Topic } from '@singularity-news/shared';
 import { API_CONFIG } from '@/config/env';
 
 interface TopicPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+async function getTopicBySlug(topicSlug: string): Promise<Topic | null> {
+  try {
+    const response = await fetch(
+      `${API_CONFIG.SERVER_URL}/topics/slug/${topicSlug}`,
+      { next: { revalidate: 60 } }
+    );
+
+    if (!response.ok) {
+      console.error(`Failed to fetch topic ${topicSlug}:`, response.status);
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch topic:', error);
+    return null;
+  }
 }
 
 async function getArticlesByTopic(topicSlug: string): Promise<Article[]> {
@@ -30,10 +49,13 @@ async function getArticlesByTopic(topicSlug: string): Promise<Article[]> {
 
 export default async function TopicPage({ params }: TopicPageProps) {
   const { slug } = await params;
-  const articles = await getArticlesByTopic(slug);
+  const [topic, articles] = await Promise.all([
+    getTopicBySlug(slug),
+    getArticlesByTopic(slug)
+  ]);
 
-  // Convert slug to display name
-  const topicDisplayName = slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
+  // Use actual topic name or fallback to formatted slug
+  const topicDisplayName = topic?.name || slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
 
   if (articles.length === 0) {
     return (
@@ -103,10 +125,11 @@ export default async function TopicPage({ params }: TopicPageProps) {
 // Generate metadata for SEO
 export async function generateMetadata({ params }: TopicPageProps) {
   const { slug } = await params;
-  const topicDisplayName = slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
+  const topic = await getTopicBySlug(slug);
+  const topicDisplayName = topic?.name || slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase();
 
   return {
-    title: `${topicDisplayName} News - AI News`,
-    description: `Read the latest ${topicDisplayName.toLowerCase()} news and articles on AI News`,
+    title: `${topicDisplayName} - Singularity News`,
+    description: `Διαβάστε τα τελευταία νέα και άρθρα για ${topicDisplayName.toLowerCase()} στο Singularity News`,
   };
 }
