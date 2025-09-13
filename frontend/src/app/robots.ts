@@ -1,14 +1,14 @@
 import { MetadataRoute } from 'next';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+import { SITE_URL } from '@/config/env';
 
 export default function robots(): MetadataRoute.Robots {
-  return {
+  // Only include sitemap if we have a valid URL
+  const robots: MetadataRoute.Robots = {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/_next/'],
+        disallow: ['/api/', '/admin/', '/_next/', '/search'],
       },
       {
         userAgent: 'Googlebot',
@@ -16,6 +16,10 @@ export default function robots(): MetadataRoute.Robots {
         crawlDelay: 0,
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
   };
+
+  // Add sitemap with configured URL
+  robots.sitemap = `${SITE_URL}sitemap.xml`;
+
+  return robots;
 }

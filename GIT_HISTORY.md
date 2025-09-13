@@ -13,6 +13,37 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 
 ### 2025-09-13
 
+#### `[PENDING]` - **fix(seo)**: centralize SITE_URL configuration across all SEO files
+- **Centralized SITE_URL configuration**:
+  - Added SITE_URL = 'https://www.amerolipta-nea.gr/' as centralized configuration in config/env.ts
+  - Updated robots.ts to import SITE_URL from config/env instead of environment variables
+  - Updated sitemap.ts to use centralized SITE_URL from config/env with proper URL concatenation
+  - Updated layout.tsx to import SITE_URL from config for metadataBase instead of process.env
+  - Created SEOSchema component using centralized SITE_URL for structured data
+- **Fixed Google Search Console sitemap URL error**:
+  - Resolved "Invalid sitemap URL" error by ensuring consistent URL format across all SEO files
+  - Fixed sitemap.xml URL generation to use centralized configuration
+  - Updated robots.txt sitemap reference to use proper URL formatting
+  - Ensured all SEO files use same URL source to prevent configuration drift
+- **Enhanced SEO functionality**:
+  - Added comprehensive structured data schema components (website, organization, news-media)
+  - Updated homepage to include structured data for better search visibility
+  - Added metadata verification codes and enhanced SEO properties in layout.tsx
+  - Improved URL consistency across robots.txt, sitemap.xml, and structured data
+- **URL formatting improvements**:
+  - Fixed trailing slash handling in sitemap URL generation
+  - Standardized URL concatenation to prevent double slashes or missing paths
+  - Ensured all article and topic URLs use consistent formatting
+- **Files affected**:
+  - frontend/src/config/env.ts: Added centralized SITE_URL configuration
+  - frontend/src/app/robots.ts: Updated to use centralized SITE_URL
+  - frontend/src/app/sitemap.ts: Updated to use centralized SITE_URL with proper concatenation
+  - frontend/src/app/layout.tsx: Updated imports and added verification metadata
+  - frontend/src/components/SEOSchema.tsx: New component using centralized SITE_URL
+  - frontend/src/app/(public)/page.tsx: Added structured data schema components
+
+### 2025-09-13
+
 #### `7acf637` - **docs**: add comprehensive architecture documentation and update development guide
 - **Created comprehensive ARCHITECTURE.md documentation**:
   - Added detailed system architecture overview with tech stack (Next.js, Express, PostgreSQL)

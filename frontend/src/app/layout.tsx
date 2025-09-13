@@ -12,10 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || '';
+import { SITE_URL } from '@/config/env';
 
 export const metadata: Metadata = {
-  metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Αμερόληπτα Νέα - Amerolipta Nea με AI',
     template: '%s | Αμερόληπτα Νέα'
@@ -35,6 +35,18 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  verification: {
+    google: 'your-google-verification-code-here',
+    yandex: 'your-yandex-verification-code-here',
+  },
+  classification: 'news, media, journalism, greece, ai',
+  other: {
+    'application-name': 'Αμερόληπτα Νέα',
+    'apple-mobile-web-app-title': 'Αμερόληπτα Νέα',
+    'msapplication-tooltip': 'Αμερόληπτα νέα με τεχνητή νοημοσύνη',
+    'theme-color': '#1e40af',
+    'color-scheme': 'light',
   },
   icons: {
     icon: '/favicon.svg',

@@ -1,6 +1,7 @@
 import { getArticles, getTopics } from '@/lib/server-data';
 import MainContent from '@/components/MainContent';
 import Sidebar from '@/components/Sidebar';
+import { SEOSchema } from '@/components/SEOSchema';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -20,11 +21,16 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="container mx-auto px-4 py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <MainContent articles={articles} />
-        <Sidebar articles={articles} topics={topics} />
-      </div>
-    </main>
+    <>
+      <SEOSchema type="website" />
+      <SEOSchema type="organization" />
+      <SEOSchema type="news-media" />
+      <main className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <MainContent articles={articles} />
+          <Sidebar articles={articles} topics={topics} />
+        </div>
+      </main>
+    </>
   );
 }
