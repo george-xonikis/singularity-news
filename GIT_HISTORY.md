@@ -7,13 +7,13 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 7acf637)
+- **master**: Production-ready code (last commit: cc4dca5)
 
 ## Complete Commit History
 
 ### 2025-09-13
 
-#### `[PENDING]` - **fix(seo)**: centralize SITE_URL configuration across all SEO files
+#### `cc4dca5` - **fix(seo)**: centralize SITE_URL configuration across all SEO files
 - **Centralized SITE_URL configuration**:
   - Added SITE_URL = 'https://www.amerolipta-nea.gr/' as centralized configuration in config/env.ts
   - Updated robots.ts to import SITE_URL from config/env instead of environment variables
