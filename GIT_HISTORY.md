@@ -7,9 +7,36 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: 2581009)
+- **master**: Production-ready code (last commit: 6102747)
 
 ## Complete Commit History
+
+### 2025-09-13
+
+#### `[PENDING]` - **docs**: add comprehensive architecture documentation and update development guide
+- **Created comprehensive ARCHITECTURE.md documentation**:
+  - Added detailed system architecture overview with tech stack (Next.js, Express, PostgreSQL)
+  - Created infrastructure diagram showing Vercel + Railway deployment architecture
+  - Documented complete project structure and directory organization
+  - Added key features overview and development workflow guidelines
+  - Included environment variable documentation for both frontend and backend
+- **Updated CLAUDE.md with accurate project state**:
+  - Removed outdated Firebase/Firestore references throughout the document
+  - Updated tech stack to reflect PostgreSQL on Railway instead of Firebase
+  - Clarified deployment strategy: Frontend on Vercel, Backend+DB on Railway
+  - Updated project name from "Singularity News" to "Αμερόληπτα Νέα (Amerolipta Nea)"
+  - Added note about hybrid authentication approach (Railway DB + planned Supabase Auth)
+  - Updated development status with completed steps and current focus areas
+  - Revised environment variable examples for current tech stack
+  - Updated key commands and development workflow instructions
+- **Documentation improvements for developer onboarding**:
+  - Clear separation between completed features and upcoming work
+  - Proper environment variable configuration examples
+  - Updated response protocol and development rules
+  - Better organization of project status and next steps
+- **Files affected**:
+  - ARCHITECTURE.md: New comprehensive system architecture documentation
+  - CLAUDE.md: Complete update to reflect current project state and tech stack
 
 ### 2025-09-12
 
