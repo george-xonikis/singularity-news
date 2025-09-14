@@ -7,9 +7,29 @@ This file maintains a comprehensive history of all commits in the Singularity Ne
 **Main Branch**: master
 
 ## Branch Structure
-- **master**: Production-ready code (last commit: cc4dca5)
+- **master**: Production-ready code (last commit: [PENDING])
 
 ## Complete Commit History
+
+### 2025-09-14
+
+#### `[PENDING]` - **perf(frontend)**: enable 5-minute caching for article pages
+- **Performance optimization for article navigation**:
+  - Updated getArticleBySlug function in server-data.ts to use 5-minute caching
+  - Changed from `cache: 'no-store'` to `next: { revalidate: 300 }` for better performance
+  - Matches home page caching strategy for consistent user experience
+  - Resolves slow article navigation performance issue
+- **Caching strategy improvements**:
+  - Article pages now cache for 5 minutes, preventing repeated API calls
+  - Reduces server load while maintaining content freshness
+  - Provides faster page transitions when navigating between articles
+  - Uses Next.js Incremental Static Regeneration (ISR) for optimal performance
+- **User experience benefits**:
+  - Eliminates slow loading when clicking on articles from home page
+  - Consistent navigation speed across all pages
+  - Better perceived performance with faster page transitions
+- **Files affected**:
+  - frontend/src/lib/server-data.ts: Updated caching configuration for article fetching
 
 ### 2025-09-13
 

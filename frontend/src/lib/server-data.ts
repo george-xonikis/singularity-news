@@ -45,7 +45,7 @@ export async function getTopics(): Promise<Topic[]> {
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
     const response = await fetch(`${API_CONFIG.SERVER_URL}/articles/${slug}`, {
-      cache: 'no-store'
+      next: { revalidate: 300 } // Cache for 5 minutes like the home page
     });
 
     if (!response.ok) {
